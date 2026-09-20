@@ -11,6 +11,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+
       - name: Checkout
         uses: actions/checkout@v4
 
@@ -23,14 +24,46 @@ jobs:
       - name: Generate Android project
         run: flutter create . --platforms=android
 
+      - name: Add Location Permissions
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          file = Path("android/app/src/main/AndroidManifest.xml")
+          text = file.read_text()
+
+          permissions = """
+              <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+              <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+              <uses-permission android:name="android.permission.CAMERA"/>
+          """
+
+          if "android.permission.ACCESS_FINE_LOCATION" not in text:
+              text = text.replace("<manifest", "<manifest" + permissions, 1)
+
+          file.write_text(text)
+          PY
+
       - name: Get dependencies
         run: flutter pub get
 
+      - name: Check Flutter
+        run: flutter doctor -v
+
       - name: Build APK
         run: flutter build apk --release
+
+      - name: Build App Bundle
+        run: flutter build appbundle --release
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: marine-aqua-technologies-apk
           path: build/app/outputs/flutter-apk/app-release.apk
+
+      - name: Upload AAB
+        uses: actions/upload-artifact@v4
+        with:
+          name: marine-aqua-technologies-aab
+          path: build/app/outputs/bundle/release/app-release.aab
