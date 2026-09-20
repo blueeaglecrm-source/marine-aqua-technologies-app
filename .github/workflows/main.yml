@@ -14,20 +14,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Java
-        uses: actions/setup-java@v4
-        with:
-          distribution: temurin
-          java-version: "17"
-
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
           flutter-version: "3.35.2"
           channel: stable
-          cache: true
 
-      - name: Create Android project
+      - name: Generate Android project
         run: flutter create . --platforms=android
 
       - name: Get dependencies
