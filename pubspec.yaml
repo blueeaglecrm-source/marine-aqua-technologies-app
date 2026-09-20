@@ -10,9 +10,12 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  geolocator: ^14.0.2
+  image_picker: ^1.2.0
 
 flutter:
   uses-material-design: true
+
   assets:
     - bio sludge -x.png
     - free moult.png
