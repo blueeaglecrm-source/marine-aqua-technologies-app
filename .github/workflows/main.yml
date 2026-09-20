@@ -28,6 +28,7 @@ jobs:
         run: |
           python3 - <<'PY'
           from pathlib import Path
+          import re
 
           manifest = Path("android/app/src/main/AndroidManifest.xml")
           text = manifest.read_text()
@@ -39,11 +40,23 @@ jobs:
           """
 
           if "android.permission.ACCESS_FINE_LOCATION" not in text:
-              position = text.find(">")
-              text = text[:position + 1] + permissions + text[position + 1:]
+              match = re.search(r"<manifest\b[^>]*>", text)
+
+              if not match:
+                  raise RuntimeError("AndroidManifest.xml: <manifest> tag not found")
+
+              position = match.end()
+              text = text[:position] + permissions + text[position:]
 
           manifest.write_text(text)
           PY
+
+      - name: Verify Android Permissions
+        run: |
+          echo "===== AndroidManifest.xml ====="
+          cat android/app/src/main/AndroidManifest.xml
+          echo "===== Checking permissions ====="
+          grep -E "ACCESS_FINE_LOCATION|ACCESS_COARSE_LOCATION|CAMERA" android/app/src/main/AndroidManifest.xml
 
       - name: Get dependencies
         run: flutter pub get
