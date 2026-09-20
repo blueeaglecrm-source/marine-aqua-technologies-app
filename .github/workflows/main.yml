@@ -24,13 +24,13 @@ jobs:
       - name: Generate Android project
         run: flutter create . --platforms=android
 
-      - name: Add Location Permissions
+      - name: Add Android Permissions
         run: |
           python3 - <<'PY'
           from pathlib import Path
 
-          file = Path("android/app/src/main/AndroidManifest.xml")
-          text = file.read_text()
+          manifest = Path("android/app/src/main/AndroidManifest.xml")
+          text = manifest.read_text()
 
           permissions = """
               <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
@@ -39,9 +39,10 @@ jobs:
           """
 
           if "android.permission.ACCESS_FINE_LOCATION" not in text:
-              text = text.replace("<manifest", "<manifest" + permissions, 1)
+              position = text.find(">")
+              text = text[:position + 1] + permissions + text[position + 1:]
 
-          file.write_text(text)
+          manifest.write_text(text)
           PY
 
       - name: Get dependencies
