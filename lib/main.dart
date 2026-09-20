@@ -205,13 +205,58 @@ class ProductsPage extends StatelessWidget {
   ]));
 }
 class ProductCard extends StatelessWidget {
-  final Product product; const ProductCard({super.key, required this.product});
-  @override Widget build(BuildContext context) => InkWell(onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => ProductDetailsPage(product: product))),
-    child: Container(padding: const EdgeInsets.all(12), decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(22)), child: Column(children: [
-      Expanded(child: Image.asset(product.image, fit: BoxFit.contain, errorBuilder: (_, __, ___) => const Icon(Icons.image_not_supported, size: 50))),
-      const SizedBox(height: 8), Text(product.name, textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis, style: const TextStyle(color: darkText, fontSize: 16, fontWeight: FontWeight.bold)),
-      const SizedBox(height: 5), Text(product.category, textAlign: TextAlign.center, style: const TextStyle(color: marineTeal, fontSize: 12)),
-    ]));
+  final Product product;
+  const ProductCard({super.key, required this.product});
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () => Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => ProductDetailsPage(product: product),
+        ),
+      ),
+      borderRadius: BorderRadius.circular(22),
+      child: Container(
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(22),
+        ),
+        child: Column(
+          children: [
+            Expanded(
+              child: Image.asset(
+                product.image,
+                fit: BoxFit.contain,
+                errorBuilder: (_, __, ___) =>
+                    const Icon(Icons.image_not_supported, size: 50),
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              product.name,
+              textAlign: TextAlign.center,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(
+                color: darkText,
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 5),
+            Text(
+              product.category,
+              textAlign: TextAlign.center,
+              style: const TextStyle(color: marineTeal, fontSize: 12),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 }
 class ProductDetailsPage extends StatelessWidget {
   final Product product; const ProductDetailsPage({super.key, required this.product});
