@@ -12,6 +12,7 @@ void main() {
 const Color marineBlue = Color(0xFF006B78);
 const Color marineTeal = Color(0xFF008C95);
 const Color aqua = Color(0xFF18A9AD);
+const Color lightAqua = Color(0xFFE7F7F8);
 const Color pageBg = Color(0xFFF3FBFC);
 const Color darkText = Color(0xFF063B45);
 
@@ -320,7 +321,7 @@ class EmployeeDashboardPage extends StatelessWidget {
     dashboardTile(context, Icons.water_drop, 'Water Test', const WaterTestPage()),
     dashboardTile(context, Icons.waves, 'My Ponds', const MyPondsPage()),
     dashboardTile(context, Icons.store, 'Dealer Locator', const DealerPage()),
-  ]);
+  ]));
 }
 Widget dashboardTile(BuildContext context, IconData icon, String title, Widget page) => Card(color: Colors.white, child: ListTile(leading: Icon(icon, color: marineTeal), title: Text(title, style: const TextStyle(fontWeight: FontWeight.bold)), trailing: const Icon(Icons.chevron_right), onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => page))));
 
@@ -392,7 +393,7 @@ class _EmployeeVisitPageState extends State<EmployeeVisitPage> {
     _gpsCard(), const SizedBox(height: 18), _photoCard(), const SizedBox(height: 24),
     SizedBox(width: double.infinity, height: 55, child: ElevatedButton.icon(onPressed: submitVisit, icon: const Icon(Icons.send), label: const Text('SUBMIT FIELD VISIT', style: TextStyle(fontWeight: FontWeight.bold)), style: ElevatedButton.styleFrom(backgroundColor: marineBlue, foregroundColor: Colors.white)),
     const SizedBox(height: 25),
-  ]));
+  ])));
 
   Widget _gpsCard() => Container(width: double.infinity, padding: const EdgeInsets.all(18), decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(20)), child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
     const Row(children: [Icon(Icons.location_on, color: marineTeal), SizedBox(width: 10), Text('GPS Location', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold))]), const SizedBox(height: 14),
@@ -411,7 +412,7 @@ class _EmployeeVisitPageState extends State<EmployeeVisitPage> {
     const Row(children: [Icon(Icons.camera_alt, color: marineTeal), SizedBox(width: 10), Text('Visit Photo', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold))]), const SizedBox(height: 14),
     if (visitPhoto != null) ClipRRect(borderRadius: BorderRadius.circular(16), child: Image.file(File(visitPhoto!.path), height: 220, width: double.infinity, fit: BoxFit.cover)), const SizedBox(height: 12),
     SizedBox(width: double.infinity, child: OutlinedButton.icon(onPressed: capturePhoto, icon: const Icon(Icons.camera_alt), label: Text(visitPhoto == null ? 'CAPTURE VISIT PHOTO' : 'RETAKE PHOTO'))),
-  ]);
+  ]));
 }
 
 class WaterTestPage extends StatefulWidget { const WaterTestPage({super.key}); @override State<WaterTestPage> createState() => _WaterTestPageState(); }
