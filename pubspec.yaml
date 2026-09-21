@@ -18,13 +18,15 @@ flutter:
   uses-material-design: true
 
   assets:
+    - marine_logo.png
     - bio sludge -x.png
     - free moult.png
     - marine 6g.png
-    - white shield.png
+    - matine white shield.png
     - oxytab.png
     - protab.png
     - red thunder.png
     - starmin.png
     - vibrio shield.png
     - volt-x.png
+    - white shield.png
