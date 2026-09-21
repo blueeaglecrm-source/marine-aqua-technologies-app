@@ -1,13 +1,4 @@
-from pathlib import Path
-from PIL import Image
-
-# Create a clean logo asset from the logo image already provided in the conversation.
-src = Path("/mnt/data/ChatGPT Image Sep 8, 2026, 11_39_28 AM.png")
-logo = Image.open(src).convert("RGB")
-logo = logo.resize((900, 900))
-logo.save("/mnt/data/marine_logo.png", "PNG")
-
-main_code = r'''import 'dart:io';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
@@ -677,3 +668,1371 @@ class HomePage extends StatelessWidget {
                         Expanded(
                           child: QuickCard(
                             icon: Icons.menu_book,
+                            title: 'Pond Diary',
+                            page: PondDiaryPage(),
+                          ),
+                        ),
+                        const SizedBox(width: 14),
+                        Expanded(
+                          child: QuickCard(
+                            icon: Icons.location_on,
+                            title: 'Dealer Locator',
+                            page: DealerPage(),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 30),
+                    const Text(
+                      'Featured Products',
+                      style: TextStyle(
+                        color: darkText,
+                        fontSize: 26,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    SizedBox(
+                      height: 245,
+                      child: ListView.separated(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: 4,
+                        separatorBuilder: (_, __) =>
+                            const SizedBox(width: 14),
+                        itemBuilder: (_, i) =>
+                            ProductMiniCard(product: products[i]),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+}
+
+class QuickCard extends StatelessWidget {
+  final IconData icon;
+  final String title;
+  final Widget page;
+
+  const QuickCard({
+    super.key,
+    required this.icon,
+    required this.title,
+    required this.page,
+  });
+
+  @override
+  Widget build(BuildContext context) => InkWell(
+        onTap: () => Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => page),
+        ),
+        borderRadius: BorderRadius.circular(25),
+        child: Container(
+          height: 150,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(25),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(icon, size: 44, color: marineTeal),
+              const SizedBox(height: 14),
+              Text(
+                title,
+                style: const TextStyle(
+                  fontSize: 17,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+}
+
+class ProductMiniCard extends StatelessWidget {
+  final Product product;
+
+  const ProductMiniCard({super.key, required this.product});
+
+  @override
+  Widget build(BuildContext context) => GestureDetector(
+        onTap: () => Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) => ProductDetailsPage(product: product),
+          ),
+        ),
+        child: Container(
+          width: 220,
+          padding: const EdgeInsets.all(12),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(24),
+          ),
+          child: Column(
+            children: [
+              Expanded(
+                child: Image.asset(
+                  product.image,
+                  fit: BoxFit.contain,
+                  errorBuilder: (_, __, ___) => const Icon(
+                    Icons.image_not_supported,
+                    size: 50,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                product.name,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                  fontSize: 17,
+                  fontWeight: FontWeight.bold,
+                  color: darkText,
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+}
+
+// ---------------- PRODUCTS ----------------
+
+class ProductsPage extends StatelessWidget {
+  const ProductsPage({super.key});
+
+  @override
+  Widget build(BuildContext context) => SafeArea(
+        child: Column(
+          children: [
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(22),
+              color: marineBlue,
+              child: const Text(
+                'Our Products',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 26,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            Expanded(
+              child: GridView.builder(
+                padding: const EdgeInsets.all(16),
+                itemCount: products.length,
+                gridDelegate:
+                    const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 14,
+                  mainAxisSpacing: 14,
+                  childAspectRatio: .72,
+                ),
+                itemBuilder: (_, i) => ProductCard(product: products[i]),
+              ),
+            ),
+          ],
+        ),
+      );
+}
+
+class ProductCard extends StatelessWidget {
+  final Product product;
+
+  const ProductCard({super.key, required this.product});
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () => Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => ProductDetailsPage(product: product),
+        ),
+      ),
+      borderRadius: BorderRadius.circular(22),
+      child: Container(
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(22),
+        ),
+        child: Column(
+          children: [
+            Expanded(
+              child: Image.asset(
+                product.image,
+                fit: BoxFit.contain,
+                errorBuilder: (_, __, ___) =>
+                    const Icon(Icons.image_not_supported, size: 50),
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              product.name,
+              textAlign: TextAlign.center,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(
+                color: darkText,
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 5),
+            Text(
+              product.category,
+              textAlign: TextAlign.center,
+              style: const TextStyle(color: marineTeal, fontSize: 12),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class ProductDetailsPage extends StatelessWidget {
+  final Product product;
+
+  const ProductDetailsPage({super.key, required this.product});
+
+  @override
+  Widget build(BuildContext context) => Scaffold(
+        backgroundColor: pageBg,
+        appBar: AppBar(
+          backgroundColor: marineBlue,
+          foregroundColor: Colors.white,
+          title: Text(product.name),
+        ),
+        body: SingleChildScrollView(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                height: 330,
+                width: double.infinity,
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(28),
+                ),
+                child: Image.asset(product.image, fit: BoxFit.contain),
+              ),
+              const SizedBox(height: 24),
+              Text(
+                product.name,
+                style: const TextStyle(
+                  color: darkText,
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 6),
+              Text(
+                product.category,
+                style: const TextStyle(
+                  color: marineTeal,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 24),
+              InfoSection(
+                title: 'Product Description',
+                icon: Icons.info_outline,
+                text: product.description,
+              ),
+              InfoSection(
+                title: 'Usage',
+                icon: Icons.science_outlined,
+                text: product.usage,
+              ),
+              InfoSection(
+                title: 'Recommended Dosage',
+                icon: Icons.medication_outlined,
+                text: product.dosage,
+              ),
+              InfoSection(
+                title: 'Composition',
+                icon: Icons.biotech_outlined,
+                text: product.composition,
+              ),
+            ],
+          ),
+        ),
+      );
+}
+
+class InfoSection extends StatelessWidget {
+  final String title, text;
+  final IconData icon;
+
+  const InfoSection({
+    super.key,
+    required this.title,
+    required this.text,
+    required this.icon,
+  });
+
+  @override
+  Widget build(BuildContext context) => Container(
+        width: double.infinity,
+        margin: const EdgeInsets.only(bottom: 16),
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          color: lightAqua,
+          borderRadius: BorderRadius.circular(22),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Icon(icon, color: marineTeal),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: Text(
+                    title,
+                    style: const TextStyle(
+                      fontSize: 19,
+                      fontWeight: FontWeight.bold,
+                      color: darkText,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
+            Text(
+              text,
+              style: const TextStyle(fontSize: 16, height: 1.55),
+            ),
+          ],
+        ),
+      );
+}
+
+// ---------------- SUPPORT / PROFILE ----------------
+
+class SupportPage extends StatelessWidget {
+  const SupportPage({super.key});
+
+  @override
+  Widget build(BuildContext context) => SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            children: [
+              const SizedBox(height: 70),
+              const Icon(Icons.support_agent, size: 80, color: marineTeal),
+              const SizedBox(height: 20),
+              const Text(
+                'Technical Support',
+                style: TextStyle(
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold,
+                  color: darkText,
+                ),
+              ),
+              const SizedBox(height: 12),
+              const Text(
+                'Marine Aqua Technologies technical team support',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 16, color: Colors.black54),
+              ),
+              const SizedBox(height: 35),
+              ListTile(
+                leading: const Icon(Icons.phone, color: marineTeal),
+                title: const Text('Customer Care'),
+                subtitle: const Text('+91 93902 59830'),
+                tileColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(18),
+                ),
+              ),
+              const SizedBox(height: 12),
+              ListTile(
+                leading: const Icon(Icons.email, color: marineTeal),
+                title: const Text('Email'),
+                subtitle: const Text('marineaquahr@gmail.com'),
+                tileColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(18),
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+}
+
+class ProfilePage extends StatelessWidget {
+  const ProfilePage({super.key});
+
+  @override
+  Widget build(BuildContext context) => SafeArea(
+        child: ListView(
+          padding: const EdgeInsets.all(20),
+          children: [
+            const SizedBox(height: 25),
+            const CircleAvatar(
+              radius: 48,
+              backgroundColor: lightAqua,
+              child: Icon(Icons.person, size: 55, color: marineTeal),
+            ),
+            const SizedBox(height: 15),
+            const Center(
+              child: Text(
+                'MARINE AQUA TECHNOLOGIES',
+                style: TextStyle(
+                  fontSize: 21,
+                  fontWeight: FontWeight.bold,
+                  color: darkText,
+                ),
+              ),
+            ),
+            const SizedBox(height: 30),
+            ProfileMenu(
+              icon: Icons.badge_outlined,
+              title: 'Employee Login',
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => const EmployeeLoginPage(),
+                ),
+              ),
+            ),
+            ProfileMenu(
+              icon: Icons.location_on_outlined,
+              title: 'Employee Field Visit',
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => const EmployeeVisitPage(),
+                ),
+              ),
+            ),
+            ProfileMenu(
+              icon: Icons.info_outline,
+              title: 'About Marine Aqua Technologies',
+              onTap: () => showAboutDialog(
+                context: context,
+                applicationName: 'MARINE AQUA TECHNOLOGIES',
+                applicationLegalese: 'Smart Aquaculture. Better Results.',
+              ),
+            ),
+          ],
+        ),
+      );
+}
+
+class ProfileMenu extends StatelessWidget {
+  final IconData icon;
+  final String title;
+  final VoidCallback onTap;
+
+  const ProfileMenu({
+    super.key,
+    required this.icon,
+    required this.title,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) => Card(
+        color: Colors.white,
+        margin: const EdgeInsets.only(bottom: 12),
+        child: ListTile(
+          leading: Icon(icon, color: marineTeal),
+          title: Text(title),
+          trailing: const Icon(Icons.chevron_right),
+          onTap: onTap,
+        ),
+      );
+}
+
+// ---------------- EMPLOYEE ----------------
+
+class EmployeeLoginPage extends StatefulWidget {
+  const EmployeeLoginPage({super.key});
+
+  @override
+  State<EmployeeLoginPage> createState() => _EmployeeLoginPageState();
+}
+
+class _EmployeeLoginPageState extends State<EmployeeLoginPage> {
+  final id = TextEditingController();
+  final pass = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) => Scaffold(
+        appBar: AppBar(
+          title: const Text('Employee Login'),
+          backgroundColor: marineBlue,
+          foregroundColor: Colors.white,
+        ),
+        body: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            children: [
+              const SizedBox(height: 35),
+              const Icon(Icons.badge, size: 75, color: marineTeal),
+              const SizedBox(height: 25),
+              TextField(
+                controller: id,
+                decoration: inputDecoration('Employee ID', Icons.person),
+              ),
+              const SizedBox(height: 15),
+              TextField(
+                controller: pass,
+                obscureText: true,
+                decoration: inputDecoration('Password', Icons.lock),
+              ),
+              const SizedBox(height: 25),
+              SizedBox(
+                width: double.infinity,
+                height: 52,
+                child: ElevatedButton(
+                  onPressed: () => Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const EmployeeDashboardPage(),
+                    ),
+                  ),
+                  child: const Text('LOGIN'),
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+}
+
+class EmployeeDashboardPage extends StatelessWidget {
+  const EmployeeDashboardPage({super.key});
+
+  @override
+  Widget build(BuildContext context) => Scaffold(
+        appBar: AppBar(
+          title: const Text('Employee Dashboard'),
+          backgroundColor: marineBlue,
+          foregroundColor: Colors.white,
+        ),
+        body: ListView(
+          padding: const EdgeInsets.all(20),
+          children: [
+            dashboardTile(
+              context,
+              Icons.location_on,
+              'Field Visit',
+              const EmployeeVisitPage(),
+            ),
+            dashboardTile(
+              context,
+              Icons.water_drop,
+              'Water Test',
+              const WaterTestPage(),
+            ),
+            dashboardTile(
+              context,
+              Icons.waves,
+              'My Ponds',
+              const MyPondsPage(),
+            ),
+            dashboardTile(
+              context,
+              Icons.store,
+              'Dealer Locator',
+              const DealerPage(),
+            ),
+          ],
+        ),
+      );
+}
+
+Widget dashboardTile(
+  BuildContext context,
+  IconData icon,
+  String title,
+  Widget page,
+) =>
+    Card(
+      color: Colors.white,
+      child: ListTile(
+        leading: Icon(icon, color: marineTeal),
+        title: Text(
+          title,
+          style: const TextStyle(fontWeight: FontWeight.bold),
+        ),
+        trailing: const Icon(Icons.chevron_right),
+        onTap: () => Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => page),
+        ),
+      ),
+    );
+
+// ---------------- FIELD VISIT ----------------
+
+class EmployeeVisitPage extends StatefulWidget {
+  const EmployeeVisitPage({super.key});
+
+  @override
+  State<EmployeeVisitPage> createState() => _EmployeeVisitPageState();
+}
+
+class _EmployeeVisitPageState extends State<EmployeeVisitPage> {
+  final farmerController = TextEditingController();
+  final pondController = TextEditingController();
+  final remarksController = TextEditingController();
+
+  Position? currentPosition;
+  XFile? visitPhoto;
+  bool loadingLocation = false;
+
+  String village = '';
+  String mandal = '';
+  String district = '';
+  String state = '';
+  String pincode = '';
+
+  Future<void> captureLocation() async {
+    setState(() => loadingLocation = true);
+
+    try {
+      if (!await Geolocator.isLocationServiceEnabled()) {
+        _message('Phone Location/GPS ON cheyyandi');
+        return;
+      }
+
+      var permission = await Geolocator.checkPermission();
+
+      if (permission == LocationPermission.denied) {
+        permission = await Geolocator.requestPermission();
+      }
+
+      if (permission == LocationPermission.denied) {
+        _message('Location permission denied');
+        return;
+      }
+
+      if (permission == LocationPermission.deniedForever) {
+        _message('Location permission Settings lo enable cheyyandi');
+        return;
+      }
+
+      final position = await Geolocator.getCurrentPosition(
+        locationSettings: const LocationSettings(
+          accuracy: LocationAccuracy.high,
+        ),
+      );
+
+      String v = '';
+      String m = '';
+      String d = '';
+      String s = '';
+      String p = '';
+
+      try {
+        final marks = await placemarkFromCoordinates(
+          position.latitude,
+          position.longitude,
+        );
+
+        if (marks.isNotEmpty) {
+          final x = marks.first;
+          v = x.subLocality?.trim().isNotEmpty == true
+              ? x.subLocality!.trim()
+              : (x.locality?.trim() ?? '');
+          m = x.locality?.trim() ?? '';
+          d = x.subAdministrativeArea?.trim() ?? '';
+          s = x.administrativeArea?.trim() ?? '';
+          p = x.postalCode?.trim() ?? '';
+        }
+      } catch (_) {}
+
+      if (!mounted) return;
+
+      setState(() {
+        currentPosition = position;
+        village = v;
+        mandal = m;
+        district = d;
+        state = s;
+        pincode = p;
+      });
+
+      _message('Current GPS location captured');
+    } catch (_) {
+      _message('Location capture failed');
+    } finally {
+      if (mounted) {
+        setState(() => loadingLocation = false);
+      }
+    }
+  }
+
+  Future<void> capturePhoto() async {
+    final photo = await ImagePicker().pickImage(
+      source: ImageSource.camera,
+      imageQuality: 80,
+    );
+
+    if (photo != null && mounted) {
+      setState(() => visitPhoto = photo);
+    }
+  }
+
+  void submitVisit() {
+    if (farmerController.text.trim().isEmpty) {
+      _message('Farmer name enter cheyyandi');
+      return;
+    }
+
+    if (pondController.text.trim().isEmpty) {
+      _message('Pond name/number enter cheyyandi');
+      return;
+    }
+
+    if (currentPosition == null) {
+      _message('First GPS location capture cheyyandi');
+      return;
+    }
+
+    if (visitPhoto == null) {
+      _message('Visit photo capture cheyyandi');
+      return;
+    }
+
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        title: const Text('Visit Submitted'),
+        content: Text(
+          'Farmer: ${farmerController.text}\n'
+          'Pond: ${pondController.text}\n\n'
+          'Village: $village\n'
+          'Mandal: $mandal\n'
+          'District: $district\n'
+          'State: $state\n'
+          'Pincode: $pincode\n\n'
+          'Latitude: ${currentPosition!.latitude}\n'
+          'Longitude: ${currentPosition!.longitude}\n\n'
+          'Date/Time: ${DateTime.now()}',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('OK'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _message(String text) {
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(text)),
+      );
+    }
+  }
+
+  @override
+  void dispose() {
+    farmerController.dispose();
+    pondController.dispose();
+    remarksController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) => Scaffold(
+        appBar: AppBar(
+          title: const Text('Field Visit'),
+          backgroundColor: marineBlue,
+          foregroundColor: Colors.white,
+        ),
+        body: SingleChildScrollView(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'Visit Details',
+                style: TextStyle(
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold,
+                  color: darkText,
+                ),
+              ),
+              const SizedBox(height: 22),
+              TextField(
+                controller: farmerController,
+                decoration: inputDecoration('Farmer Name', Icons.person),
+              ),
+              const SizedBox(height: 15),
+              TextField(
+                controller: pondController,
+                decoration: inputDecoration(
+                  'Pond Name / Pond Number',
+                  Icons.waves,
+                ),
+              ),
+              const SizedBox(height: 15),
+              TextField(
+                controller: remarksController,
+                maxLines: 4,
+                decoration: inputDecoration(
+                  'Visit Remarks',
+                  Icons.notes,
+                ),
+              ),
+              const SizedBox(height: 22),
+              _gpsCard(),
+              const SizedBox(height: 18),
+              _photoCard(),
+              const SizedBox(height: 24),
+              SizedBox(
+                width: double.infinity,
+                height: 55,
+                child: ElevatedButton.icon(
+                  onPressed: submitVisit,
+                  icon: const Icon(Icons.send),
+                  label: const Text(
+                    'SUBMIT FIELD VISIT',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: marineBlue,
+                    foregroundColor: Colors.white,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 25),
+            ],
+          ),
+        ),
+      );
+
+  Widget _gpsCard() => Container(
+        width: double.infinity,
+        padding: const EdgeInsets.all(18),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Row(
+              children: [
+                Icon(Icons.location_on, color: marineTeal),
+                SizedBox(width: 10),
+                Text(
+                  'GPS Location',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 14),
+            if (currentPosition == null)
+              const Text(
+                'Location not captured',
+                style: TextStyle(color: Colors.grey),
+              )
+            else
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Latitude: ${currentPosition!.latitude}'),
+                  Text('Longitude: ${currentPosition!.longitude}'),
+                  const SizedBox(height: 15),
+                  if (village.isNotEmpty)
+                    locationRow(
+                      Icons.home,
+                      'Village / Locality',
+                      village,
+                    ),
+                  if (mandal.isNotEmpty)
+                    locationRow(
+                      Icons.location_city,
+                      'Mandal',
+                      mandal,
+                    ),
+                  if (district.isNotEmpty)
+                    locationRow(Icons.map, 'District', district),
+                  if (state.isNotEmpty)
+                    locationRow(Icons.public, 'State', state),
+                  if (pincode.isNotEmpty)
+                    locationRow(
+                      Icons.markunread_mailbox,
+                      'Pincode',
+                      pincode,
+                    ),
+                ],
+              ),
+            const SizedBox(height: 14),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton.icon(
+                onPressed: loadingLocation ? null : captureLocation,
+                icon: const Icon(Icons.my_location),
+                label: Text(
+                  loadingLocation
+                      ? 'Capturing...'
+                      : 'CAPTURE CURRENT LOCATION',
+                ),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: marineTeal,
+                  foregroundColor: Colors.white,
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+
+  Widget locationRow(
+    IconData icon,
+    String title,
+    String value,
+  ) =>
+      Padding(
+        padding: const EdgeInsets.only(bottom: 9),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Icon(icon, size: 20, color: marineTeal),
+            const SizedBox(width: 9),
+            Expanded(
+              child: Text(
+                '$title: $value',
+                style: const TextStyle(fontSize: 15),
+              ),
+            ),
+          ],
+        ),
+      );
+
+  Widget _photoCard() => Container(
+        width: double.infinity,
+        padding: const EdgeInsets.all(18),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Row(
+              children: [
+                Icon(Icons.camera_alt, color: marineTeal),
+                SizedBox(width: 10),
+                Text(
+                  'Visit Photo',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 14),
+            if (visitPhoto != null)
+              ClipRRect(
+                borderRadius: BorderRadius.circular(16),
+                child: Image.file(
+                  File(visitPhoto!.path),
+                  height: 220,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                ),
+              ),
+            const SizedBox(height: 12),
+            SizedBox(
+              width: double.infinity,
+              child: OutlinedButton.icon(
+                onPressed: capturePhoto,
+                icon: const Icon(Icons.camera_alt),
+                label: Text(
+                  visitPhoto == null
+                      ? 'CAPTURE VISIT PHOTO'
+                      : 'RETAKE PHOTO',
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+}
+
+// ---------------- WATER TEST / PONDS / DIARY / DEALER ----------------
+
+class WaterTestPage extends StatefulWidget {
+  const WaterTestPage({super.key});
+
+  @override
+  State<WaterTestPage> createState() => _WaterTestPageState();
+}
+
+class _WaterTestPageState extends State<WaterTestPage> {
+  final pH = TextEditingController();
+  final doC = TextEditingController();
+  final sal = TextEditingController();
+  final ammonia = TextEditingController();
+  final temp = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) => Scaffold(
+        appBar: AppBar(
+          title: const Text('Water Test'),
+          backgroundColor: marineBlue,
+          foregroundColor: Colors.white,
+        ),
+        body: ListView(
+          padding: const EdgeInsets.all(20),
+          children: [
+            const Text(
+              'Water Parameters',
+              style: TextStyle(
+                fontSize: 28,
+                fontWeight: FontWeight.bold,
+                color: darkText,
+              ),
+            ),
+            const SizedBox(height: 20),
+            field(pH, 'pH', Icons.science),
+            field(doC, 'DO (mg/L)', Icons.air),
+            field(sal, 'Salinity', Icons.water),
+            field(ammonia, 'Ammonia', Icons.warning_amber),
+            field(temp, 'Temperature °C', Icons.thermostat),
+            const SizedBox(height: 15),
+            ElevatedButton(
+              onPressed: () => ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Water test saved locally'),
+                ),
+              ),
+              child: const Text('SAVE WATER TEST'),
+            ),
+          ],
+        ),
+      );
+
+  Widget field(
+    TextEditingController c,
+    String label,
+    IconData i,
+  ) =>
+      Padding(
+        padding: const EdgeInsets.only(bottom: 14),
+        child: TextField(
+          controller: c,
+          keyboardType: TextInputType.number,
+          decoration: inputDecoration(label, i),
+        ),
+      );
+}
+
+class MyPondsPage extends StatefulWidget {
+  const MyPondsPage({super.key});
+
+  @override
+  State<MyPondsPage> createState() => _MyPondsPageState();
+}
+
+class _MyPondsPageState extends State<MyPondsPage> {
+  final List<String> ponds = [];
+  final c = TextEditingController();
+
+  void add() {
+    if (c.text.trim().isNotEmpty) {
+      setState(() {
+        ponds.add(c.text.trim());
+        c.clear();
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) => Scaffold(
+        appBar: AppBar(
+          title: const Text('My Ponds'),
+          backgroundColor: marineBlue,
+          foregroundColor: Colors.white,
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () => showDialog(
+            context: context,
+            builder: (_) => AlertDialog(
+              title: const Text('Add Pond'),
+              content: TextField(
+                controller: c,
+                decoration: const InputDecoration(
+                  hintText: 'Pond name / number',
+                ),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    add();
+                    Navigator.pop(context);
+                  },
+                  child: const Text('SAVE'),
+                ),
+              ],
+            ),
+          ),
+          child: const Icon(Icons.add),
+        ),
+        body: ponds.isEmpty
+            ? const Center(child: Text('No ponds added yet'))
+            : ListView.builder(
+                padding: const EdgeInsets.all(16),
+                itemCount: ponds.length,
+                itemBuilder: (_, i) => Card(
+                  child: ListTile(
+                    leading: const Icon(
+                      Icons.waves,
+                      color: marineTeal,
+                    ),
+                    title: Text(ponds[i]),
+                  ),
+                ),
+              ),
+      );
+}
+
+class PondDiaryPage extends StatefulWidget {
+  const PondDiaryPage({super.key});
+
+  @override
+  State<PondDiaryPage> createState() => _PondDiaryPageState();
+}
+
+class _PondDiaryPageState extends State<PondDiaryPage> {
+  final c = TextEditingController();
+  final entries = <String>[];
+
+  @override
+  Widget build(BuildContext context) => Scaffold(
+        appBar: AppBar(
+          title: const Text('Pond Diary'),
+          backgroundColor: marineBlue,
+          foregroundColor: Colors.white,
+        ),
+        body: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            children: [
+              TextField(
+                controller: c,
+                maxLines: 4,
+                decoration: inputDecoration(
+                  "Today's pond observation",
+                  Icons.menu_book,
+                ),
+              ),
+              const SizedBox(height: 12),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () {
+                    if (c.text.trim().isNotEmpty) {
+                      setState(() {
+                        entries.insert(0, c.text.trim());
+                        c.clear();
+                      });
+                    }
+                  },
+                  child: const Text('ADD ENTRY'),
+                ),
+              ),
+              const SizedBox(height: 15),
+              Expanded(
+                child: ListView.builder(
+                  itemCount: entries.length,
+                  itemBuilder: (_, i) => Card(
+                    child: ListTile(
+                      title: Text(entries[i]),
+                      subtitle: Text(
+                        DateTime.now().toString().substring(0, 16),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+}
+
+class DealerPage extends StatefulWidget {
+  const DealerPage({super.key});
+
+  @override
+  State<DealerPage> createState() => _DealerPageState();
+}
+
+class _DealerPageState extends State<DealerPage> {
+  final dealers = <Map<String, String>>[
+    {
+      'name': 'Marine Aqua Dealer - Hyderabad',
+      'city': 'Hyderabad',
+      'address': 'Madhapur',
+      'phone': '',
+    },
+    {
+      'name': 'Marine Aqua Dealer - Kakinada',
+      'city': 'Kakinada',
+      'address': 'Kakinada',
+      'phone': '',
+    },
+    {
+      'name': 'Marine Aqua Dealer - Vizag',
+      'city': 'Vizag',
+      'address': 'Visakhapatnam',
+      'phone': '',
+    },
+  ];
+
+  final n = TextEditingController();
+  final city = TextEditingController();
+  final addr = TextEditingController();
+  final phone = TextEditingController();
+
+  void addDealer() {
+    if (n.text.trim().isEmpty) return;
+
+    setState(() {
+      dealers.add({
+        'name': n.text.trim(),
+        'city': city.text.trim(),
+        'address': addr.text.trim(),
+        'phone': phone.text.trim(),
+      });
+    });
+
+    n.clear();
+    city.clear();
+    addr.clear();
+    phone.clear();
+  }
+
+  @override
+  Widget build(BuildContext context) => Scaffold(
+        appBar: AppBar(
+          title: const Text('Dealer Locator'),
+          backgroundColor: marineBlue,
+          foregroundColor: Colors.white,
+        ),
+        floatingActionButton: FloatingActionButton.extended(
+          onPressed: () => showDialog(
+            context: context,
+            builder: (_) => AlertDialog(
+              title: const Text('Add Dealer'),
+              content: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    TextField(
+                      controller: n,
+                      decoration:
+                          const InputDecoration(labelText: 'Dealer Name'),
+                    ),
+                    TextField(
+                      controller: city,
+                      decoration:
+                          const InputDecoration(labelText: 'City'),
+                    ),
+                    TextField(
+                      controller: addr,
+                      decoration:
+                          const InputDecoration(labelText: 'Address'),
+                    ),
+                    TextField(
+                      controller: phone,
+                      keyboardType: TextInputType.phone,
+                      decoration:
+                          const InputDecoration(labelText: 'Phone'),
+                    ),
+                  ],
+                ),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    addDealer();
+                    Navigator.pop(context);
+                  },
+                  child: const Text('SAVE'),
+                ),
+              ],
+            ),
+          ),
+          label: const Text('Add Dealer'),
+          icon: const Icon(Icons.add),
+        ),
+        body: ListView.builder(
+          padding: const EdgeInsets.all(16),
+          itemCount: dealers.length,
+          itemBuilder: (_, i) {
+            final d = dealers[i];
+            return Card(
+              color: Colors.white,
+              child: ListTile(
+                leading: const CircleAvatar(
+                  backgroundColor: lightAqua,
+                  child: Icon(Icons.store, color: marineTeal),
+                ),
+                title: Text(
+                  d['name'] ?? '',
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
+                subtitle: Text(
+                  '${d['city']}\n'
+                  '${d['address']}'
+                  '${(d['phone'] ?? '').isEmpty ? '' : '\n${d['phone']}'}',
+                ),
+              ),
+            );
+          },
+        ),
+      );
+}
+
+// ---------------- HELPERS ----------------
+
+InputDecoration inputDecoration(
+  String label,
+  IconData icon,
+) =>
+    InputDecoration(
+      labelText: label,
+      prefixIcon: Icon(icon, color: marineTeal),
+      filled: true,
+      fillColor: Colors.white,
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(18),
+        borderSide: BorderSide.none,
+      ),
+      contentPadding: const EdgeInsets.symmetric(
+        horizontal: 18,
+        vertical: 17,
+      ),
+    );
