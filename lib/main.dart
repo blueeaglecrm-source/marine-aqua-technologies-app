@@ -562,154 +562,348 @@ class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
   @override
-  Widget build(BuildContext context) => SafeArea(
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: Container(
+        color: const Color(0xFFF6FBFD),
         child: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          padding: const EdgeInsets.only(bottom: 20),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.all(22),
-                color: marineBlue,
-                child: const Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'MARINE AQUA TECHNOLOGIES',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    SizedBox(height: 6),
-                    Text(
-                      'Smart Aquaculture. Better Results.',
-                      style: TextStyle(color: Colors.white70, fontSize: 16),
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      width: double.infinity,
-                      padding: const EdgeInsets.all(28),
-                      decoration: BoxDecoration(
-                        gradient: const LinearGradient(
-                          colors: [marineTeal, aqua],
-                        ),
-                        borderRadius: BorderRadius.circular(28),
-                      ),
-                      child: const Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Welcome to',
-                            style: TextStyle(
-                              color: Colors.white70,
-                              fontSize: 18,
-                            ),
-                          ),
-                          SizedBox(height: 8),
-                          Text(
-                            'MARINE AQUA\nTECHNOLOGIES',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 28,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          SizedBox(height: 12),
-                          Text(
-                            'Smart Aquaculture. Better Results.',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 17,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 28),
-                    const Text(
-                      'Quick Access',
-                      style: TextStyle(
-                        color: darkText,
-                        fontSize: 26,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: QuickCard(
-                            icon: Icons.water_drop,
-                            title: 'Water Test',
-                            page: WaterTestPage(),
-                          ),
-                        ),
-                        const SizedBox(width: 14),
-                        Expanded(
-                          child: QuickCard(
-                            icon: Icons.waves,
-                            title: 'My Ponds',
-                            page: MyPondsPage(),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 14),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: QuickCard(
-                            icon: Icons.menu_book,
-                            title: 'Pond Diary',
-                            page: PondDiaryPage(),
-                          ),
-                        ),
-                        const SizedBox(width: 14),
-                        Expanded(
-                          child: QuickCard(
-                            icon: Icons.location_on,
-                            title: 'Dealer Locator',
-                            page: DealerPage(),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 30),
-                    const Text(
-                      'Featured Products',
-                      style: TextStyle(
-                        color: darkText,
-                        fontSize: 26,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    SizedBox(
-                      height: 245,
-                      child: ListView.separated(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: 4,
-                        separatorBuilder: (_, __) =>
-                            const SizedBox(width: 14),
-                        itemBuilder: (_, i) =>
-                            ProductMiniCard(product: products[i]),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              _header(),
+              const SizedBox(height: 8),
+              _hero(),
+              const SizedBox(height: 8),
+              _dots(),
+              const SizedBox(height: 10),
+              _quickRows(context),
+              const SizedBox(height: 14),
+              _dealer(context),
+              const SizedBox(height: 18),
+              _sectionHeader(Icons.inventory_2_rounded, 'Our Aquaculture Solutions', 'Trusted Products for Healthy Shrimp & Better Yields'),
+              const SizedBox(height: 9),
+              _products(context),
+              const SizedBox(height: 18),
+              _sectionHeader(Icons.emoji_events_rounded, 'Success Stories', 'Real farmers. Real results.', iconColor: Colors.amber),
+              const SizedBox(height: 9),
+              _successStories(),
+              const SizedBox(height: 18),
+              _waterTools(),
+              const SizedBox(height: 18),
+              _sectionHeader(Icons.menu_book_rounded, 'Shrimp Growth Guide', 'Step-by-step guidance from stocking to harvest'),
+              const SizedBox(height: 9),
+              _growthGuide(),
             ],
           ),
         ),
-      );
+      ),
+    );
+  }
+
+  Widget _header() {
+    return Container(
+      padding: const EdgeInsets.fromLTRB(12, 7, 8, 7),
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),
+      ),
+      child: Row(
+        children: [
+          Image.asset(
+            'marine_logo.png',
+            width: 58,
+            height: 58,
+            fit: BoxFit.contain,
+            errorBuilder: (_, __, ___) => const Icon(Icons.water_drop, color: marineBlue, size: 46),
+          ),
+          const SizedBox(width: 8),
+          const Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('MARINE AQUA', style: TextStyle(color: Color(0xFF063B75), fontSize: 18, fontWeight: FontWeight.w800)),
+                Text('TECHNOLOGIES', style: TextStyle(color: Color(0xFF063B75), fontSize: 10.5, fontWeight: FontWeight.bold, letterSpacing: 2.0)),
+                Text('Smart Aquaculture. Better Results.', style: TextStyle(color: Colors.black54, fontSize: 8)),
+              ],
+            ),
+          ),
+          IconButton(onPressed: () {}, icon: const Icon(Icons.notifications_none_rounded, color: Color(0xFF063B75), size: 27)),
+          IconButton(onPressed: () {}, icon: const Icon(Icons.translate_rounded, color: Color(0xFF063B75), size: 24)),
+          Container(
+            width: 40,
+            height: 40,
+            decoration: const BoxDecoration(color: Color(0xFFE5F2FF), shape: BoxShape.circle),
+            child: const Icon(Icons.person, color: Color(0xFF087ED6), size: 25),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _hero() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 12),
+      child: Container(
+        height: 190,
+        width: double.infinity,
+        clipBehavior: Clip.antiAlias,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(17),
+          gradient: const LinearGradient(colors: [Color(0xFF063B75), Color(0xFF087ED6), Color(0xFF16AFC6)]),
+        ),
+        child: Stack(
+          children: [
+            Positioned(right: -10, top: 16, child: Icon(Icons.set_meal, size: 145, color: Colors.white.withOpacity(.18))),
+            Positioned(right: 5, bottom: -15, child: Icon(Icons.water, size: 125, color: Colors.white.withOpacity(.13))),
+            const Padding(
+              padding: EdgeInsets.all(17),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Healthy Ponds', style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.w800)),
+                  Text('Stronger Shrimp', style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.w800)),
+                  Text('Higher Profits', style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.w800)),
+                  SizedBox(height: 5),
+                  Text('Complete Aquaculture Solutions\nfor a Better Tomorrow', style: TextStyle(color: Colors.white, fontSize: 12, height: 1.25)),
+                  SizedBox(height: 12),
+                  DecoratedBox(
+                    decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.all(Radius.circular(9))),
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+                      child: Text('Explore Products  →', style: TextStyle(color: Color(0xFF063B75), fontSize: 12.5, fontWeight: FontWeight.bold)),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _dots() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: List.generate(5, (i) => Container(
+        width: i == 0 ? 13 : 7,
+        height: 7,
+        margin: const EdgeInsets.symmetric(horizontal: 3),
+        decoration: BoxDecoration(color: i == 0 ? const Color(0xFF087ED6) : const Color(0xFFC9D8E5), borderRadius: BorderRadius.circular(8)),
+      )),
+    );
+  }
+
+  Widget _quickRows(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 12),
+      child: Column(
+        children: [
+          Row(children: [
+            Expanded(child: _quickCard(Icons.lightbulb_rounded, Colors.orange, const Color(0xFFDDF8EA), 'Tip Of The Day', 'Maintain proper dissolved oxygen levels for better growth.', 'Learn More  →')),
+            const SizedBox(width: 9),
+            Expanded(child: _quickCard(Icons.menu_book_rounded, const Color(0xFF087ED6), const Color(0xFFE1F2FF), 'Shrimp Culture Guide', 'Learn setup, management & best practices.', 'Explore Guide  →')),
+          ]),
+          const SizedBox(height: 9),
+          Row(children: [
+            Expanded(child: _quickCard(Icons.calculate_rounded, const Color(0xFF008B68), const Color(0xFFD9F7E5), 'Biomass Calculator', 'Get estimated biomass in 3 easy steps.', 'Calculate Now  →')),
+            const SizedBox(width: 9),
+            Expanded(child: _quickCard(Icons.health_and_safety_rounded, Colors.red, const Color(0xFFFFE2E2), 'Shrimp Diseases', 'Identify, prevent & treat common diseases.', 'View Details  →')),
+          ]),
+        ],
+      ),
+    );
+  }
+
+  Widget _quickCard(IconData icon, Color iconColor, Color bg, String title, String description, String button) {
+    return Container(
+      height: 154,
+      padding: const EdgeInsets.all(11),
+      decoration: BoxDecoration(color: bg, borderRadius: BorderRadius.circular(16)),
+      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        Icon(icon, color: iconColor, size: 30),
+        const SizedBox(height: 4),
+        Text(title, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(color: Color(0xFF063B75), fontSize: 14, fontWeight: FontWeight.bold)),
+        const SizedBox(height: 4),
+        Expanded(child: Text(description, maxLines: 3, overflow: TextOverflow.ellipsis, style: const TextStyle(color: Color(0xFF34546D), fontSize: 10.5, height: 1.2))),
+        Container(padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7), decoration: BoxDecoration(color: iconColor, borderRadius: BorderRadius.circular(8)), child: Text(button, style: const TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.bold))),
+      ]),
+    );
+  }
+
+  Widget _dealer(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 12),
+      child: Container(
+        padding: const EdgeInsets.all(13),
+        decoration: BoxDecoration(color: const Color(0xFFEAF6FF), borderRadius: BorderRadius.circular(16), border: Border.all(color: const Color(0xFFD4EAF8))),
+        child: Row(children: [
+          const Icon(Icons.location_on_rounded, color: Colors.red, size: 55),
+          const SizedBox(width: 8),
+          const Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            Text('Dealers Location', style: TextStyle(color: Color(0xFF063B75), fontSize: 17, fontWeight: FontWeight.bold)),
+            SizedBox(height: 3),
+            Text('Find our nearest dealers\nacross India.', style: TextStyle(color: Color(0xFF34546D), fontSize: 11.5, height: 1.2)),
+          ])),
+          ElevatedButton(
+            onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const DealerPage())),
+            style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF087ED6), foregroundColor: Colors.white, elevation: 0, padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 9), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
+            child: const Text('Find Nearby  →', style: TextStyle(fontSize: 10.5, fontWeight: FontWeight.bold)),
+          ),
+        ]),
+      ),
+    );
+  }
+
+  Widget _sectionHeader(IconData icon, String title, String subtitle, {Color iconColor = const Color(0xFF087ED6)}) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 14),
+      child: Row(children: [
+        Icon(icon, color: iconColor, size: 28),
+        const SizedBox(width: 7),
+        Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Text(title, style: const TextStyle(color: Color(0xFF063B75), fontSize: 17, fontWeight: FontWeight.bold)),
+          Text(subtitle, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(color: Colors.black54, fontSize: 9.5)),
+        ])),
+        const Text('View All  →', style: TextStyle(color: Color(0xFF087ED6), fontSize: 10.5, fontWeight: FontWeight.bold)),
+      ]),
+    );
+  }
+
+  Widget _products(BuildContext context) {
+    final items = products.take(5).toList();
+    return SizedBox(
+      height: 174,
+      child: ListView.builder(
+        padding: const EdgeInsets.symmetric(horizontal: 12),
+        scrollDirection: Axis.horizontal,
+        itemCount: items.length,
+        itemBuilder: (_, i) {
+          final product = items[i];
+          return GestureDetector(
+            onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => ProductDetailsPage(product: product))),
+            child: Container(
+              width: 132,
+              margin: const EdgeInsets.only(right: 8),
+              padding: const EdgeInsets.all(7),
+              decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(14), border: Border.all(color: const Color(0xFFDCEAF4))),
+              child: Column(children: [
+                Expanded(child: Image.asset(product.image, fit: BoxFit.contain, errorBuilder: (_, __, ___) => const Icon(Icons.inventory_2_rounded, color: Color(0xFF087ED6), size: 48))),
+                Text(product.name, textAlign: TextAlign.center, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(color: Color(0xFF063B75), fontSize: 10.5, fontWeight: FontWeight.bold)),
+                Text(product.category, textAlign: TextAlign.center, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(color: Colors.black54, fontSize: 8.5)),
+              ]),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _successStories() {
+    return SizedBox(
+      height: 135,
+      child: ListView(
+        padding: const EdgeInsets.symmetric(horizontal: 12),
+        scrollDirection: Axis.horizontal,
+        children: [
+          _story(Icons.person, '40% Faster Growth', 'West Godavari, AP'),
+          _story(Icons.water, 'Better Survival Rate', 'Krishna, AP'),
+          _story(Icons.set_meal, 'Healthy & Active Shrimp', 'Kakinada, AP'),
+          _story(Icons.agriculture, 'Higher Yields', 'Eluru, AP'),
+        ],
+      ),
+    );
+  }
+
+  Widget _story(IconData icon, String title, String location) {
+    return Container(
+      width: 160,
+      margin: const EdgeInsets.only(right: 9),
+      decoration: BoxDecoration(gradient: const LinearGradient(colors: [Color(0xFF087ED6), Color(0xFF063B75)], begin: Alignment.topLeft, end: Alignment.bottomRight), borderRadius: BorderRadius.circular(14)),
+      child: Stack(children: [
+        Center(child: Icon(icon, color: Colors.white.withOpacity(.28), size: 66)),
+        const Center(child: CircleAvatar(radius: 19, backgroundColor: Colors.white70, child: Icon(Icons.play_arrow, color: Color(0xFF063B75), size: 23))),
+        Positioned(left: 9, right: 9, bottom: 8, child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Text(title, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(color: Colors.white, fontSize: 11.5, fontWeight: FontWeight.bold)),
+          Text(location, style: const TextStyle(color: Colors.white70, fontSize: 9)),
+        ])),
+      ]),
+    );
+  }
+
+  Widget _waterTools() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 12),
+      child: Container(
+        padding: const EdgeInsets.fromLTRB(9, 11, 9, 9),
+        decoration: BoxDecoration(color: const Color(0xFFDDF8EA), borderRadius: BorderRadius.circular(16)),
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Row(children: [
+            const Icon(Icons.science_rounded, color: Color(0xFF009B73), size: 28),
+            const SizedBox(width: 7),
+            const Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Text('Water Quality Tools', style: TextStyle(color: Color(0xFF063B75), fontSize: 17, fontWeight: FontWeight.bold)),
+              Text('Calculate, monitor and maintain ideal water parameters', style: TextStyle(color: Colors.black54, fontSize: 9.5)),
+            ]),
+          ]),
+          const SizedBox(height: 9),
+          Row(children: [
+            _tool(Icons.water_drop, 'pH', 'Calculator'),
+            _tool(Icons.thermostat, 'Temperature', 'Guide'),
+            _tool(Icons.science, 'Salinity', 'Calculator'),
+            _tool(Icons.bubble_chart, 'DO', 'Calculator'),
+          ]),
+        ]),
+      ),
+    );
+  }
+
+  Widget _tool(IconData icon, String title, String subtitle) {
+    return Expanded(child: Container(
+      margin: const EdgeInsets.symmetric(horizontal: 3),
+      padding: const EdgeInsets.symmetric(vertical: 9, horizontal: 3),
+      decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(11)),
+      child: Column(children: [
+        Icon(icon, color: const Color(0xFF087ED6), size: 26),
+        const SizedBox(height: 3),
+        Text(title, maxLines: 1, overflow: TextOverflow.ellipsis, textAlign: TextAlign.center, style: const TextStyle(color: Color(0xFF063B75), fontSize: 9.5, fontWeight: FontWeight.bold)),
+        Text(subtitle, maxLines: 1, overflow: TextOverflow.ellipsis, textAlign: TextAlign.center, style: const TextStyle(color: Colors.black54, fontSize: 7.5)),
+      ]),
+    ));
+  }
+
+  Widget _growthGuide() {
+    return SizedBox(
+      height: 145,
+      child: ListView(
+        padding: const EdgeInsets.symmetric(horizontal: 12),
+        scrollDirection: Axis.horizontal,
+        children: [
+          _growth(Icons.water_drop, 'PL Selection', 'Choose healthy PL'),
+          _growth(Icons.water, 'Pond Preparation', 'Get your pond ready'),
+          _growth(Icons.grain, 'Feeding Guide', 'Right feed, faster growth'),
+          _growth(Icons.set_meal, 'Moulting Care', 'Stronger shell, better growth'),
+        ],
+      ),
+    );
+  }
+
+  Widget _growth(IconData icon, String title, String subtitle) {
+    return Container(
+      width: 155,
+      margin: const EdgeInsets.only(right: 9),
+      padding: const EdgeInsets.all(8),
+      decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(13), border: Border.all(color: const Color(0xFFDCEAF4))),
+      child: Column(children: [
+        Expanded(child: Container(width: double.infinity, decoration: BoxDecoration(gradient: const LinearGradient(colors: [Color(0xFFDDF3FF), Color(0xFFE8F8F0)]), borderRadius: BorderRadius.circular(9)), child: Icon(icon, color: const Color(0xFF087ED6), size: 44))),
+        const SizedBox(height: 5),
+        Align(alignment: Alignment.centerLeft, child: Text(title, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(color: Color(0xFF063B75), fontSize: 10.5, fontWeight: FontWeight.bold))),
+        Align(alignment: Alignment.centerLeft, child: Text(subtitle, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(color: Colors.black54, fontSize: 8.5))),
+      ]),
+    );
+  }
 }
 
 class QuickCard extends StatelessWidget {
