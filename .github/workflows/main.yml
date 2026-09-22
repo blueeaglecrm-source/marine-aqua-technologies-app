@@ -11,7 +11,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-
       - name: Checkout
         uses: actions/checkout@v4
 
@@ -23,33 +22,7 @@ jobs:
 
       - name: Generate Android project
         run: flutter create . --platforms=android
-      - name: Configure Biometric Android
-        run: |
-          python3 - <<'PY'
-          from pathlib import Path
-          import re
 
-          files = list(Path("android/app/src/main").rglob("MainActivity.kt")) + list(Path("android/app/src/main").rglob("MainActivity.java"))
-
-          if not files:
-              raise RuntimeError("MainActivity file not found")
-
-          activity = files[0]
-          text = activity.read_text()
-
-          match = re.search(r"^\s*package\s+([^\s]+)", text, re.MULTILINE)
-
-          if not match:
-              raise RuntimeError("Package name not found in MainActivity")
-
-          package_name = match.group(1)
-
-          activity.write_text(
-              f"package {package_name}\n\n"
-              "import io.flutter.embedding.android.FlutterFragmentActivity\n\n"
-              "class MainActivity: FlutterFragmentActivity()\n"
-          )
-          PY
       - name: Add Android Permissions
         run: |
           python3 - <<'PY'
@@ -63,27 +36,15 @@ jobs:
               <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
               <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
               <uses-permission android:name="android.permission.CAMERA"/>
-              <uses-permission android:name="android.permission.USE_BIOMETRIC"/>
           """
 
           if "android.permission.ACCESS_FINE_LOCATION" not in text:
-              match = re.search(r"<manifest\b[^>]*>", text)
-
+              match = re.search(r"<manifest\\b[^>]*>", text)
               if not match:
                   raise RuntimeError("AndroidManifest.xml: <manifest> tag not found")
-
-              position = match.end()
-              text = text[:position] + permissions + text[position:]
-
-          manifest.write_text(text)
+              text = text[:match.end()] + permissions + text[match.end():]
+              manifest.write_text(text)
           PY
-
-      - name: Verify Android Permissions
-        run: |
-          echo "===== AndroidManifest.xml ====="
-          cat android/app/src/main/AndroidManifest.xml
-          echo "===== Checking permissions ====="
-          grep -E "ACCESS_FINE_LOCATION|ACCESS_COARSE_LOCATION|CAMERA" android/app/src/main/AndroidManifest.xml
 
       - name: Get dependencies
         run: flutter pub get
