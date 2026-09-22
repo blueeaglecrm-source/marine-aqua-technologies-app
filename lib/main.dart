@@ -214,7 +214,6 @@ final Map<String, Map<String, String>> _translations = {
     'Higher Yields': 'అధిక దిగుబడులు',
     'Better Survival Rate': 'మెరుగైన సర్వైవల్ రేట్',
     '40% Faster Growth': '40% వేగవంతమైన పెరుగుదల',
-  },
 
     'A liquid mineral formulation designed to support shrimp moulting, shell formation and mineral balance.': 'రొయ్యల మౌల్టింగ్, షెల్ ఫార్మేషన్ మరియు మినరల్ బ్యాలెన్స్\u200cకు సహాయపడే లిక్విడ్ మినరల్ ఫార్ములేషన్.',
     'Use during shrimp culture for mineral and moulting support.': 'రొయ్యల పెంపకంలో మినరల్ మరియు మౌల్టింగ్ సపోర్ట్ కోసం ఉపయోగించండి.',
