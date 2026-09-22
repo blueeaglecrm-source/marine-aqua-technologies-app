@@ -85,6 +85,11 @@ final Map<String, Map<String, String>> _translations = {
     'Vibrio-Related Problems': 'విబ్రియో సంబంధిత సమస్యలు',
     'Moulting Stress': 'మౌల్టింగ్ ఒత్తిడి',
     'Stress & Poor Growth': 'స్ట్రెస్ & తక్కువ పెరుగుదల',
+    'Shrimp Health Monitor': 'రొయ్యల ఆరోగ్య పర్యవేక్షణ',
+    'Watch for abnormal gut appearance, reduced feed response and changes in shrimp activity. Check water quality and seek technical guidance for diagnosis and management.': 'రొయ్యల గట్ రూపంలో అసాధారణ మార్పులు, ఫీడ్ స్పందన తగ్గడం మరియు రొయ్యల చురుకుదనంలో మార్పులను గమనించండి. నీటి నాణ్యతను పరీక్షించి, నిర్ధారణ మరియు నిర్వహణ కోసం టెక్నికల్ మార్గదర్శకత్వం పొందండి.',
+    'Monitor pond conditions, organic load, shrimp behaviour and unusual mortality. Use appropriate pond management and product guidance for Vibrio management.': 'చెరువు పరిస్థితులు, ఆర్గానిక్ లోడ్, రొయ్యల ప్రవర్తన మరియు అసాధారణ మరణాలను గమనించండి. విబ్రియో నియంత్రణ కోసం సరైన చెరువు నిర్వహణ మరియు ఉత్పత్తి మార్గదర్శకాలను పాటించండి.',
+    'Sudden changes in water quality and mineral balance can affect moulting. Maintain stable water parameters and adequate mineral support.': 'నీటి నాణ్యత మరియు మినరల్ బ్యాలెన్స్‌లో అకస్మాత్తుగా వచ్చే మార్పులు మౌల్టింగ్‌ను ప్రభావితం చేయవచ్చు. నీటి పారామీటర్లను స్థిరంగా ఉంచి, తగిన మినరల్ సపోర్ట్ అందించండి.',
+    'Check feeding response, water quality, stocking density, pond bottom condition and overall culture management when growth slows.': 'పెరుగుదల తగ్గినప్పుడు ఫీడింగ్ స్పందన, నీటి నాణ్యత, స్టాకింగ్ డెన్సిటీ, చెరువు అడుగు పరిస్థితి మరియు మొత్తం కల్చర్ నిర్వహణను పరిశీలించండి.',
     'Common warning signs to observe. Confirm diagnosis with a qualified aquaculture technical professional.': 'గమనించాల్సిన సాధారణ హెచ్చరిక సంకేతాలు. నిర్ధారణను అర్హత కలిగిన ఆక్వాకల్చర్ టెక్నికల్ ప్రొఫెషనల్‌తో నిర్ధారించండి.',
     'Select Language': 'భాషను ఎంచుకోండి',
     'Choose your language': 'మీ భాషను ఎంచుకోండి',
@@ -295,6 +300,11 @@ final Map<String, Map<String, String>> _translations = {
     'Vibrio-Related Problems': 'विब्रियो संबंधी समस्याएँ',
     'Moulting Stress': 'मोल्टिंग तनाव',
     'Stress & Poor Growth': 'तनाव और कम वृद्धि',
+    'Shrimp Health Monitor': 'झींगा स्वास्थ्य निगरानी',
+    'Watch for abnormal gut appearance, reduced feed response and changes in shrimp activity. Check water quality and seek technical guidance for diagnosis and management.': 'झींगे के गट में असामान्य बदलाव, कम फीड प्रतिक्रिया और गतिविधि में बदलाव देखें। पानी की गुणवत्ता जाँचें और निदान व प्रबंधन के लिए तकनीकी मार्गदर्शन लें.',
+    'Monitor pond conditions, organic load, shrimp behaviour and unusual mortality. Use appropriate pond management and product guidance for Vibrio management.': 'तालाब की स्थिति, ऑर्गेनिक लोड, झींगे का व्यवहार और असामान्य मृत्यु पर नज़र रखें। विब्रियो प्रबंधन के लिए उचित तालाब प्रबंधन और उत्पाद मार्गदर्शन अपनाएँ.',
+    'Sudden changes in water quality and mineral balance can affect moulting. Maintain stable water parameters and adequate mineral support.': 'पानी की गुणवत्ता और खनिज संतुलन में अचानक बदलाव मोल्टिंग को प्रभावित कर सकते हैं। पानी के पैरामीटर स्थिर रखें और पर्याप्त खनिज सहायता दें.',
+    'Check feeding response, water quality, stocking density, pond bottom condition and overall culture management when growth slows.': 'वृद्धि धीमी होने पर फीड प्रतिक्रिया, स्टॉकिंग घनत्व, पानी की गुणवत्ता, तालाब की तली और पूरे कल्चर प्रबंधन की जाँच करें.',
     'Common warning signs to observe. Confirm diagnosis with a qualified aquaculture technical professional.': 'देखने योग्य सामान्य चेतावनी संकेत। निदान की पुष्टि योग्य एक्वाकल्चर तकनीकी विशेषज्ञ से करें।',
     'Select Language': 'भाषा चुनें',
     'Choose your language': 'अपनी भाषा चुनें',
@@ -1279,10 +1289,30 @@ class ShrimpDiseasesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final diseases = [
-      ('White Gut / Gut Health Issues', 'Watch for abnormal gut appearance, reduced feed response and changes in shrimp activity. Check water quality and seek technical guidance for diagnosis and management.'),
-      ('Vibrio-Related Problems', 'Monitor pond conditions, organic load, shrimp behaviour and unusual mortality. Use appropriate pond management and product guidance for Vibrio management.'),
-      ('Moulting Stress', 'Sudden changes in water quality and mineral balance can affect moulting. Maintain stable water parameters and adequate mineral support.'),
-      ('Stress & Poor Growth', 'Check feeding response, water quality, stocking density, pond bottom condition and overall culture management when growth slows.'),
+      {
+        'title': 'White Gut / Gut Health Issues',
+        'description': 'Watch for abnormal gut appearance, reduced feed response and changes in shrimp activity. Check water quality and seek technical guidance for diagnosis and management.',
+        'icon': Icons.health_and_safety_rounded,
+        'iconColor': Colors.red,
+      },
+      {
+        'title': 'Vibrio-Related Problems',
+        'description': 'Monitor pond conditions, organic load, shrimp behaviour and unusual mortality. Use appropriate pond management and product guidance for Vibrio management.',
+        'icon': Icons.biotech_rounded,
+        'iconColor': Colors.deepOrange,
+      },
+      {
+        'title': 'Moulting Stress',
+        'description': 'Sudden changes in water quality and mineral balance can affect moulting. Maintain stable water parameters and adequate mineral support.',
+        'icon': Icons.water_drop_rounded,
+        'iconColor': Colors.blue,
+      },
+      {
+        'title': 'Stress & Poor Growth',
+        'description': 'Check feeding response, water quality, stocking density, pond bottom condition and overall culture management when growth slows.',
+        'icon': Icons.speed_rounded,
+        'iconColor': Colors.orange,
+      },
     ];
 
     return Scaffold(
@@ -1299,33 +1329,58 @@ class ShrimpDiseasesPage extends StatelessWidget {
             icon: Icons.health_and_safety_rounded,
             title: 'Shrimp Health Monitor',
             subtitle: 'Common warning signs to observe. Confirm diagnosis with a qualified aquaculture technical professional.',
-            color: Colors.red,
+            color: marineTeal,
           ),
           SizedBox(height: 16),
-          ...diseases.map((d) => Container(
-                margin: EdgeInsets.only(bottom: 12),
-                padding: EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(18),
-                  border: Border.all(color: Color(0xFFF0D9D9)),
+          ...diseases.map((d) {
+            final icon = d['icon'] as IconData;
+            final iconColor = d['iconColor'] as Color;
+            return Container(
+              margin: EdgeInsets.only(bottom: 12),
+              padding: EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(18),
+                border: Border.all(color: Color(0xFFDCEAF4)),
+              ),
+              child: ExpansionTile(
+                tilePadding: EdgeInsets.zero,
+                childrenPadding: EdgeInsets.only(top: 4, bottom: 8),
+                leading: CircleAvatar(
+                  backgroundColor: Color(0xFFE8F6F7),
+                  child: Icon(icon, color: iconColor),
                 ),
-                child: ExpansionTile(
-                  tilePadding: EdgeInsets.zero,
-                  childrenPadding: EdgeInsets.only(bottom: 8),
-                  leading: CircleAvatar(
-                    backgroundColor: Color(0xFFFFE2E2),
-                    child: Icon(Icons.warning_amber_rounded, color: Colors.red),
-                  ),
-                  title: Text(tr(d.$1), style: TextStyle(color: darkText, fontWeight: FontWeight.bold, fontSize: 15)),
-                  children: [
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(tr(d.$2), style: TextStyle(color: Colors.black54, fontSize: 13, height: 1.45)),
+                title: Text(
+                  tr(d['title'] as String),
+                  style: TextStyle(color: darkText, fontWeight: FontWeight.bold, fontSize: 15),
+                ),
+                children: [
+                  Container(
+                    width: double.infinity,
+                    margin: EdgeInsets.only(top: 8),
+                    padding: EdgeInsets.all(14),
+                    decoration: BoxDecoration(
+                      color: Color(0xFFF7FBFD),
+                      borderRadius: BorderRadius.circular(14),
                     ),
-                  ],
-                ),
-              )),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Icon(Icons.lightbulb_outline_rounded, color: Colors.amber.shade700, size: 25),
+                        SizedBox(width: 10),
+                        Expanded(
+                          child: Text(
+                            tr(d['description'] as String),
+                            style: TextStyle(color: Colors.black54, fontSize: 13, height: 1.5),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }),
         ],
       ),
     );
