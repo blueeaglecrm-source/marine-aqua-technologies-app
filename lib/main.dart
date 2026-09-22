@@ -237,6 +237,7 @@ final Map<String, Map<String, String>> _translations = {
     'According to product label dosage': 'ప్రోడక్ట్ లేబుల్ డోసేజ్ ప్రకారం',
     'A formulation for pond water hygiene and harmful bacterial management.': 'చెరువు నీటి హైజీన్ మరియు హానికర బ్యాక్టీరియా మేనేజ్\u200cమెంట్ కోసం ఫార్ములేషన్.',
     'Use for pond water hygiene and harmful bacterial management.': 'చెరువు నీటి హైజీన్ మరియు హానికర బ్యాక్టీరియా మేనేజ్\u200cమెంట్ కోసం ఉపయోగించండి.',
+  },
   'हिन्दी': {
     'Smart Aquaculture. Better Results.': 'स्मार्ट एक्वाकल्चर। बेहतर परिणाम।',
     'Loading...': 'लोड हो रहा है...',
@@ -1929,7 +1930,7 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget _sectionHeader(IconData icon, String title, String subtitle, {Color iconColor = Color(0xFF087ED6)}) {
+  Widget _sectionHeader(IconData icon, String title, String subtitle, {Color iconColor = const Color(0xFF087ED6)}) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 14),
       child: Row(children: [
