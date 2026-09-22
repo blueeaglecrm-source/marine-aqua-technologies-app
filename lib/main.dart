@@ -51,7 +51,7 @@ class _SplashScreenState extends State<SplashScreen> {
       if (!mounted) return;
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (_) => const OtpPage()),
+        MaterialPageRoute(builder: (_) => const MobileNumberPage()),
       );
     });
   }
@@ -166,10 +166,186 @@ class WaterPainter extends CustomPainter {
   bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
 
+// ---------------- MOBILE NUMBER ----------------
+
+class MobileNumberPage extends StatefulWidget {
+  const MobileNumberPage({super.key});
+
+  @override
+  State<MobileNumberPage> createState() => _MobileNumberPageState();
+}
+
+class _MobileNumberPageState extends State<MobileNumberPage> {
+  final TextEditingController phoneController = TextEditingController();
+
+  @override
+  void dispose() {
+    phoneController.dispose();
+    super.dispose();
+  }
+
+  void sendOtp() {
+    final phone = phoneController.text.replaceAll(RegExp(r'\D'), '');
+
+    if (phone.length != 10) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('10-digit mobile number enter cheyyandi')),
+      );
+      return;
+    }
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => OtpPage(phoneNumber: phone),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SafeArea(
+        child: Container(
+          width: double.infinity,
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Color(0xFFE9F8FF), Colors.white],
+              begin: Alignment.topCenter,
+              end: Alignment.center,
+            ),
+          ),
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.fromLTRB(24, 32, 24, 30),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Center(
+                  child: SizedBox(
+                    height: 145,
+                    child: Image.asset(
+                      'marine_logo.png',
+                      fit: BoxFit.contain,
+                      errorBuilder: (_, __, ___) => const Icon(
+                        Icons.water,
+                        size: 100,
+                        color: aqua,
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 8),
+                const Center(
+                  child: Text(
+                    'Smart Aquaculture. Better Results.',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Color(0xFF082E63),
+                      fontSize: 17,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 55),
+                const Text(
+                  'Enter Your Mobile Number',
+                  style: TextStyle(
+                    color: Color(0xFF082E63),
+                    fontSize: 28,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 12),
+                const Text(
+                  'We will send a 6-digit OTP to verify your mobile number.',
+                  style: TextStyle(color: Colors.black54, fontSize: 16),
+                ),
+                const SizedBox(height: 28),
+                TextField(
+                  controller: phoneController,
+                  keyboardType: TextInputType.phone,
+                  maxLength: 10,
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600,
+                  ),
+                  decoration: InputDecoration(
+                    counterText: '',
+                    prefixText: '+91 ',
+                    prefixStyle: const TextStyle(
+                      color: Color(0xFF0877E8),
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    hintText: 'Enter 10-digit number',
+                    filled: true,
+                    fillColor: Colors.white,
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 18,
+                      vertical: 18,
+                    ),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(16),
+                      borderSide: const BorderSide(color: Color(0xFFBBDDF2)),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(16),
+                      borderSide: const BorderSide(color: Color(0xFFBBDDF2)),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(16),
+                      borderSide: const BorderSide(
+                        color: Color(0xFF0877E8),
+                        width: 2,
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 28),
+                SizedBox(
+                  width: double.infinity,
+                  height: 56,
+                  child: ElevatedButton(
+                    onPressed: sendOtp,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF0877E8),
+                      foregroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(18),
+                      ),
+                    ),
+                    child: const Text(
+                      'Send OTP  →',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 40),
+                const Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    OtpTrust(icon: Icons.verified_user, text: 'Secure\nLogin'),
+                    OtpTrust(icon: Icons.eco, text: 'Trusted by\nAqua Farmers'),
+                    OtpTrust(icon: Icons.groups, text: 'Better\nTogether'),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 // ---------------- OTP ----------------
 
 class OtpPage extends StatefulWidget {
-  const OtpPage({super.key});
+  final String phoneNumber;
+
+  const OtpPage({super.key, required this.phoneNumber});
 
   @override
   State<OtpPage> createState() => _OtpPageState();
@@ -205,6 +381,14 @@ class _OtpPageState extends State<OtpPage> {
       context,
       MaterialPageRoute(builder: (_) => const MainScreen()),
     );
+  }
+
+  String get formattedPhone {
+    final p = widget.phoneNumber;
+    if (p.length == 10) {
+      return '+91 ${p.substring(0, 5)} ${p.substring(5)}';
+    }
+    return '+91 $p';
   }
 
   @override
@@ -264,9 +448,9 @@ class _OtpPageState extends State<OtpPage> {
                     style: TextStyle(color: Colors.black54, fontSize: 17),
                   ),
                   const SizedBox(height: 6),
-                  const Text(
-                    '+91 98765 43210',
-                    style: TextStyle(
+                  Text(
+                    formattedPhone,
+                    style: const TextStyle(
                       color: Colors.blue,
                       fontSize: 22,
                       fontWeight: FontWeight.bold,
