@@ -2649,9 +2649,21 @@ class _EmployeeLoginPageState extends State<EmployeeLoginPage> {
       }
 
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(tr('Face / Biometric verification successful'))),
-      );
+   await showDialog<void>(
+  context: context,
+  builder: (context) => AlertDialog(
+    title: const Text('Face Verification Successful ✓'),
+    content: const Text(
+      'Employee face / biometric verification completed successfully.',
+    ),
+    actions: [
+      TextButton(
+        onPressed: () => Navigator.pop(context),
+        child: const Text('Continue'),
+      ),
+    ],
+  ),
+);
 
       final serviceEnabled = await Geolocator.isLocationServiceEnabled();
       if (!serviceEnabled) {
