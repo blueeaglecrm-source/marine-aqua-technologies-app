@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:local_auth/local_auth.dart';
 
 void main() {
   runApp(MarineAquaApp());
@@ -148,6 +149,15 @@ final Map<String, Map<String, String>> _translations = {
     'Customer Care': 'కస్టమర్ కేర్',
     'Email': 'ఈమెయిల్',
     'Employee Login': 'ఎంప్లాయీ లాగిన్',
+    'Face / Biometric Login': 'ఫేస్ / బయోమెట్రిక్ లాగిన్',
+    'Verify Employee': 'ఎంప్లాయీని ధృవీకరించండి',
+    'Use Face Recognition / Biometrics': 'ఫేస్ రికగ్నిషన్ / బయోమెట్రిక్స్ ఉపయోగించండి',
+    'Face / Biometric verification successful': 'ఫేస్ / బయోమెట్రిక్ ధృవీకరణ విజయవంతమైంది',
+    'Biometric authentication failed': 'బయోమెట్రిక్ ధృవీకరణ విఫలమైంది',
+    'Biometric is not available on this phone': 'ఈ ఫోన్‌లో బయోమెట్రిక్ సదుపాయం అందుబాటులో లేదు',
+    'Employee Location': 'ఎంప్లాయీ లొకేషన్',
+    'Verified Employee': 'ధృవీకరించబడిన ఎంప్లాయీ',
+    'Secure Login': 'సురక్షిత లాగిన్',
     'Employee Field Visit': 'ఎంప్లాయీ ఫీల్డ్ విజిట్',
     'About Marine Aqua Technologies': 'Marine Aqua Technologies గురించి',
     'Employee ID': 'ఎంప్లాయీ ID',
@@ -362,6 +372,15 @@ final Map<String, Map<String, String>> _translations = {
     'Customer Care': 'कस्टमर केयर',
     'Email': 'ईमेल',
     'Employee Login': 'कर्मचारी लॉगिन',
+    'Face / Biometric Login': 'फेस / बायोमेट्रिक लॉगिन',
+    'Verify Employee': 'कर्मचारी सत्यापित करें',
+    'Use Face Recognition / Biometrics': 'फेस रिकग्निशन / बायोमेट्रिक्स का उपयोग करें',
+    'Face / Biometric verification successful': 'फेस / बायोमेट्रिक सत्यापन सफल हुआ',
+    'Biometric authentication failed': 'बायोमेट्रिक सत्यापन विफल हुआ',
+    'Biometric is not available on this phone': 'इस फोन पर बायोमेट्रिक सुविधा उपलब्ध नहीं है',
+    'Employee Location': 'कर्मचारी लोकेशन',
+    'Verified Employee': 'सत्यापित कर्मचारी',
+    'Secure Login': 'सुरक्षित लॉगिन',
     'Employee Field Visit': 'कर्मचारी फील्ड विजिट',
     'About Marine Aqua Technologies': 'Marine Aqua Technologies के बारे में',
     'Employee ID': 'कर्मचारी ID',
@@ -2589,8 +2608,125 @@ class EmployeeLoginPage extends StatefulWidget {
 }
 
 class _EmployeeLoginPageState extends State<EmployeeLoginPage> {
-  final id = TextEditingController();
-  final pass = TextEditingController();
+  final LocalAuthentication _auth = LocalAuthentication();
+  bool _busy = false;
+
+  Future<void> _verifyEmployee() async {
+    if (_busy) return;
+    setState(() => _busy = true);
+
+    try {
+      final canCheck = await _auth.canCheckBiometrics;
+      final supported = await _auth.isDeviceSupported();
+
+      if (!canCheck && !supported) {
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(tr('Biometric is not available on this phone'))),
+        );
+        return;
+      }
+
+      final available = await _auth.getAvailableBiometrics();
+      final hasFace = available.contains(BiometricType.face);
+
+      final authenticated = await _auth.authenticate(
+        localizedReason: hasFace
+            ? tr('Use Face Recognition / Biometrics')
+            : tr('Verify Employee'),
+        options: const AuthenticationOptions(
+          biometricOnly: true,
+          stickyAuth: true,
+        ),
+      );
+
+      if (!authenticated) {
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(tr('Biometric authentication failed'))),
+        );
+        return;
+      }
+
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(tr('Face / Biometric verification successful'))),
+      );
+
+      final serviceEnabled = await Geolocator.isLocationServiceEnabled();
+      if (!serviceEnabled) {
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(tr('Phone Location/GPS ON cheyyandi'))),
+        );
+        return;
+      }
+
+      var permission = await Geolocator.checkPermission();
+      if (permission == LocationPermission.denied) {
+        permission = await Geolocator.requestPermission();
+      }
+      if (permission == LocationPermission.denied ||
+          permission == LocationPermission.deniedForever) {
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(tr('Location permission denied'))),
+        );
+        return;
+      }
+
+      final position = await Geolocator.getCurrentPosition(
+        locationSettings: const LocationSettings(
+          accuracy: LocationAccuracy.high,
+        ),
+      );
+
+      String village = '';
+      String mandal = '';
+      String district = '';
+      String state = '';
+      String pincode = '';
+
+      try {
+        final geocoding = Geocoding();
+        final marks = await geocoding.placemarkFromCoordinates(
+          position.latitude,
+          position.longitude,
+        );
+        if (marks.isNotEmpty) {
+          final mark = marks.first;
+          village = mark.locality ?? mark.subLocality ?? '';
+          mandal = mark.subLocality ?? '';
+          district = mark.subAdministrativeArea ?? '';
+          state = mark.administrativeArea ?? '';
+          pincode = mark.postalCode ?? '';
+        }
+      } catch (_) {}
+
+      if (!mounted) return;
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (_) => EmployeeDashboardPage(
+            latitude: position.latitude,
+            longitude: position.longitude,
+            village: village,
+            mandal: mandal,
+            district: district,
+            state: state,
+            pincode: pincode,
+          ),
+        ),
+      );
+    } catch (_) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(tr('Biometric authentication failed'))),
+      );
+    } finally {
+      if (mounted) setState(() => _busy = false);
+    }
+  }
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -2604,31 +2740,69 @@ class _EmployeeLoginPageState extends State<EmployeeLoginPage> {
           child: Column(
             children: [
               SizedBox(height: 35),
-              Icon(Icons.badge, size: 75, color: marineTeal),
-              SizedBox(height: 25),
-              TextField(
-                controller: id,
-                decoration: inputDecoration('Employee ID', Icons.person),
+              Container(
+                width: 105,
+                height: 105,
+                decoration: BoxDecoration(
+                  color: lightAqua,
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  Icons.face_retouching_natural,
+                  size: 62,
+                  color: marineTeal,
+                ),
               ),
-              SizedBox(height: 15),
-              TextField(
-                controller: pass,
-                obscureText: true,
-                decoration: inputDecoration('Password', Icons.lock),
+              SizedBox(height: 20),
+              Text(
+                tr('Face / Biometric Login'),
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: darkText,
+                ),
               ),
-              SizedBox(height: 25),
+              SizedBox(height: 10),
+              Text(
+                tr('Use Face Recognition / Biometrics'),
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 15, color: Colors.black54),
+              ),
+              SizedBox(height: 30),
               SizedBox(
                 width: double.infinity,
-                height: 52,
-                child: ElevatedButton(
-                  onPressed: () => Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => EmployeeDashboardPage(),
+                height: 56,
+                child: ElevatedButton.icon(
+                  onPressed: _busy ? null : _verifyEmployee,
+                  icon: _busy
+                      ? SizedBox(
+                          width: 22,
+                          height: 22,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2.5,
+                            color: Colors.white,
+                          ),
+                        )
+                      : Icon(Icons.face_retouching_natural),
+                  label: Text(
+                    _busy ? tr('Loading...') : tr('Verify Employee'),
+                  ),
+                ),
+              ),
+              SizedBox(height: 18),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.security, size: 18, color: marineTeal),
+                  SizedBox(width: 7),
+                  Text(
+                    tr('Secure Login'),
+                    style: TextStyle(
+                      color: darkText,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
-                  child: Text(tr('LOGIN')),
-                ),
+                ],
               ),
             ],
           ),
@@ -2637,7 +2811,24 @@ class _EmployeeLoginPageState extends State<EmployeeLoginPage> {
 }
 
 class EmployeeDashboardPage extends StatelessWidget {
-  EmployeeDashboardPage({super.key});
+  final double latitude;
+  final double longitude;
+  final String village;
+  final String mandal;
+  final String district;
+  final String state;
+  final String pincode;
+
+  EmployeeDashboardPage({
+    super.key,
+    required this.latitude,
+    required this.longitude,
+    required this.village,
+    required this.mandal,
+    required this.district,
+    required this.state,
+    required this.pincode,
+  });
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -2649,6 +2840,63 @@ class EmployeeDashboardPage extends StatelessWidget {
         body: ListView(
           padding: EdgeInsets.all(20),
           children: [
+            Card(
+              color: Colors.white,
+              elevation: 2,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(18),
+              ),
+              child: Padding(
+                padding: EdgeInsets.all(18),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        CircleAvatar(
+                          backgroundColor: lightAqua,
+                          child: Icon(Icons.location_on, color: marineTeal),
+                        ),
+                        SizedBox(width: 12),
+                        Expanded(
+                          child: Text(
+                            tr('Employee Location'),
+                            style: TextStyle(
+                              fontSize: 19,
+                              fontWeight: FontWeight.bold,
+                              color: darkText,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 14),
+                    Text(
+                      tr('Verified Employee'),
+                      style: TextStyle(
+                        color: marineTeal,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(height: 8),
+                    Text(
+                      '${tr('Village / Locality')}: $village\n'
+                      '${tr('Mandal')}: $mandal\n'
+                      '${tr('District')}: $district\n'
+                      '${tr('State')}: $state\n'
+                      '${tr('Pincode')}: $pincode',
+                    ),
+                    SizedBox(height: 10),
+                    Text(
+                      '${tr('Latitude')}: ${latitude.toStringAsFixed(6)}\n'
+                      '${tr('Longitude')}: ${longitude.toStringAsFixed(6)}',
+                      style: TextStyle(fontSize: 13, color: Colors.black54),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            SizedBox(height: 14),
             dashboardTile(
               context,
               Icons.location_on,
@@ -3344,7 +3592,7 @@ class _DealerPageState extends State<DealerPage> {
     n.clear();
     city.clear();
     addr.clear();
-    phone.clear();
+    phone.clear();f
   }
 
   @override
