@@ -3592,7 +3592,7 @@ class _DealerPageState extends State<DealerPage> {
     n.clear();
     city.clear();
     addr.clear();
-    phone.clear();f
+    phone.clear();
   }
 
   @override
