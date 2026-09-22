@@ -16,6 +16,9 @@ const Color lightAqua = Color(0xFFE7F7F8);
 const Color pageBg = Color(0xFFF3FBFC);
 const Color darkText = Color(0xFF063B45);
 
+// App language selection
+final ValueNotifier<String> selectedLanguage = ValueNotifier<String>('English');
+
 class MarineAquaApp extends StatelessWidget {
   const MarineAquaApp({super.key});
 
@@ -968,6 +971,123 @@ class _TipCard extends StatelessWidget {
   }
 }
 
+// ---------------- LANGUAGE ----------------
+
+class LanguagePage extends StatelessWidget {
+  const LanguagePage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final languages = const [
+      ('English', 'English'),
+      ('తెలుగు', 'Telugu'),
+      ('हिन्दी', 'Hindi'),
+    ];
+
+    return Scaffold(
+      backgroundColor: const Color(0xFFF6FBFD),
+      appBar: AppBar(
+        title: const Text('Select Language'),
+        backgroundColor: Colors.white,
+        foregroundColor: const Color(0xFF063B75),
+        elevation: 0,
+      ),
+      body: ValueListenableBuilder<String>(
+        valueListenable: selectedLanguage,
+        builder: (context, current, _) {
+          return ListView(
+            padding: const EdgeInsets.all(16),
+            children: [
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                    colors: [Color(0xFF063B75), Color(0xFF087ED6)],
+                  ),
+                  borderRadius: BorderRadius.circular(18),
+                ),
+                child: const Row(
+                  children: [
+                    Icon(Icons.translate_rounded, color: Colors.white, size: 34),
+                    SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Choose your language',
+                            style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.bold),
+                          ),
+                          SizedBox(height: 4),
+                          Text(
+                            'Select the language you want to use in the app.',
+                            style: TextStyle(color: Colors.white70, fontSize: 11.5),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 16),
+              ...languages.map((item) {
+                final selected = current == item.$1;
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: 10),
+                  child: Card(
+                    elevation: 0,
+                    margin: EdgeInsets.zero,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(14),
+                      side: BorderSide(
+                        color: selected ? const Color(0xFF087ED6) : const Color(0xFFD8E7F0),
+                        width: selected ? 1.5 : 1,
+                      ),
+                    ),
+                    child: ListTile(
+                      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
+                      leading: CircleAvatar(
+                        backgroundColor: selected ? const Color(0xFFE1F2FF) : const Color(0xFFF1F6F9),
+                        child: Icon(
+                          Icons.language_rounded,
+                          color: selected ? const Color(0xFF087ED6) : const Color(0xFF557080),
+                        ),
+                      ),
+                      title: Text(
+                        item.$1,
+                        style: const TextStyle(color: Color(0xFF063B75), fontSize: 16, fontWeight: FontWeight.bold),
+                      ),
+                      subtitle: Text(item.$2),
+                      trailing: selected
+                          ? const Icon(Icons.check_circle_rounded, color: Color(0xFF008B68), size: 25)
+                          : const Icon(Icons.radio_button_unchecked_rounded, color: Colors.black26),
+                      onTap: () {
+                        selectedLanguage.value = item.$1;
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('${item.$1} selected'),
+                            duration: const Duration(milliseconds: 900),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                );
+              }),
+              const SizedBox(height: 8),
+              const Text(
+                'Language selection is ready. App screen translations can be added next.',
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.black54, fontSize: 11),
+              ),
+            ],
+          );
+        },
+      ),
+    );
+  }
+}
+
 // ---------------- PRODUCTS ----------------
 
 class Product {
@@ -1200,7 +1320,16 @@ class HomePage extends StatelessWidget {
             ),
           ),
           IconButton(onPressed: () {}, icon: const Icon(Icons.notifications_none_rounded, color: Color(0xFF063B75), size: 27)),
-          IconButton(onPressed: () {}, icon: const Icon(Icons.translate_rounded, color: Color(0xFF063B75), size: 24)),
+          IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const LanguagePage()),
+              );
+            },
+            icon: const Icon(Icons.translate_rounded, color: Color(0xFF063B75), size: 24),
+            tooltip: 'Language',
+          ),
           Container(
             width: 40,
             height: 40,
