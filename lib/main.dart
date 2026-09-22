@@ -1262,7 +1262,7 @@ class HomePage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _header(),
+              _header(context),
               const SizedBox(height: 8),
               _hero(),
               const SizedBox(height: 8),
@@ -1292,7 +1292,7 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget _header() {
+  Widget _header(BuildContext context) {
     return Container(
       padding: const EdgeInsets.fromLTRB(12, 7, 8, 7),
       decoration: const BoxDecoration(
