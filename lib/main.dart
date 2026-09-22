@@ -582,6 +582,392 @@ class OtpTrust extends StatelessWidget {
   }
 }
 
+// ---------------- QUICK TOOLS ----------------
+
+class TipOfTheDayPage extends StatelessWidget {
+  const TipOfTheDayPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: pageBg,
+      appBar: AppBar(
+        title: const Text('Tip Of The Day'),
+        backgroundColor: marineBlue,
+        foregroundColor: Colors.white,
+      ),
+      body: ListView(
+        padding: const EdgeInsets.all(18),
+        children: const [
+          _ToolHeader(
+            icon: Icons.lightbulb_rounded,
+            title: 'Today\'s Pond Tip',
+            subtitle: 'Small checks can make a big difference in shrimp culture.',
+            color: Colors.orange,
+          ),
+          SizedBox(height: 16),
+          _TipCard(
+            title: 'Maintain Dissolved Oxygen',
+            text: 'Monitor dissolved oxygen regularly, especially during early morning hours and after weather changes. Stable oxygen supports shrimp activity and feeding.',
+          ),
+          _TipCard(
+            title: 'Observe Feed Response',
+            text: 'Check feeding trays and shrimp activity. Sudden changes in feed response can be an early signal that pond conditions need attention.',
+          ),
+          _TipCard(
+            title: 'Watch Pond Bottom',
+            text: 'Regularly observe sludge accumulation, water colour and unusual odour. Early pond-bottom management can help maintain a healthier culture environment.',
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class ShrimpCultureGuidePage extends StatelessWidget {
+  const ShrimpCultureGuidePage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final stages = [
+      ('1', 'Pond Preparation', 'Prepare and condition the pond, check water quality and ensure the pond bottom is ready before stocking.'),
+      ('2', 'Seed Stocking', 'Use healthy seed and follow the farm stocking plan. Record stocking date, quantity and pond details.'),
+      ('3', 'Water Management', 'Regularly monitor pH, dissolved oxygen, salinity, temperature and ammonia. Record results in the app.'),
+      ('4', 'Feed Management', 'Adjust feeding based on shrimp growth, feeding response, water conditions and biomass observations.'),
+      ('5', 'Health Monitoring', 'Observe shrimp behaviour, gut appearance, moulting, growth and pond-bottom condition regularly.'),
+      ('6', 'Growth & Harvest', 'Track biomass and growth, maintain stable pond conditions and plan harvest based on farm targets.'),
+    ];
+
+    return Scaffold(
+      backgroundColor: pageBg,
+      appBar: AppBar(
+        title: const Text('Shrimp Culture Guide'),
+        backgroundColor: marineBlue,
+        foregroundColor: Colors.white,
+      ),
+      body: ListView.builder(
+        padding: const EdgeInsets.all(18),
+        itemCount: stages.length,
+        itemBuilder: (_, index) {
+          final item = stages[index];
+          return Container(
+            margin: const EdgeInsets.only(bottom: 12),
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(18),
+              border: Border.all(color: const Color(0xFFDCEAF4)),
+            ),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                CircleAvatar(
+                  backgroundColor: marineTeal,
+                  foregroundColor: Colors.white,
+                  child: Text(item.$1, style: const TextStyle(fontWeight: FontWeight.bold)),
+                ),
+                const SizedBox(width: 13),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(item.$2, style: const TextStyle(fontSize: 17, fontWeight: FontWeight.bold, color: darkText)),
+                      const SizedBox(height: 6),
+                      Text(item.$3, style: const TextStyle(fontSize: 13, height: 1.45, color: Colors.black54)),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+
+class BiomassCalculatorPage extends StatefulWidget {
+  const BiomassCalculatorPage({super.key});
+
+  @override
+  State<BiomassCalculatorPage> createState() => _BiomassCalculatorPageState();
+}
+
+class _BiomassCalculatorPageState extends State<BiomassCalculatorPage> {
+  final areaController = TextEditingController();
+  final stockingController = TextEditingController();
+  final survivalController = TextEditingController();
+  final abwController = TextEditingController();
+
+  double? totalShrimp;
+  double? biomassKg;
+  double? biomassPerAcre;
+
+  void calculateBiomass() {
+    final area = double.tryParse(areaController.text.trim());
+    final stocking = double.tryParse(stockingController.text.trim());
+    final survival = double.tryParse(survivalController.text.trim());
+    final abw = double.tryParse(abwController.text.trim());
+
+    if (area == null || stocking == null || survival == null || abw == null || area <= 0 || stocking <= 0 || survival < 0 || survival > 100 || abw <= 0) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please enter valid values in all fields.')),
+      );
+      return;
+    }
+
+    final shrimpCount = area * stocking * (survival / 100);
+    final biomass = shrimpCount * abw / 1000;
+
+    setState(() {
+      totalShrimp = shrimpCount;
+      biomassKg = biomass;
+      biomassPerAcre = biomass / area;
+    });
+  }
+
+  void clearCalculator() {
+    areaController.clear();
+    stockingController.clear();
+    survivalController.clear();
+    abwController.clear();
+    setState(() {
+      totalShrimp = null;
+      biomassKg = null;
+      biomassPerAcre = null;
+    });
+  }
+
+  @override
+  void dispose() {
+    areaController.dispose();
+    stockingController.dispose();
+    survivalController.dispose();
+    abwController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: pageBg,
+      appBar: AppBar(
+        title: const Text('Biomass Calculator'),
+        backgroundColor: marineBlue,
+        foregroundColor: Colors.white,
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const _ToolHeader(
+              icon: Icons.calculate_rounded,
+              title: 'Shrimp Biomass Calculator',
+              subtitle: 'Estimate pond biomass using area, stocking, survival and average body weight.',
+              color: marineTeal,
+            ),
+            const SizedBox(height: 18),
+            _calcField(areaController, 'Pond Area (Acres)', Icons.waves, 'Example: 2.5'),
+            _calcField(stockingController, 'Stocking Density (PL/acre)', Icons.set_meal, 'Example: 100000'),
+            _calcField(survivalController, 'Survival Rate (%)', Icons.favorite, 'Example: 85'),
+            _calcField(abwController, 'Average Body Weight (grams)', Icons.scale, 'Example: 15'),
+            const SizedBox(height: 5),
+            SizedBox(
+              width: double.infinity,
+              height: 52,
+              child: ElevatedButton.icon(
+                onPressed: calculateBiomass,
+                icon: const Icon(Icons.calculate),
+                label: const Text('CALCULATE BIOMASS', style: TextStyle(fontWeight: FontWeight.bold)),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: marineTeal,
+                  foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(13)),
+                ),
+              ),
+            ),
+            const SizedBox(height: 9),
+            SizedBox(
+              width: double.infinity,
+              height: 48,
+              child: OutlinedButton(onPressed: clearCalculator, child: const Text('CLEAR')),
+            ),
+            if (biomassKg != null) ...[
+              const SizedBox(height: 20),
+              const Text('Calculation Result', style: TextStyle(color: darkText, fontSize: 21, fontWeight: FontWeight.bold)),
+              const SizedBox(height: 10),
+              _resultCard('Estimated Shrimp Count', '${totalShrimp!.round()} shrimp', Icons.set_meal, const Color(0xFFE1F2FF)),
+              _resultCard('Total Biomass', '${biomassKg!.toStringAsFixed(2)} kg', Icons.scale, const Color(0xFFDDF8EA)),
+              _resultCard('Biomass Per Acre', '${biomassPerAcre!.toStringAsFixed(2)} kg/acre', Icons.waves, const Color(0xFFFFF1D6)),
+              const SizedBox(height: 5),
+              const Text('Formula: Estimated shrimp count × average body weight (g) ÷ 1000.', style: TextStyle(color: Colors.black54, fontSize: 12)),
+            ],
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _calcField(TextEditingController controller, String label, IconData icon, String hint) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12),
+      child: TextField(
+        controller: controller,
+        keyboardType: const TextInputType.numberWithOptions(decimal: true),
+        decoration: InputDecoration(
+          labelText: label,
+          hintText: hint,
+          prefixIcon: Icon(icon, color: marineTeal),
+          filled: true,
+          fillColor: Colors.white,
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(13), borderSide: BorderSide.none),
+          enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(13), borderSide: const BorderSide(color: Color(0xFFDCEAF4))),
+        ),
+      ),
+    );
+  }
+
+  Widget _resultCard(String title, String value, IconData icon, Color background) {
+    return Container(
+      width: double.infinity,
+      margin: const EdgeInsets.only(bottom: 10),
+      padding: const EdgeInsets.all(15),
+      decoration: BoxDecoration(color: background, borderRadius: BorderRadius.circular(15)),
+      child: Row(
+        children: [
+          Icon(icon, color: marineTeal, size: 30),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(title, style: const TextStyle(color: darkText, fontSize: 12)),
+                const SizedBox(height: 3),
+                Text(value, style: const TextStyle(color: darkText, fontSize: 19, fontWeight: FontWeight.bold)),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class ShrimpDiseasesPage extends StatelessWidget {
+  const ShrimpDiseasesPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final diseases = [
+      ('White Gut / Gut Health Issues', 'Watch for abnormal gut appearance, reduced feed response and changes in shrimp activity. Check water quality and seek technical guidance for diagnosis and management.'),
+      ('Vibrio-Related Problems', 'Monitor pond conditions, organic load, shrimp behaviour and unusual mortality. Use appropriate pond management and product guidance for Vibrio management.'),
+      ('Moulting Stress', 'Sudden changes in water quality and mineral balance can affect moulting. Maintain stable water parameters and adequate mineral support.'),
+      ('Stress & Poor Growth', 'Check feeding response, water quality, stocking density, pond bottom condition and overall culture management when growth slows.'),
+    ];
+
+    return Scaffold(
+      backgroundColor: pageBg,
+      appBar: AppBar(
+        title: const Text('Shrimp Diseases'),
+        backgroundColor: marineBlue,
+        foregroundColor: Colors.white,
+      ),
+      body: ListView(
+        padding: const EdgeInsets.all(18),
+        children: [
+          const _ToolHeader(
+            icon: Icons.health_and_safety_rounded,
+            title: 'Shrimp Health Monitor',
+            subtitle: 'Common warning signs to observe. Confirm diagnosis with a qualified aquaculture technical professional.',
+            color: Colors.red,
+          ),
+          const SizedBox(height: 16),
+          ...diseases.map((d) => Container(
+                margin: const EdgeInsets.only(bottom: 12),
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(18),
+                  border: Border.all(color: const Color(0xFFF0D9D9)),
+                ),
+                child: ExpansionTile(
+                  tilePadding: EdgeInsets.zero,
+                  childrenPadding: const EdgeInsets.only(bottom: 8),
+                  leading: const CircleAvatar(
+                    backgroundColor: Color(0xFFFFE2E2),
+                    child: Icon(Icons.warning_amber_rounded, color: Colors.red),
+                  ),
+                  title: Text(d.$1, style: const TextStyle(color: darkText, fontWeight: FontWeight.bold, fontSize: 15)),
+                  children: [
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(d.$2, style: const TextStyle(color: Colors.black54, fontSize: 13, height: 1.45)),
+                    ),
+                  ],
+                ),
+              )),
+        ],
+      ),
+    );
+  }
+}
+
+class _ToolHeader extends StatelessWidget {
+  final IconData icon;
+  final String title;
+  final String subtitle;
+  final Color color;
+
+  const _ToolHeader({required this.icon, required this.title, required this.subtitle, required this.color});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(18),
+      decoration: BoxDecoration(
+        gradient: const LinearGradient(colors: [Color(0xFF063B75), Color(0xFF087ED6), Color(0xFF16AFC6)]),
+        borderRadius: BorderRadius.circular(18),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Icon(icon, color: Colors.white, size: 36),
+          const SizedBox(height: 8),
+          Text(title, style: const TextStyle(color: Colors.white, fontSize: 21, fontWeight: FontWeight.bold)),
+          const SizedBox(height: 5),
+          Text(subtitle, style: const TextStyle(color: Colors.white70, fontSize: 12, height: 1.4)),
+        ],
+      ),
+    );
+  }
+}
+
+class _TipCard extends StatelessWidget {
+  final String title;
+  final String text;
+
+  const _TipCard({required this.title, required this.text});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 12),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(17), border: Border.all(color: const Color(0xFFDCEAF4))),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(children: [const Icon(Icons.check_circle, color: marineTeal), const SizedBox(width: 9), Expanded(child: Text(title, style: const TextStyle(color: darkText, fontSize: 16, fontWeight: FontWeight.bold)))]),
+          const SizedBox(height: 9),
+          Text(text, style: const TextStyle(color: Colors.black54, fontSize: 13, height: 1.45)),
+        ],
+      ),
+    );
+  }
+}
+
 // ---------------- PRODUCTS ----------------
 
 class Product {
@@ -886,23 +1272,82 @@ class HomePage extends StatelessWidget {
       child: Column(
         children: [
           Row(children: [
-            Expanded(child: _quickCard(Icons.lightbulb_rounded, Colors.orange, const Color(0xFFDDF8EA), 'Tip Of The Day', 'Maintain proper dissolved oxygen levels for better growth.', 'Learn More  →')),
+            Expanded(
+              child: _quickCard(
+                Icons.lightbulb_rounded,
+                Colors.orange,
+                const Color(0xFFDDF8EA),
+                'Tip Of The Day',
+                'Maintain proper dissolved oxygen levels for better growth.',
+                'Learn More  →',
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (_) => const TipOfTheDayPage()));
+                },
+              ),
+            ),
             const SizedBox(width: 9),
-            Expanded(child: _quickCard(Icons.menu_book_rounded, const Color(0xFF087ED6), const Color(0xFFE1F2FF), 'Shrimp Culture Guide', 'Learn setup, management & best practices.', 'Explore Guide  →')),
+            Expanded(
+              child: _quickCard(
+                Icons.menu_book_rounded,
+                const Color(0xFF087ED6),
+                const Color(0xFFE1F2FF),
+                'Shrimp Culture Guide',
+                'Learn setup, management & best practices.',
+                'Explore Guide  →',
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (_) => const ShrimpCultureGuidePage()));
+                },
+              ),
+            ),
           ]),
           const SizedBox(height: 9),
           Row(children: [
-            Expanded(child: _quickCard(Icons.calculate_rounded, const Color(0xFF008B68), const Color(0xFFD9F7E5), 'Biomass Calculator', 'Get estimated biomass in 3 easy steps.', 'Calculate Now  →')),
+            Expanded(
+              child: _quickCard(
+                Icons.calculate_rounded,
+                const Color(0xFF008B68),
+                const Color(0xFFD9F7E5),
+                'Biomass Calculator',
+                'Get estimated biomass in 3 easy steps.',
+                'Calculate Now  →',
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (_) => const BiomassCalculatorPage()));
+                },
+              ),
+            ),
             const SizedBox(width: 9),
-            Expanded(child: _quickCard(Icons.health_and_safety_rounded, Colors.red, const Color(0xFFFFE2E2), 'Shrimp Diseases', 'Identify, prevent & treat common diseases.', 'View Details  →')),
+            Expanded(
+              child: _quickCard(
+                Icons.health_and_safety_rounded,
+                Colors.red,
+                const Color(0xFFFFE2E2),
+                'Shrimp Diseases',
+                'Identify, prevent & treat common diseases.',
+                'View Details  →',
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (_) => const ShrimpDiseasesPage()));
+                },
+              ),
+            ),
           ]),
         ],
       ),
     );
   }
 
-  Widget _quickCard(IconData icon, Color iconColor, Color bg, String title, String description, String button) {
-    return Container(
+  Widget _quickCard(
+    IconData icon,
+    Color iconColor,
+    Color bg,
+    String title,
+    String description,
+    String button, {
+    VoidCallback? onTap,
+  }) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(16),
+      child: Container(
       height: 154,
       padding: const EdgeInsets.all(11),
       decoration: BoxDecoration(color: bg, borderRadius: BorderRadius.circular(16)),
@@ -914,6 +1359,7 @@ class HomePage extends StatelessWidget {
         Expanded(child: Text(description, maxLines: 3, overflow: TextOverflow.ellipsis, style: const TextStyle(color: Color(0xFF34546D), fontSize: 10.5, height: 1.2))),
         Container(padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7), decoration: BoxDecoration(color: iconColor, borderRadius: BorderRadius.circular(8)), child: Text(button, style: const TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.bold))),
       ]),
+      ),
     );
   }
 
