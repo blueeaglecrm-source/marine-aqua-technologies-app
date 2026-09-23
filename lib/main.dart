@@ -103,8 +103,7 @@ class _SplashPageState extends State<SplashPage> {
                 ),
                 const SizedBox(height: 18),
                 const Text(
-                  'ఆక్వా సాగులో ప్రతి దశలో… మీకు తోడుగా
-Marine Aqua Technologies',
+                  'ఆక్వా సాగులో ప్రతి దశలో… మీకు తోడుగా\nMarine Aqua Technologies',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: darkText,
@@ -193,8 +192,7 @@ class _LoginPageState extends State<LoginPage> {
                   const SizedBox(height: 2),
                   const Center(
                     child: Text(
-                      'ఆక్వా సాగులో ప్రతి దశలో… మీకు తోడుగా
-Marine Aqua Technologies',
+                      'ఆక్వా సాగులో ప్రతి దశలో… మీకు తోడుగా\nMarine Aqua Technologies',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         color: darkText,
@@ -552,8 +550,7 @@ class HomePage extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  'ఆక్వా సాగులో ప్రతి దశలో… మీకు తోడుగా
-Marine Aqua Technologies',
+                  'ఆక్వా సాగులో ప్రతి దశలో… మీకు తోడుగా\nMarine Aqua Technologies',
                   style: TextStyle(
                     color: Colors.black45,
                     fontSize: 11,
@@ -1456,8 +1453,7 @@ class ProfilePage extends StatelessWidget {
           ProfileTile(
             icon: Icons.info_outline,
             title: 'About',
-            subtitle: 'ఆక్వా సాగులో ప్రతి దశలో… మీకు తోడుగా
-Marine Aqua Technologies',
+            subtitle: 'ఆక్వా సాగులో ప్రతి దశలో… మీకు తోడుగా\nMarine Aqua Technologies',
             onTap: () {
               showAboutDialog(
                 context: context,
@@ -1809,8 +1805,7 @@ class NotificationsPage extends StatelessWidget {
               ),
               title: Text('Welcome to Marine Aqua Technologies'),
               subtitle: Text(
-                'ఆక్వా సాగులో ప్రతి దశలో… మీకు తోడుగా
-Marine Aqua Technologies',
+                'ఆక్వా సాగులో ప్రతి దశలో… మీకు తోడుగా\nMarine Aqua Technologies',
               ),
             ),
           ),
