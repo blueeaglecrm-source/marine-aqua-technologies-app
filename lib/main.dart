@@ -150,9 +150,7 @@ class _LoginPageState extends State<LoginPage> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (_) => OtpPage(
-          mobile: mobileController.text.trim(),
-        ),
+        builder: (_) => OtpPage(mobile: mobileController.text.trim()),
       ),
     );
   }
@@ -164,69 +162,89 @@ class _LoginPageState extends State<LoginPage> {
       body: SafeArea(
         child: LayoutBuilder(
           builder: (context, constraints) {
-            final h = constraints.maxHeight;
-            final topSpace = h < 700 ? 20.0 : 35.0;
-            final logoHeight = h < 700 ? 145.0 : 175.0;
-            final titleGap = h < 700 ? 30.0 : 48.0;
-            final featureGap = h < 700 ? 25.0 : 42.0;
+            final compact = constraints.maxHeight < 720;
+            final horizontal = constraints.maxWidth < 380 ? 24.0 : 34.0;
 
             return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 50),
+              padding: EdgeInsets.symmetric(horizontal: horizontal),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(height: topSpace),
+                  SizedBox(height: compact ? 14 : 24),
                   Center(
                     child: Image.asset(
                       'marine_logo.png',
-                      width: 270,
-                      height: logoHeight,
+                      width: compact ? 190 : 215,
+                      height: compact ? 145 : 165,
                       fit: BoxFit.contain,
                       errorBuilder: (_, __, ___) => const Icon(
                         Icons.water_drop,
-                        size: 110,
+                        size: 90,
                         color: aqua,
                       ),
                     ),
                   ),
-                  const SizedBox(height: 2),
-                  const Center(
-                    child: Text(
-                      'ఆక్వా సాగులో ప్రతి దశలో… మీకు తోడుగా\nMarine Aqua Technologies',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: darkText,
-                        fontSize: 20,
+                  const SizedBox(height: 0),
+                  const Text(
+                    'ఆక్వా సాగులో ప్రతి దశలో… మీకు తోడుగా',
+                    textAlign: TextAlign.center,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      color: darkText,
+                      fontSize: 17,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  const Text(
+                    'Marine Aqua Technologies',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: darkText,
+                      fontSize: 17,
+                    ),
+                  ),
+                  SizedBox(height: compact ? 28 : 38),
+                  SizedBox(
+                    width: double.infinity,
+                    child: FittedBox(
+                      fit: BoxFit.scaleDown,
+                      alignment: Alignment.centerLeft,
+                      child: const Text(
+                        'Enter Your Mobile Number',
+                        maxLines: 1,
+                        style: TextStyle(
+                          color: darkText,
+                          fontSize: 30,
+                          height: 1.1,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ),
-                  SizedBox(height: titleGap),
-                  const Text(
-                    'Enter Your Mobile\nNumber',
-                    style: TextStyle(
-                      color: darkText,
-                      fontSize: 38,
-                      height: 1.22,
-                      fontWeight: FontWeight.bold,
+                  const SizedBox(height: 10),
+                  const SizedBox(
+                    width: double.infinity,
+                    child: Text(
+                      'We will send a 6-digit OTP to verify your mobile number.',
+                      textAlign: TextAlign.left,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        color: Colors.black54,
+                        fontSize: 14,
+                        height: 1.3,
+                      ),
                     ),
                   ),
-                  const SizedBox(height: 14),
-                  const Text(
-                    'We will send a 6-digit OTP to verify your\nmobile number.',
-                    style: TextStyle(
-                      color: Colors.black54,
-                      fontSize: 19,
-                      height: 1.35,
-                    ),
-                  ),
-                  const SizedBox(height: 25),
+                  SizedBox(height: compact ? 18 : 22),
                   TextField(
                     controller: mobileController,
                     keyboardType: TextInputType.phone,
                     maxLength: 10,
                     textAlign: TextAlign.center,
                     style: const TextStyle(
-                      fontSize: 20,
+                      fontSize: 19,
                       fontWeight: FontWeight.w600,
                     ),
                     decoration: InputDecoration(
@@ -236,17 +254,16 @@ class _LoginPageState extends State<LoginPage> {
                         color: Colors.black54,
                         fontWeight: FontWeight.w600,
                       ),
-                      contentPadding:
-                          const EdgeInsets.symmetric(vertical: 20),
+                      contentPadding: const EdgeInsets.symmetric(vertical: 17),
                       enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(28),
+                        borderRadius: BorderRadius.circular(26),
                         borderSide: const BorderSide(
                           color: Color(0xFFB8DCE9),
                           width: 2,
                         ),
                       ),
                       focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(28),
+                        borderRadius: BorderRadius.circular(26),
                         borderSide: const BorderSide(
                           color: brightBlue,
                           width: 2,
@@ -254,10 +271,10 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 18),
+                  const SizedBox(height: 14),
                   SizedBox(
                     width: double.infinity,
-                    height: 62,
+                    height: 58,
                     child: FilledButton(
                       onPressed: sendOtp,
                       style: FilledButton.styleFrom(
@@ -269,31 +286,23 @@ class _LoginPageState extends State<LoginPage> {
                       child: const Text(
                         'Send OTP  →',
                         style: TextStyle(
-                          fontSize: 23,
+                          fontSize: 21,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
                   ),
-                  SizedBox(height: featureGap),
+                  SizedBox(height: compact ? 22 : 30),
                   const Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      LoginFeature(
-                        icon: Icons.verified_user,
-                        title: 'Secure\nLogin',
-                      ),
-                      LoginFeature(
-                        icon: Icons.eco,
-                        title: 'Trusted by\nAqua Farmers',
-                      ),
-                      LoginFeature(
-                        icon: Icons.groups,
-                        title: 'Better\nTogether',
-                      ),
+                      LoginFeature(icon: Icons.verified_user, title: 'Secure\nLogin'),
+                      LoginFeature(icon: Icons.eco, title: 'Trusted by\nAqua Farmers'),
+                      LoginFeature(icon: Icons.groups, title: 'Better\nTogether'),
                     ],
                   ),
                   const Spacer(),
+                  SizedBox(height: compact ? 8 : 14),
                 ],
               ),
             );
