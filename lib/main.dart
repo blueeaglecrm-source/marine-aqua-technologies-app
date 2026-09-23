@@ -103,7 +103,8 @@ class _SplashPageState extends State<SplashPage> {
                 ),
                 const SizedBox(height: 18),
                 const Text(
-                  'Smart Aquaculture. Better Results.',
+                  'ఆక్వా సాగులో ప్రతి దశలో… మీకు తోడుగా
+Marine Aqua Technologies',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: darkText,
@@ -111,24 +112,7 @@ class _SplashPageState extends State<SplashPage> {
                     fontWeight: FontWeight.w500,
                   ),
                 ),
-                const SizedBox(height: 85),
-                const Text(
-                  'Loading...',
-                  style: TextStyle(
-                    color: brightBlue,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 10),
-                const SizedBox(
-                  width: 38,
-                  height: 38,
-                  child: CircularProgressIndicator(
-                    strokeWidth: 5,
-                    color: brightBlue,
-                  ),
-                ),
+                const SizedBox(height: 95),
               ],
             ),
           ),
@@ -179,161 +163,145 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.fromLTRB(50, 55, 50, 20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Center(
-                child: Image.asset(
-                  'marine_logo.png',
-                  width: 300,
-                  height: 210,
-                  fit: BoxFit.contain,
-                  errorBuilder: (_, __, ___) => const Icon(
-                    Icons.water_drop,
-                    size: 120,
-                    color: aqua,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 4),
-              const Center(
-                child: Text(
-                  'Smart Aquaculture. Better Results.',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: darkText,
-                    fontSize: 20,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 82),
-              const Text(
-                'Enter Your Mobile\nNumber',
-                style: TextStyle(
-                  color: darkText,
-                  fontSize: 39,
-                  height: 1.25,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 20),
-              const Text(
-                'We will send a 6-digit OTP to verify your\nmobile number.',
-                style: TextStyle(
-                  color: Colors.black54,
-                  fontSize: 20,
-                  height: 1.45,
-                ),
-              ),
-              const SizedBox(height: 35),
-              TextField(
-                controller: mobileController,
-                keyboardType: TextInputType.phone,
-                maxLength: 10,
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                  fontSize: 21,
-                  fontWeight: FontWeight.w600,
-                ),
-                decoration: InputDecoration(
-                  counterText: '',
-                  hintText: 'Enter 10-digit number',
-                  hintStyle: const TextStyle(
-                    color: Colors.black54,
-                    fontWeight: FontWeight.w600,
-                  ),
-                  contentPadding: const EdgeInsets.symmetric(vertical: 23),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(28),
-                    borderSide: const BorderSide(
-                      color: Color(0xFFB8DCE9),
-                      width: 2,
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            final h = constraints.maxHeight;
+            final topSpace = h < 700 ? 20.0 : 35.0;
+            final logoHeight = h < 700 ? 145.0 : 175.0;
+            final titleGap = h < 700 ? 30.0 : 48.0;
+            final featureGap = h < 700 ? 25.0 : 42.0;
+
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 50),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: topSpace),
+                  Center(
+                    child: Image.asset(
+                      'marine_logo.png',
+                      width: 270,
+                      height: logoHeight,
+                      fit: BoxFit.contain,
+                      errorBuilder: (_, __, ___) => const Icon(
+                        Icons.water_drop,
+                        size: 110,
+                        color: aqua,
+                      ),
                     ),
                   ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(28),
-                    borderSide: const BorderSide(
-                      color: brightBlue,
-                      width: 2,
+                  const SizedBox(height: 2),
+                  const Center(
+                    child: Text(
+                      'ఆక్వా సాగులో ప్రతి దశలో… మీకు తోడుగా
+Marine Aqua Technologies',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: darkText,
+                        fontSize: 20,
+                      ),
                     ),
                   ),
-                ),
-              ),
-              const SizedBox(height: 24),
-              SizedBox(
-                width: double.infinity,
-                height: 67,
-                child: FilledButton(
-                  onPressed: sendOtp,
-                  style: FilledButton.styleFrom(
-                    backgroundColor: brightBlue,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(28),
-                    ),
-                  ),
-                  child: const Text(
-                    'Send OTP  →',
+                  SizedBox(height: titleGap),
+                  const Text(
+                    'Enter Your Mobile\nNumber',
                     style: TextStyle(
-                      fontSize: 24,
+                      color: darkText,
+                      fontSize: 38,
+                      height: 1.22,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                ),
-              ),
-              const SizedBox(height: 58),
-              const Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  LoginFeature(
-                    icon: Icons.verified_user,
-                    title: 'Secure\nLogin',
+                  const SizedBox(height: 14),
+                  const Text(
+                    'We will send a 6-digit OTP to verify your\nmobile number.',
+                    style: TextStyle(
+                      color: Colors.black54,
+                      fontSize: 19,
+                      height: 1.35,
+                    ),
                   ),
-                  LoginFeature(
-                    icon: Icons.eco,
-                    title: 'Trusted by\nAqua Farmers',
+                  const SizedBox(height: 25),
+                  TextField(
+                    controller: mobileController,
+                    keyboardType: TextInputType.phone,
+                    maxLength: 10,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w600,
+                    ),
+                    decoration: InputDecoration(
+                      counterText: '',
+                      hintText: 'Enter 10-digit number',
+                      hintStyle: const TextStyle(
+                        color: Colors.black54,
+                        fontWeight: FontWeight.w600,
+                      ),
+                      contentPadding:
+                          const EdgeInsets.symmetric(vertical: 20),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(28),
+                        borderSide: const BorderSide(
+                          color: Color(0xFFB8DCE9),
+                          width: 2,
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(28),
+                        borderSide: const BorderSide(
+                          color: brightBlue,
+                          width: 2,
+                        ),
+                      ),
+                    ),
                   ),
-                  LoginFeature(
-                    icon: Icons.groups,
-                    title: 'Better\nTogether',
+                  const SizedBox(height: 18),
+                  SizedBox(
+                    width: double.infinity,
+                    height: 62,
+                    child: FilledButton(
+                      onPressed: sendOtp,
+                      style: FilledButton.styleFrom(
+                        backgroundColor: brightBlue,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(28),
+                        ),
+                      ),
+                      child: const Text(
+                        'Send OTP  →',
+                        style: TextStyle(
+                          fontSize: 23,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
                   ),
+                  SizedBox(height: featureGap),
+                  const Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      LoginFeature(
+                        icon: Icons.verified_user,
+                        title: 'Secure\nLogin',
+                      ),
+                      LoginFeature(
+                        icon: Icons.eco,
+                        title: 'Trusted by\nAqua Farmers',
+                      ),
+                      LoginFeature(
+                        icon: Icons.groups,
+                        title: 'Better\nTogether',
+                      ),
+                    ],
+                  ),
+                  const Spacer(),
                 ],
               ),
-            ],
-          ),
+            );
+          },
         ),
       ),
-    );
-  }
-}
-
-class LoginFeature extends StatelessWidget {
-  final IconData icon;
-  final String title;
-
-  const LoginFeature({
-    super.key,
-    required this.icon,
-    required this.title,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Icon(icon, color: aqua, size: 48),
-        const SizedBox(height: 12),
-        Text(
-          title,
-          textAlign: TextAlign.center,
-          style: const TextStyle(
-            color: Colors.black54,
-            fontSize: 15,
-            height: 1.3,
-          ),
-        ),
-      ],
     );
   }
 }
@@ -584,7 +552,8 @@ class HomePage extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  'Smart Aquaculture. Better Results.',
+                  'ఆక్వా సాగులో ప్రతి దశలో… మీకు తోడుగా
+Marine Aqua Technologies',
                   style: TextStyle(
                     color: Colors.black45,
                     fontSize: 11,
@@ -1487,7 +1456,8 @@ class ProfilePage extends StatelessWidget {
           ProfileTile(
             icon: Icons.info_outline,
             title: 'About',
-            subtitle: 'Smart Aquaculture. Better Results.',
+            subtitle: 'ఆక్వా సాగులో ప్రతి దశలో… మీకు తోడుగా
+Marine Aqua Technologies',
             onTap: () {
               showAboutDialog(
                 context: context,
@@ -1839,7 +1809,8 @@ class NotificationsPage extends StatelessWidget {
               ),
               title: Text('Welcome to Marine Aqua Technologies'),
               subtitle: Text(
-                'Smart Aquaculture. Better Results.',
+                'ఆక్వా సాగులో ప్రతి దశలో… మీకు తోడుగా
+Marine Aqua Technologies',
               ),
             ),
           ),
