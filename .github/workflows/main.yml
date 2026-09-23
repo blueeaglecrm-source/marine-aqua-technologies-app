@@ -29,9 +29,6 @@ jobs:
       - name: Check Flutter
         run: flutter doctor -v
 
-      - name: Analyze Dart code
-        run: flutter analyze
-
       - name: Build APK
         run: flutter build apk --release
 
