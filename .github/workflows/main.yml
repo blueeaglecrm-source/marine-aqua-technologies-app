@@ -23,34 +23,14 @@ jobs:
       - name: Generate Android project
         run: flutter create . --platforms=android
 
-      - name: Add Android Permissions
-        run: |
-          python3 - <<'PY'
-          from pathlib import Path
-          import re
-
-          manifest = Path("android/app/src/main/AndroidManifest.xml")
-          text = manifest.read_text()
-
-          permissions = """
-              <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-              <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-              <uses-permission android:name="android.permission.CAMERA"/>
-          """
-
-          if "android.permission.ACCESS_FINE_LOCATION" not in text:
-              match = re.search(r"<manifest\\b[^>]*>", text)
-              if not match:
-                  raise RuntimeError("AndroidManifest.xml: <manifest> tag not found")
-              text = text[:match.end()] + permissions + text[match.end():]
-              manifest.write_text(text)
-          PY
-
       - name: Get dependencies
         run: flutter pub get
 
       - name: Check Flutter
         run: flutter doctor -v
+
+      - name: Analyze Dart code
+        run: flutter analyze
 
       - name: Build APK
         run: flutter build apk --release
