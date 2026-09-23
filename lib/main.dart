@@ -304,6 +304,40 @@ class _LoginPageState extends State<LoginPage> {
   }
 }
 
+class LoginFeature extends StatelessWidget {
+  final IconData icon;
+  final String title;
+
+  const LoginFeature({
+    super.key,
+    required this.icon,
+    required this.title,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 100,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, color: aqua, size: 42),
+          const SizedBox(height: 8),
+          Text(
+            title,
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              color: Colors.black54,
+              fontSize: 14,
+              height: 1.25,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 // ---------------- OTP ----------------
 
 class OtpPage extends StatefulWidget {
