@@ -1,4 +1,3 @@
-```yaml
 name: marine_aqua_technologies
 
 description: MARINE AQUA TECHNOLOGIES - Smart Aquaculture. Better Results.
@@ -17,6 +16,7 @@ dependencies:
   geolocator: ^14.0.2
   image_picker: ^1.2.0
   geocoding: ^5.0.0
+  local_auth: ^2.3.0
   syncfusion_flutter_pdfviewer: ^31.1.21
 
 dev_dependencies:
@@ -33,7 +33,7 @@ flutter:
     - free moult.png
     - marine 6g.png
     - marine_logo.png
-    - marine white shield.png
+    - matine white shield.png
     - oxytab.png
     - protab.png
     - red thunder.png
@@ -42,4 +42,3 @@ flutter:
     - volt-x.png
     - white shield.png
     - mat_guide.pdf
-```
