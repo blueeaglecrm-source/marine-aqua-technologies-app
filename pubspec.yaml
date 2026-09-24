@@ -1,10 +1,8 @@
 name: marine_aqua_technologies
-
-description: MARINE AQUA TECHNOLOGIES - Smart Aquaculture. Better Results.
-
+description: Marine Aqua Technologies - Smart Aquaculture
 publish_to: "none"
 
-version: 1.0.0+1
+version: 1.0.0+57
 
 environment:
   sdk: ">=3.0.0 <4.0.0"
@@ -13,31 +11,23 @@ dependencies:
   flutter:
     sdk: flutter
 
-  geolocator: ^14.0.2
-  image_picker: ^1.2.0
-  geocoding: ^5.0.0
-  syncfusion_flutter_pdfviewer: ^31.1.21
+  cupertino_icons: ^1.0.8
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
   flutter_lints: ^5.0.0
 
 flutter:
   uses-material-design: true
 
   assets:
-    - bio sludge -x.png
-    - free moult.png
-    - marine 6g.png
-    - marine_logo.png
-    - matine white shield.png
-    - oxytab.png
-    - protab.png
-    - red thunder.png
-    - starmin.png
-    - vibrio shield.png
-    - volt-x.png
-    - white shield.png
-    - mat_guide.pdf
+    - assets/logo.png
+    - assets/mat_guide.pdf
+    - assets/marine_6g.png
+    - assets/white_shield.png
+    - assets/vibrio_shield.png
+    - assets/protab.png
+    - assets/volt-x.png
+    - assets/oxytab.png
+    - assets/bio_sludge_x.png
