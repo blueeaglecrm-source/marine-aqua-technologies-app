@@ -564,7 +564,7 @@ class _LoginPageState extends State<LoginPage> {
 
               const Spacer(),
 
-              const Row(
+              Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   _LoginBadge(
@@ -1038,7 +1038,7 @@ class FarmerHome extends StatelessWidget {
             ),
           ),
 
-          const Column(
+          Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
@@ -1104,7 +1104,7 @@ class FarmerHome extends StatelessWidget {
 
               const SizedBox(width: 8),
 
-              const Expanded(
+              Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -2206,7 +2206,7 @@ class ProfilePage extends StatelessWidget {
 
           const SizedBox(height: 24),
 
-          const Card(
+          Card(
             color: Colors.white,
             child: ListTile(
               leading: Icon(
