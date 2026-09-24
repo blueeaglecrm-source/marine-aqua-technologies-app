@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:geocoding/geocoding.dart';
+import 'package:geocoding/geocoding.dart' as geo;
 import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -1723,7 +1723,7 @@ class _EmployeeVisitPageState extends State<EmployeeVisitPage> {
       String p = '';
 
       try {
-        final marks = await placemarkFromCoordinates(
+        final marks = await geo.placemarkFromCoordinates(
           position.latitude,
           position.longitude,
         );
