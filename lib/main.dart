@@ -4,21 +4,8 @@ void main() {
   runApp(const MarineAquaApp());
 }
 
-class MarineAquaApp extends StatefulWidget {
+class MarineAquaApp extends StatelessWidget {
   const MarineAquaApp({super.key});
-
-  @override
-  State<MarineAquaApp> createState() => _MarineAquaAppState();
-}
-
-class _MarineAquaAppState extends State<MarineAquaApp> {
-  bool isTelugu = false;
-
-  void changeLanguage(bool telugu) {
-    setState(() {
-      isTelugu = telugu;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,81 +14,587 @@ class _MarineAquaAppState extends State<MarineAquaApp> {
       title: 'Marine Aqua Technologies',
       theme: ThemeData(
         useMaterial3: true,
-        fontFamily: 'Roboto',
+        fontFamily: 'Arial',
+        scaffoldBackgroundColor: const Color(0xFFF4FBFD),
         colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFF006B67),
+          seedColor: const Color(0xFF129CCB),
         ),
       ),
-      home: HomePage(
-        isTelugu: isTelugu,
-        onLanguageChanged: changeLanguage,
+      home: const SplashScreen(),
+    );
+  }
+}
+
+/* =========================================================
+   COLORS
+========================================================= */
+
+const Color marineBlue = Color(0xFF0B4A7F);
+const Color marineCyan = Color(0xFF12A8C5);
+const Color lightBlue = Color(0xFFE5F4FF);
+const Color lightGreen = Color(0xFFE5F7EF);
+const Color lightPink = Color(0xFFFFE9ED);
+const Color white = Colors.white;
+
+/* =========================================================
+   SPLASH SCREEN
+========================================================= */
+
+class SplashScreen extends StatefulWidget {
+  const SplashScreen({super.key});
+
+  @override
+  State<SplashScreen> createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
+  @override
+  void initState() {
+    super.initState();
+
+    Future.delayed(const Duration(seconds: 2), () {
+      if (!mounted) return;
+
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (_) => const MobileLoginScreen(),
+        ),
+      );
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: SafeArea(
+        child: Column(
+          children: [
+            const Spacer(flex: 2),
+
+            Image.asset(
+              'assets/logo.png',
+              width: 180,
+              height: 180,
+              fit: BoxFit.contain,
+              errorBuilder: (_, __, ___) {
+                return const Icon(
+                  Icons.water,
+                  size: 120,
+                  color: marineCyan,
+                );
+              },
+            ),
+
+            const SizedBox(height: 30),
+
+            const Text(
+              'ఆక్వా సాగులో ప్రతి దశలో... మీకు\nతోడుగా',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: marineBlue,
+                fontSize: 25,
+                fontWeight: FontWeight.bold,
+                height: 1.35,
+              ),
+            ),
+
+            const SizedBox(height: 20),
+
+            const Text(
+              'Marine Aqua Technologies',
+              style: TextStyle(
+                color: marineBlue,
+                fontSize: 22,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+
+            const Spacer(),
+
+            Container(
+              height: 170,
+              width: double.infinity,
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Color(0xFF12A8C5),
+                    Color(0xFF078FD2),
+                  ],
+                ),
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(90),
+                  topRight: Radius.circular(90),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
 }
 
-// ------------------------------------------------------------
-// HOME PAGE
-// ------------------------------------------------------------
+/* =========================================================
+   MOBILE LOGIN
+========================================================= */
 
-class HomePage extends StatefulWidget {
-  final bool isTelugu;
-  final Function(bool) onLanguageChanged;
-
-  const HomePage({
-    super.key,
-    required this.isTelugu,
-    required this.onLanguageChanged,
-  });
+class MobileLoginScreen extends StatefulWidget {
+  const MobileLoginScreen({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<MobileLoginScreen> createState() => _MobileLoginScreenState();
 }
 
-class _HomePageState extends State<HomePage> {
-  int currentIndex = 0;
+class _MobileLoginScreenState extends State<MobileLoginScreen> {
+  final TextEditingController mobileController =
+      TextEditingController();
+
+  @override
+  void dispose() {
+    mobileController.dispose();
+    super.dispose();
+  }
+
+  void sendOtp() {
+    if (mobileController.text.trim().length != 10) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Please enter a valid 10-digit mobile number'),
+        ),
+      );
+      return;
+    }
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => const OtpScreen(),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    final pages = [
-      HomeContent(
-        isTelugu: widget.isTelugu,
-        onLanguageChanged: widget.onLanguageChanged,
-      ),
-      ProductsPage(isTelugu: widget.isTelugu),
-      ProfilePage(isTelugu: widget.isTelugu),
-      SupportPage(isTelugu: widget.isTelugu),
-    ];
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 34),
+            child: Column(
+              children: [
+                const SizedBox(height: 35),
 
+                Image.asset(
+                  'assets/logo.png',
+                  width: 155,
+                  height: 155,
+                  errorBuilder: (_, __, ___) {
+                    return const Icon(
+                      Icons.water,
+                      size: 100,
+                      color: marineCyan,
+                    );
+                  },
+                ),
+
+                const SizedBox(height: 18),
+
+                const Text(
+                  'ఆక్వా సాగులో ప్రతి దశలో... మీకు\nతోడుగా',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: marineBlue,
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+
+                const SizedBox(height: 15),
+
+                const Text(
+                  'Marine Aqua Technologies',
+                  style: TextStyle(
+                    color: marineBlue,
+                    fontSize: 19,
+                  ),
+                ),
+
+                const SizedBox(height: 80),
+
+                const Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    'Enter Your Mobile Number',
+                    style: TextStyle(
+                      color: marineBlue,
+                      fontSize: 31,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+
+                const SizedBox(height: 10),
+
+                const Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    'We will send a 6-digit OTP to verify\nyour mobile number.',
+                    style: TextStyle(
+                      color: Colors.grey,
+                      fontSize: 18,
+                      height: 1.5,
+                    ),
+                  ),
+                ),
+
+                const SizedBox(height: 30),
+
+                TextField(
+                  controller: mobileController,
+                  keyboardType: TextInputType.phone,
+                  maxLength: 10,
+                  decoration: InputDecoration(
+                    counterText: '',
+                    hintText: 'Enter 10-digit number',
+                    hintStyle: const TextStyle(
+                      color: Colors.grey,
+                      fontSize: 19,
+                    ),
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 30,
+                      vertical: 24,
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(35),
+                      borderSide: const BorderSide(
+                        color: Color(0xFFB5E0E9),
+                        width: 3,
+                      ),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(35),
+                      borderSide: const BorderSide(
+                        color: marineCyan,
+                        width: 3,
+                      ),
+                    ),
+                  ),
+                ),
+
+                const SizedBox(height: 18),
+
+                SizedBox(
+                  width: double.infinity,
+                  height: 62,
+                  child: ElevatedButton(
+                    onPressed: sendOtp,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF1099D2),
+                      foregroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(35),
+                      ),
+                      elevation: 4,
+                    ),
+                    child: const Text(
+                      'Send OTP  →',
+                      style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+
+                const SizedBox(height: 75),
+
+                const Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    LoginFeature(
+                      icon: Icons.verified_user,
+                      title: 'Secure\nLogin',
+                    ),
+                    LoginFeature(
+                      icon: Icons.eco,
+                      title: 'Trusted by\nAqua Farmers',
+                    ),
+                    LoginFeature(
+                      icon: Icons.groups,
+                      title: 'Better\nTogether',
+                    ),
+                  ],
+                ),
+
+                const SizedBox(height: 30),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class LoginFeature extends StatelessWidget {
+  final IconData icon;
+  final String title;
+
+  const LoginFeature({
+    super.key,
+    required this.icon,
+    required this.title,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Icon(
+          icon,
+          color: marineCyan,
+          size: 45,
+        ),
+        const SizedBox(height: 10),
+        Text(
+          title,
+          textAlign: TextAlign.center,
+          style: const TextStyle(
+            color: Colors.grey,
+            fontSize: 16,
+            height: 1.4,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+/* =========================================================
+   OTP SCREEN
+========================================================= */
+
+class OtpScreen extends StatefulWidget {
+  const OtpScreen({super.key});
+
+  @override
+  State<OtpScreen> createState() => _OtpScreenState();
+}
+
+class _OtpScreenState extends State<OtpScreen> {
+  final TextEditingController otpController =
+      TextEditingController();
+
+  void verifyOtp() {
+    if (otpController.text.trim().length != 6) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Enter 6-digit OTP'),
+        ),
+      );
+      return;
+    }
+
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(
+        builder: (_) => const MainNavigation(),
+      ),
+      (route) => false,
+    );
+  }
+
+  @override
+  void dispose() {
+    otpController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 34),
+          child: Column(
+            children: [
+              const SizedBox(height: 25),
+
+              Align(
+                alignment: Alignment.centerLeft,
+                child: IconButton(
+                  onPressed: () => Navigator.pop(context),
+                  icon: const Icon(
+                    Icons.arrow_back,
+                    size: 35,
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 10),
+
+              Image.asset(
+                'assets/logo.png',
+                width: 150,
+                height: 150,
+                errorBuilder: (_, __, ___) {
+                  return const Icon(
+                    Icons.water,
+                    size: 100,
+                    color: marineCyan,
+                  );
+                },
+              ),
+
+              const SizedBox(height: 30),
+
+              const Text(
+                'Verify OTP',
+                style: TextStyle(
+                  color: marineBlue,
+                  fontSize: 38,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+
+              const SizedBox(height: 12),
+
+              const Text(
+                'Enter the 6-digit OTP sent to your\nmobile number.',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Colors.grey,
+                  fontSize: 19,
+                  height: 1.5,
+                ),
+              ),
+
+              const SizedBox(height: 45),
+
+              TextField(
+                controller: otpController,
+                keyboardType: TextInputType.number,
+                maxLength: 6,
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  fontSize: 24,
+                  letterSpacing: 5,
+                ),
+                decoration: InputDecoration(
+                  counterText: '',
+                  hintText: 'Enter 6-digit OTP',
+                  contentPadding: const EdgeInsets.symmetric(
+                    vertical: 24,
+                  ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 28),
+
+              SizedBox(
+                width: double.infinity,
+                height: 62,
+                child: ElevatedButton(
+                  onPressed: verifyOtp,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF1099D2),
+                    foregroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(35),
+                    ),
+                  ),
+                  child: const Text(
+                    'Verify OTP  →',
+                    style: TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+
+              const Spacer(),
+
+              const Text(
+                'Resend OTP',
+                style: TextStyle(
+                  color: Color(0xFF128FBE),
+                  fontSize: 21,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+
+              const SizedBox(height: 50),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/* =========================================================
+   MAIN NAVIGATION
+========================================================= */
+
+class MainNavigation extends StatefulWidget {
+  const MainNavigation({super.key});
+
+  @override
+  State<MainNavigation> createState() => _MainNavigationState();
+}
+
+class _MainNavigationState extends State<MainNavigation> {
+  int currentIndex = 0;
+
+  final List<Widget> pages = const [
+    HomeScreen(),
+    ProductsScreen(),
+    SupportScreen(),
+    ProfileScreen(),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       body: pages[currentIndex],
       bottomNavigationBar: NavigationBar(
+        height: 85,
         selectedIndex: currentIndex,
         onDestinationSelected: (index) {
           setState(() {
             currentIndex = index;
           });
         },
-        destinations: [
+        backgroundColor: Colors.white,
+        indicatorColor: const Color(0xFFD5F4F7),
+        destinations: const [
           NavigationDestination(
-            icon: const Icon(Icons.home_outlined),
-            selectedIcon: const Icon(Icons.home),
-            label: widget.isTelugu ? 'హోమ్' : 'Home',
+            icon: Icon(Icons.home_outlined),
+            selectedIcon: Icon(Icons.home),
+            label: 'Home',
           ),
           NavigationDestination(
-            icon: const Icon(Icons.inventory_2_outlined),
-            selectedIcon: const Icon(Icons.inventory_2),
-            label: widget.isTelugu ? 'ప్రొడక్ట్స్' : 'Products',
+            icon: Icon(Icons.inventory_2_outlined),
+            selectedIcon: Icon(Icons.inventory_2),
+            label: 'Products',
           ),
           NavigationDestination(
-            icon: const Icon(Icons.person_outline),
-            selectedIcon: const Icon(Icons.person),
-            label: widget.isTelugu ? 'ప్రొఫైల్' : 'Profile',
+            icon: Icon(Icons.support_agent_outlined),
+            selectedIcon: Icon(Icons.support_agent),
+            label: 'Support',
           ),
           NavigationDestination(
-            icon: const Icon(Icons.support_agent_outlined),
-            selectedIcon: const Icon(Icons.support_agent),
-            label: widget.isTelugu ? 'సపోర్ట్' : 'Support',
+            icon: Icon(Icons.person_outline),
+            selectedIcon: Icon(Icons.person),
+            label: 'Profile',
           ),
         ],
       ),
@@ -109,329 +602,138 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-// ------------------------------------------------------------
-// HOME CONTENT
-// ------------------------------------------------------------
+/* =========================================================
+   HOME
+========================================================= */
 
-class HomeContent extends StatelessWidget {
-  final bool isTelugu;
-  final Function(bool) onLanguageChanged;
-
-  const HomeContent({
-    super.key,
-    required this.isTelugu,
-    required this.onLanguageChanged,
-  });
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: SingleChildScrollView(
+        padding: const EdgeInsets.only(bottom: 20),
         child: Column(
           children: [
-            // HEADER
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.fromLTRB(20, 18, 20, 22),
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    Color(0xFF004F4B),
-                    Color(0xFF008C83),
-                  ],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(28),
-                  bottomRight: Radius.circular(28),
-                ),
-              ),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(3),
-                        decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.18),
-                          borderRadius: BorderRadius.circular(25),
-                        ),
-                        child: Row(
-                          children: [
-                            _languageButton(
-                              context,
-                              'EN',
-                              !isTelugu,
-                              false,
-                              onLanguageChanged,
-                            ),
-                            _languageButton(
-                              context,
-                              'తెలుగు',
-                              isTelugu,
-                              true,
-                              onLanguageChanged,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
+            const SizedBox(height: 8),
 
-                  const SizedBox(height: 12),
+            _buildHeader(context),
 
-                  // MARINE LOGO
-                  Image.asset(
-                    'marine_logo.png',
-                    height: 85,
-                    fit: BoxFit.contain,
-                    errorBuilder: (context, error, stackTrace) {
-                      return const Icon(
-                        Icons.water_drop,
-                        color: Colors.white,
-                        size: 70,
-                      );
-                    },
-                  ),
+            const SizedBox(height: 15),
 
-                  const SizedBox(height: 12),
-
-                  const Text(
-                    'MARINE AQUA TECHNOLOGIES',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 23,
-                      fontWeight: FontWeight.bold,
-                      letterSpacing: 1.2,
-                    ),
-                  ),
-
-                  const SizedBox(height: 8),
-
-                  const Text(
-                    'ప్రయత్నం మీది... ఫలితం మాది.',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 17,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-
-            const SizedBox(height: 22),
-
-            // WELCOME
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 18),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  isTelugu
-                      ? 'ఆక్వా సాగుకు మీ పూర్తి సపోర్ట్'
-                      : 'Your Complete Support for Aquaculture',
-                  style: const TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xFF004F4B),
-                  ),
-                ),
-              ),
-            ),
-
-            const SizedBox(height: 14),
-
-            // INFO CARDS
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Column(
-                children: [
-                  InfoCard(
-                    icon: Icons.water,
-                    title: isTelugu
-                        ? 'నీటి నాణ్యత'
-                        : 'Water Quality',
-                    description: isTelugu
-                        ? 'Pond water quality management కోసం సరైన ఉత్పత్తులు మరియు మార్గదర్శకాలు.'
-                        : 'Products and guidance for better pond water quality management.',
-                  ),
-                  InfoCard(
-                    icon: Icons.health_and_safety,
-                    title: isTelugu
-                        ? 'రొయ్యల ఆరోగ్యం'
-                        : 'Shrimp Health',
-                    description: isTelugu
-                        ? 'రొయ్యల ఆరోగ్యం, ఇమ్యూనిటీ మరియు మంచి కల్చర్ కోసం సరైన సపోర్ట్.'
-                        : 'Right support for shrimp health, immunity and better culture.',
-                  ),
-                  InfoCard(
-                    icon: Icons.trending_up,
-                    title: isTelugu
-                        ? 'గ్రోత్ మేనేజ్‌మెంట్'
-                        : 'Growth Management',
-                    description: isTelugu
-                        ? 'మంచి feed utilization మరియు growth కోసం Marine products.'
-                        : 'Marine products for better feed utilization and growth.',
-                  ),
-                ],
-              ),
-            ),
+            _buildHero(),
 
             const SizedBox(height: 18),
 
-            // PRODUCT BUTTON
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 18),
-              child: SizedBox(
-                width: double.infinity,
-                height: 54,
-                child: ElevatedButton.icon(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) =>
-                            ProductsPage(isTelugu: isTelugu),
-                      ),
-                    );
-                  },
-                  icon: const Icon(Icons.inventory_2),
-                  label: Text(
-                    isTelugu
-                        ? 'మా ప్రొడక్ట్స్ చూడండి'
-                        : 'View Our Products',
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF006B67),
-                    foregroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                  ),
-                ),
-              ),
-            ),
+            _buildWaterQuality(),
 
-            const SizedBox(height: 25),
+            const SizedBox(height: 18),
+
+            _buildQuickCards(),
+
+            const SizedBox(height: 28),
+
+            _buildProductsSection(),
+
+            const SizedBox(height: 28),
+
+            _buildSuccessStories(),
           ],
         ),
       ),
     );
   }
 
-  Widget _languageButton(
-    BuildContext context,
-    String text,
-    bool selected,
-    bool telugu,
-    Function(bool) callback,
-  ) {
-    return GestureDetector(
-      onTap: () {
-        callback(telugu);
-      },
-      child: Container(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 13,
-          vertical: 8,
-        ),
-        decoration: BoxDecoration(
-          color: selected ? Colors.white : Colors.transparent,
-          borderRadius: BorderRadius.circular(20),
-        ),
-        child: Text(
-          text,
-          style: TextStyle(
-            color: selected
-                ? const Color(0xFF006B67)
-                : Colors.white,
-            fontWeight: FontWeight.bold,
-            fontSize: 13,
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-// ------------------------------------------------------------
-// INFO CARD
-// ------------------------------------------------------------
-
-class InfoCard extends StatelessWidget {
-  final IconData icon;
-  final String title;
-  final String description;
-
-  const InfoCard({
-    super.key,
-    required this.icon,
-    required this.title,
-    required this.description,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.all(17),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(17),
-        boxShadow: [
-          BoxShadow(
-            blurRadius: 10,
-            spreadRadius: 1,
-            color: Colors.black.withOpacity(0.07),
-          ),
-        ],
-      ),
+  Widget _buildHeader(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 22),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            height: 50,
-            width: 50,
-            decoration: BoxDecoration(
-              color: const Color(0xFFE3F5F3),
-              borderRadius: BorderRadius.circular(14),
-            ),
-            child: Icon(
-              icon,
-              color: const Color(0xFF006B67),
-              size: 27,
-            ),
+          const Icon(
+            Icons.menu,
+            size: 38,
+            color: marineBlue,
           ),
-          const SizedBox(width: 14),
+
+          const SizedBox(width: 12),
+
           Expanded(
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  title,
-                  style: const TextStyle(
+                Image.asset(
+                  'assets/logo.png',
+                  width: 62,
+                  height: 62,
+                  errorBuilder: (_, __, ___) {
+                    return const Icon(
+                      Icons.water,
+                      size: 50,
+                      color: marineCyan,
+                    );
+                  },
+                ),
+                const Text(
+                  'ఆక్వా సాగులో ప్రతి దశలో...',
+                  style: TextStyle(
+                    color: marineBlue,
+                    fontSize: 15,
                     fontWeight: FontWeight.bold,
-                    fontSize: 17,
                   ),
                 ),
-                const SizedBox(height: 5),
-                Text(
-                  description,
+                const Text(
+                  'మీకు తోడుగా',
                   style: TextStyle(
-                    color: Colors.grey.shade700,
-                    fontSize: 14,
-                    height: 1.4,
+                    color: marineBlue,
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
                   ),
+                ),
+                const Text(
+                  'Marine Aqua Technologies',
+                  style: TextStyle(
+                    color: marineBlue,
+                    fontSize: 16,
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          const Icon(
+            Icons.notifications_none,
+            color: marineBlue,
+            size: 34,
+          ),
+
+          const SizedBox(width: 10),
+
+          Container(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 14,
+              vertical: 12,
+            ),
+            decoration: BoxDecoration(
+              color: const Color(0xFFDCEEFF),
+              borderRadius: BorderRadius.circular(30),
+            ),
+            child: const Row(
+              children: [
+                Icon(
+                  Icons.language,
+                  color: marineBlue,
+                ),
+                SizedBox(width: 5),
+                Text(
+                  'EN',
+                  style: TextStyle(
+                    color: marineBlue,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Icon(
+                  Icons.keyboard_arrow_down,
+                  color: marineBlue,
                 ),
               ],
             ),
@@ -440,212 +742,400 @@ class InfoCard extends StatelessWidget {
       ),
     );
   }
-}
 
-// ------------------------------------------------------------
-// PRODUCTS PAGE
-// ------------------------------------------------------------
-
-class ProductsPage extends StatelessWidget {
-  final bool isTelugu;
-
-  const ProductsPage({
-    super.key,
-    required this.isTelugu,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final products = [
-      ProductData(
-        name: 'MARINE 6G',
-        image: 'marine 6g.png',
-        telugu:
-            'Liquid Minerals – Shell Formation & Moulting Support',
-        english:
-            'Liquid minerals for shell formation and moulting support.',
-      ),
-      ProductData(
-        name: 'MARINE VIBRIO SHIELD',
-        image: 'vibrio shield.png',
-        telugu:
-            'Vibrio Management కోసం రూపొందించిన ప్రత్యేక ఫార్ములా.',
-        english:
-            'Special formulation for Vibrio management.',
-      ),
-      ProductData(
-        name: 'MARINE PROTAB',
-        image: 'protab.png',
-        telugu:
-            'Probiotic support – Pond microbial management కోసం.',
-        english:
-            'Probiotic support for pond microbial management.',
-      ),
-      ProductData(
-        name: 'MARINE VOLT-X',
-        image: 'volt-x.png',
-        telugu:
-            'Growth & Energy support కోసం.',
-        english:
-            'Advanced growth and energy support.',
-      ),
-      ProductData(
-        name: 'BIO SLUDGE-X',
-        image: 'bio sludge -x.png',
-        telugu:
-            'Organic sludge management మరియు microbial activity కోసం.',
-        english:
-            'For organic sludge management and microbial activity.',
-      ),
-      ProductData(
-        name: 'OXYTAB',
-        image: 'oxytab.png',
-        telugu:
-            'Pond oxygen support కోసం.',
-        english:
-            'Oxygen support for aquaculture ponds.',
-      ),
-      ProductData(
-        name: 'FREE MOULT',
-        image: 'free moult.png',
-        telugu:
-            'Smooth moulting support కోసం.',
-        english:
-            'Support for smooth moulting.',
-      ),
-      ProductData(
-        name: 'WHITE SHIELD',
-        image: 'white shield.png',
-        telugu:
-            'Shrimp health support కోసం.',
-        english:
-            'Shrimp health support.',
-      ),
-      ProductData(
-        name: 'RED THUNDER',
-        image: 'red thunder.png',
-        telugu:
-            'Aquaculture performance support.',
-        english:
-            'Aquaculture performance support.',
-      ),
-      ProductData(
-        name: 'STARMIN',
-        image: 'starmin.png',
-        telugu:
-            'Mineral support కోసం.',
-        english:
-            'Mineral support for aquaculture.',
-      ),
-    ];
-
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          isTelugu ? 'మా ప్రొడక్ట్స్' : 'Our Products',
-          style: const TextStyle(fontWeight: FontWeight.bold),
+  Widget _buildHero() {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 18),
+      padding: const EdgeInsets.all(28),
+      height: 220,
+      decoration: BoxDecoration(
+        gradient: const LinearGradient(
+          colors: [
+            Color(0xFF0A4E89),
+            Color(0xFF16AFC1),
+          ],
         ),
-        backgroundColor: const Color(0xFF006B67),
-        foregroundColor: Colors.white,
+        borderRadius: BorderRadius.circular(38),
       ),
-      body: GridView.builder(
-        padding: const EdgeInsets.all(14),
-        itemCount: products.length,
-        gridDelegate:
-            const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          crossAxisSpacing: 12,
-          mainAxisSpacing: 12,
-          childAspectRatio: 0.72,
+      child: Stack(
+        children: [
+          const Positioned(
+            right: -25,
+            bottom: -20,
+            child: Icon(
+              Icons.water,
+              size: 150,
+              color: Color(0x301FFFFFF),
+            ),
+          ),
+
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'Healthy Ponds\nStronger Shrimp\nHigher Profits',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 34,
+                  fontWeight: FontWeight.bold,
+                  height: 1.05,
+                ),
+              ),
+
+              const SizedBox(height: 15),
+
+              const Text(
+                'Complete Aquaculture Solutions\nfor a Better Tomorrow',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 17,
+                  height: 1.35,
+                ),
+              ),
+
+              const SizedBox(height: 8),
+
+              const Text(
+                'Explore Products  →',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildWaterQuality() {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 18),
+      padding: const EdgeInsets.all(22),
+      decoration: BoxDecoration(
+        color: const Color(0xFFE4F8F1),
+        borderRadius: BorderRadius.circular(32),
+      ),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              const Icon(
+                Icons.water_drop,
+                color: marineCyan,
+                size: 42,
+              ),
+              const SizedBox(width: 14),
+              const Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Water Quality\nParameters',
+                      style: TextStyle(
+                        color: marineBlue,
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(height: 5),
+                    Text(
+                      'Maintain Optimal Water Conditions for Healthy Shrimp',
+                      style: TextStyle(
+                        color: Colors.grey,
+                        fontSize: 14,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const Text(
+                'View All →',
+                style: TextStyle(
+                  color: Color(0xFF178FC5),
+                  fontWeight: FontWeight.bold,
+                  fontSize: 17,
+                ),
+              ),
+            ],
+          ),
+
+          const SizedBox(height: 20),
+
+          const Row(
+            children: [
+              ParameterCard(
+                icon: '🌡️',
+                title: 'Temperature',
+                value: '28°C –\n30°C',
+              ),
+              ParameterCard(
+                icon: 'pH',
+                title: 'pH',
+                value: '7.5 – 8.5',
+              ),
+              ParameterCard(
+                icon: 'O₂',
+                title: 'Dissolved\nOxygen',
+                value: '> 4 / > 6\nppm',
+              ),
+              ParameterCard(
+                icon: '〰',
+                title: 'Salinity',
+                value: '0 – 30 ppt',
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildQuickCards() {
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      padding: const EdgeInsets.symmetric(horizontal: 18),
+      child: Row(
+        children: const [
+          QuickCard(
+            icon: Icons.menu_book,
+            title: 'Shrimp\nCulture Guide',
+            subtitle: 'Pond Preparation...',
+            color: lightBlue,
+          ),
+          QuickCard(
+            icon: Icons.calculate,
+            title: 'Biomass\nCalculator',
+            subtitle: 'Estimate Your\nShrimp Stock',
+            color: lightGreen,
+          ),
+          QuickCard(
+            icon: Icons.health_and_safety,
+            title: 'Shrimp\nDiseases',
+            subtitle: 'Identify • Prevent • Manage',
+            color: lightPink,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildProductsSection() {
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 25),
+          child: Row(
+            children: [
+              const Expanded(
+                child: Text(
+                  'Our Aquaculture\nSolutions',
+                  style: TextStyle(
+                    color: marineBlue,
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              const Text(
+                'View All Products →',
+                style: TextStyle(
+                  color: Color(0xFF178FC5),
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
         ),
-        itemBuilder: (context, index) {
-          return ProductCard(
-            product: products[index],
-            isTelugu: isTelugu,
-          );
-        },
-      ),
+
+        const SizedBox(height: 18),
+
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          padding: const EdgeInsets.symmetric(horizontal: 18),
+          child: Row(
+            children: const [
+              ProductCard(
+                image: 'assets/marine_6g.png',
+                name: 'MARINE-6G',
+                category: 'Liquid Minerals',
+              ),
+              ProductCard(
+                image: 'assets/white_shield.png',
+                name: 'MARINE WHITE SHIELD',
+                category: 'Gut Health',
+              ),
+              ProductCard(
+                image: 'assets/vibrio_shield.png',
+                name: 'VIBRIO SHIELD',
+                category: 'Vibrio Control',
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildSuccessStories() {
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 25),
+          child: Row(
+            children: [
+              const Expanded(
+                child: Text(
+                  'Success Stories',
+                  style: TextStyle(
+                    color: marineBlue,
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              const Text(
+                'View All Stories →',
+                style: TextStyle(
+                  color: Color(0xFF178FC5),
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+        ),
+
+        const SizedBox(height: 18),
+
+        Container(
+          margin: const EdgeInsets.symmetric(horizontal: 18),
+          padding: const EdgeInsets.all(25),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(28),
+            border: Border.all(
+              color: const Color(0xFFDDE6E9),
+            ),
+          ),
+          child: Row(
+            children: [
+              Container(
+                width: 130,
+                height: 130,
+                decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                    colors: [
+                      Color(0xFF078FCE),
+                      Color(0xFF15A8B7),
+                    ],
+                  ),
+                  borderRadius: BorderRadius.circular(28),
+                ),
+                child: const Icon(
+                  Icons.agriculture,
+                  size: 65,
+                  color: Colors.white,
+                ),
+              ),
+
+              const SizedBox(width: 20),
+
+              const Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      '"Better growth and healthy shrimp"',
+                      style: TextStyle(
+                        color: marineBlue,
+                        fontSize: 19,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(height: 12),
+                    Text(
+                      'West Godavari, AP',
+                      style: TextStyle(
+                        color: Colors.grey,
+                        fontSize: 17,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }
 
-// ------------------------------------------------------------
-// PRODUCT MODEL
-// ------------------------------------------------------------
+/* =========================================================
+   PARAMETER CARD
+========================================================= */
 
-class ProductData {
-  final String name;
-  final String image;
-  final String telugu;
-  final String english;
+class ParameterCard extends StatelessWidget {
+  final String icon;
+  final String title;
+  final String value;
 
-  ProductData({
-    required this.name,
-    required this.image,
-    required this.telugu,
-    required this.english,
-  });
-}
-
-// ------------------------------------------------------------
-// PRODUCT CARD
-// ------------------------------------------------------------
-
-class ProductCard extends StatelessWidget {
-  final ProductData product;
-  final bool isTelugu;
-
-  const ProductCard({
+  const ParameterCard({
     super.key,
-    required this.product,
-    required this.isTelugu,
+    required this.icon,
+    required this.title,
+    required this.value,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 4,
-      clipBehavior: Clip.antiAlias,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(18),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(10),
+    return Expanded(
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 3),
+        padding: const EdgeInsets.symmetric(
+          vertical: 12,
+          horizontal: 4,
+        ),
+        height: 160,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(25),
+          border: Border.all(
+            color: const Color(0xFFD5E5E9),
+          ),
+        ),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Expanded(
-              child: Image.asset(
-                product.image,
-                fit: BoxFit.contain,
-                errorBuilder: (context, error, stackTrace) {
-                  return const Icon(
-                    Icons.image_not_supported,
-                    size: 55,
-                    color: Colors.grey,
-                  );
-                },
+            Text(
+              icon,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                fontSize: 25,
               ),
             ),
             const SizedBox(height: 7),
             Text(
-              product.name,
+              title,
               textAlign: TextAlign.center,
               style: const TextStyle(
-                fontSize: 15,
+                color: marineBlue,
                 fontWeight: FontWeight.bold,
-                color: Color(0xFF006B67),
+                fontSize: 13,
               ),
             ),
-            const SizedBox(height: 5),
+            const SizedBox(height: 7),
             Text(
-              isTelugu ? product.telugu : product.english,
+              value,
               textAlign: TextAlign.center,
-              maxLines: 3,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                fontSize: 11.5,
-                color: Colors.grey.shade700,
-                height: 1.3,
+              style: const TextStyle(
+                color: marineBlue,
+                fontSize: 13,
+                fontWeight: FontWeight.bold,
               ),
             ),
           ],
@@ -655,262 +1145,425 @@ class ProductCard extends StatelessWidget {
   }
 }
 
-// ------------------------------------------------------------
-// PROFILE PAGE
-// ------------------------------------------------------------
+/* =========================================================
+   QUICK CARD
+========================================================= */
 
-class ProfilePage extends StatelessWidget {
-  final bool isTelugu;
+class QuickCard extends StatelessWidget {
+  final IconData icon;
+  final String title;
+  final String subtitle;
+  final Color color;
 
-  const ProfilePage({
+  const QuickCard({
     super.key,
-    required this.isTelugu,
+    required this.icon,
+    required this.title,
+    required this.subtitle,
+    required this.color,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          isTelugu ? 'ప్రొఫైల్' : 'Profile',
-          style: const TextStyle(fontWeight: FontWeight.bold),
-        ),
-        backgroundColor: const Color(0xFF006B67),
-        foregroundColor: Colors.white,
+    return Container(
+      width: 205,
+      height: 145,
+      margin: const EdgeInsets.only(right: 14),
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: color,
+        borderRadius: BorderRadius.circular(28),
       ),
-      body: ListView(
-        padding: const EdgeInsets.all(18),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Center(
-            child: Image.asset(
-              'marine_logo.png',
-              height: 110,
-              errorBuilder: (context, error, stackTrace) {
-                return const Icon(
-                  Icons.water_drop,
-                  size: 90,
-                  color: Color(0xFF006B67),
-                );
-              },
+          Icon(
+            icon,
+            color: const Color(0xFF1098D0),
+            size: 42,
+          ),
+          const SizedBox(height: 10),
+          Text(
+            title,
+            style: const TextStyle(
+              color: marineBlue,
+              fontSize: 19,
+              fontWeight: FontWeight.bold,
             ),
           ),
-          const SizedBox(height: 18),
-          const Center(
-            child: Text(
-              'MARINE AQUA TECHNOLOGIES',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 21,
-                fontWeight: FontWeight.bold,
-                color: Color(0xFF006B67),
-              ),
+          const SizedBox(height: 4),
+          Text(
+            subtitle,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(
+              color: Colors.grey,
+              fontSize: 14,
             ),
-          ),
-          const SizedBox(height: 8),
-          const Center(
-            child: Text(
-              'ప్రయత్నం మీది... ఫలితం మాది.',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ),
-          const SizedBox(height: 30),
-          _profileTile(
-            Icons.business,
-            isTelugu ? 'కంపెనీ' : 'Company',
-            'Marine Aqua Technologies',
-          ),
-          _profileTile(
-            Icons.water_drop,
-            isTelugu ? 'విభాగం' : 'Industry',
-            isTelugu
-                ? 'Aquaculture & Shrimp Farming'
-                : 'Aquaculture & Shrimp Farming',
-          ),
-          _profileTile(
-            Icons.language,
-            isTelugu ? 'భాష' : 'Language',
-            isTelugu ? 'తెలుగు' : 'English',
           ),
         ],
       ),
     );
   }
+}
 
-  Widget _profileTile(
-    IconData icon,
-    String title,
-    String subtitle,
-  ) {
-    return Card(
-      margin: const EdgeInsets.only(bottom: 12),
+/* =========================================================
+   PRODUCT CARD
+========================================================= */
+
+class ProductCard extends StatelessWidget {
+  final String image;
+  final String name;
+  final String category;
+
+  const ProductCard({
+    super.key,
+    required this.image,
+    required this.name,
+    required this.category,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 290,
+      height: 340,
+      margin: const EdgeInsets.only(right: 18),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(28),
+        border: Border.all(
+          color: const Color(0xFFD6E2E6),
+        ),
+      ),
+      child: Column(
+        children: [
+          Expanded(
+            child: Image.asset(
+              image,
+              fit: BoxFit.contain,
+              errorBuilder: (_, __, ___) {
+                return const Icon(
+                  Icons.image_not_supported,
+                  size: 70,
+                  color: Colors.grey,
+                );
+              },
+            ),
+          ),
+
+          const SizedBox(height: 8),
+
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              name,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(
+                color: marineBlue,
+                fontSize: 19,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+
+          const SizedBox(height: 5),
+
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              category,
+              style: const TextStyle(
+                color: Colors.grey,
+                fontSize: 16,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/* =========================================================
+   PRODUCTS SCREEN
+========================================================= */
+
+class ProductsScreen extends StatelessWidget {
+  const ProductsScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final products = [
+      ['assets/marine_6g.png', 'MARINE-6G', 'Liquid Minerals'],
+      ['assets/white_shield.png', 'MARINE WHITE SHIELD', 'Gut Health'],
+      ['assets/vibrio_shield.png', 'VIBRIO SHIELD', 'Vibrio Control'],
+      ['assets/protab.png', 'MARINE PROTAB', 'Probiotic'],
+      ['assets/volt-x.png', 'MARINE VOLT-X', 'Growth Support'],
+      ['assets/oxytab.png', 'OXYTAB+', 'Oxygen Support'],
+      ['assets/bio_sludge_x.png', 'BIO SLUDGE-X', 'Sludge Management'],
+    ];
+
+    return SafeArea(
+      child: Column(
+        children: [
+          const SizedBox(height: 25),
+
+          const Text(
+            'Our Products',
+            style: TextStyle(
+              color: marineBlue,
+              fontSize: 30,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+
+          const SizedBox(height: 20),
+
+          Expanded(
+            child: GridView.builder(
+              padding: const EdgeInsets.all(18),
+              itemCount: products.length,
+              gridDelegate:
+                  const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                crossAxisSpacing: 14,
+                mainAxisSpacing: 14,
+                childAspectRatio: .72,
+              ),
+              itemBuilder: (_, index) {
+                return ProductCard(
+                  image: products[index][0],
+                  name: products[index][1],
+                  category: products[index][2],
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/* =========================================================
+   SUPPORT
+========================================================= */
+
+class SupportScreen extends StatelessWidget {
+  const SupportScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.all(25),
+        child: Column(
+          children: [
+            const SizedBox(height: 20),
+
+            const Text(
+              'Support',
+              style: TextStyle(
+                color: marineBlue,
+                fontSize: 32,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+
+            const SizedBox(height: 30),
+
+            SupportTile(
+              icon: Icons.phone,
+              title: 'Call Support',
+              subtitle: 'Talk to our aquaculture support team',
+              onTap: () {},
+            ),
+
+            SupportTile(
+              icon: Icons.chat,
+              title: 'WhatsApp Support',
+              subtitle: 'Get assistance from Marine Aqua Team',
+              onTap: () {},
+            ),
+
+            SupportTile(
+              icon: Icons.menu_book,
+              title: 'MAT Guide',
+              subtitle: 'Aquaculture technical guide',
+              onTap: () {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text(
+                      'mat_guide.pdf is available in app assets.',
+                    ),
+                  ),
+                );
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class SupportTile extends StatelessWidget {
+  final IconData icon;
+  final String title;
+  final String subtitle;
+  final VoidCallback onTap;
+
+  const SupportTile({
+    super.key,
+    required this.icon,
+    required this.title,
+    required this.subtitle,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 15),
       child: ListTile(
-        leading: Icon(
-          icon,
-          color: const Color(0xFF006B67),
+        onTap: onTap,
+        tileColor: Colors.white,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(22),
+        ),
+        leading: CircleAvatar(
+          radius: 28,
+          backgroundColor: const Color(0xFFE0F6FA),
+          child: Icon(
+            icon,
+            color: marineCyan,
+          ),
         ),
         title: Text(
           title,
           style: const TextStyle(
+            color: marineBlue,
+            fontSize: 18,
             fontWeight: FontWeight.bold,
           ),
         ),
         subtitle: Text(subtitle),
+        trailing: const Icon(
+          Icons.arrow_forward_ios,
+          size: 18,
+        ),
       ),
     );
   }
 }
 
-// ------------------------------------------------------------
-// SUPPORT PAGE
-// ------------------------------------------------------------
+/* =========================================================
+   PROFILE
+========================================================= */
 
-class SupportPage extends StatelessWidget {
-  final bool isTelugu;
-
-  const SupportPage({
-    super.key,
-    required this.isTelugu,
-  });
+class ProfileScreen extends StatelessWidget {
+  const ProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          isTelugu ? 'సపోర్ట్' : 'Support',
-          style: const TextStyle(fontWeight: FontWeight.bold),
-        ),
-        backgroundColor: const Color(0xFF006B67),
-        foregroundColor: Colors.white,
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(18),
+    return SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.all(25),
         child: Column(
           children: [
+            const SizedBox(height: 25),
+
             Image.asset(
-              'marine_logo.png',
-              height: 100,
-              errorBuilder: (context, error, stackTrace) {
+              'assets/logo.png',
+              width: 120,
+              height: 120,
+              errorBuilder: (_, __, ___) {
                 return const Icon(
-                  Icons.support_agent,
-                  size: 90,
-                  color: Color(0xFF006B67),
+                  Icons.person,
+                  size: 100,
+                  color: marineCyan,
                 );
               },
             ),
 
-            const SizedBox(height: 18),
+            const SizedBox(height: 20),
 
-            Text(
-              isTelugu
-                  ? 'Marine Aqua Technologies'
-                  : 'Marine Aqua Technologies',
-              style: const TextStyle(
-                fontSize: 21,
+            const Text(
+              'Marine Aqua Technologies',
+              style: TextStyle(
+                color: marineBlue,
+                fontSize: 25,
                 fontWeight: FontWeight.bold,
-                color: Color(0xFF006B67),
               ),
             ),
 
-            const SizedBox(height: 8),
+            const SizedBox(height: 35),
 
-            Text(
-              isTelugu
-                  ? 'మీ ఆక్వా సాగుకు మా పూర్తి సపోర్ట్.'
-                  : 'Complete support for your aquaculture journey.',
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                fontSize: 15,
-              ),
+            ProfileTile(
+              icon: Icons.person_outline,
+              title: 'My Profile',
             ),
 
-            const SizedBox(height: 25),
-
-            _supportCard(
-              Icons.phone,
-              isTelugu ? 'సంప్రదించండి' : 'Contact Us',
-              isTelugu
-                  ? 'మా టీమ్‌ను సంప్రదించడానికి'
-                  : 'Contact our team for assistance',
+            ProfileTile(
+              icon: Icons.language,
+              title: 'Language',
             ),
 
-            _supportCard(
-              Icons.menu_book,
-              isTelugu ? 'ఉత్పత్తుల సమాచారం' : 'Product Information',
-              isTelugu
-                  ? 'ప్రొడక్ట్స్ మరియు వాటి ఉపయోగాల గురించి తెలుసుకోండి.'
-                  : 'Learn about our products and their applications.',
+            ProfileTile(
+              icon: Icons.info_outline,
+              title: 'About Marine Aqua Technologies',
             ),
 
-            _supportCard(
-              Icons.help_outline,
-              isTelugu ? 'సహాయం' : 'Help',
-              isTelugu
-                  ? 'మీకు అవసరమైన సహాయం కోసం మమ్మల్ని సంప్రదించండి.'
-                  : 'Contact us whenever you need assistance.',
+            ProfileTile(
+              icon: Icons.description_outlined,
+              title: 'Terms & Conditions',
             ),
           ],
         ),
       ),
     );
   }
+}
 
-  Widget _supportCard(
-    IconData icon,
-    String title,
-    String subtitle,
-  ) {
+class ProfileTile extends StatelessWidget {
+  final IconData icon;
+  final String title;
+
+  const ProfileTile({
+    super.key,
+    required this.icon,
+    required this.title,
+  });
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
-      width: double.infinity,
       margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.all(15),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            blurRadius: 8,
-            color: Colors.black.withOpacity(0.07),
-          ),
-        ],
+        borderRadius: BorderRadius.circular(20),
       ),
-      child: Row(
-        children: [
-          CircleAvatar(
-            radius: 25,
-            backgroundColor: const Color(0xFFE3F5F3),
-            child: Icon(
-              icon,
-              color: const Color(0xFF006B67),
-            ),
+      child: ListTile(
+        leading: Icon(
+          icon,
+          color: marineCyan,
+          size: 28,
+        ),
+        title: Text(
+          title,
+          style: const TextStyle(
+            color: marineBlue,
+            fontSize: 17,
+            fontWeight: FontWeight.w600,
           ),
-          const SizedBox(width: 14),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  subtitle,
-                  style: TextStyle(
-                    color: Colors.grey.shade700,
-                    fontSize: 13,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
+        ),
+        trailing: const Icon(
+          Icons.arrow_forward_ios,
+          size: 16,
+        ),
       ),
     );
   }
