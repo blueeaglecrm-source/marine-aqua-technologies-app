@@ -991,7 +991,7 @@ class FarmerHome extends StatelessWidget {
 
               const SizedBox(width: 8),
 
-              Expanded(
+              const Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -1769,7 +1769,7 @@ class GuidePage extends StatelessWidget {
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text(
-          tr('Shrimp Culture Guide')),
+          tr('Shrimp Culture Guide'),
         ),
       ),
       body: SfPdfViewer.asset(
@@ -1839,7 +1839,7 @@ class _BiomassPageState extends State<BiomassPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          tr('Biomass Calculator')),
+          tr('Biomass Calculator'),
         ),
       ),
       body: ListView(
@@ -1939,7 +1939,7 @@ class DiseasePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          tr('Shrimp Diseases')),
+          tr('Shrimp Diseases'),
         ),
       ),
       body: ListView(
@@ -1967,6 +1967,7 @@ class DiseasePage extends StatelessWidget {
               ),
             )
             .toList(),
+      ),
     );
   }
 }
