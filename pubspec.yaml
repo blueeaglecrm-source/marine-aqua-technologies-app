@@ -13,22 +13,20 @@ dependencies:
   geolocator: ^14.0.2
   image_picker: ^1.2.0
   geocoding: ^5.0.0
-  google_mlkit_face_detection: ^0.13.1
-  syncfusion_flutter_pdfviewer: ^31.1.19
+  syncfusion_flutter_pdfviewer: ^31.1.21
+
 flutter:
   uses-material-design: true
 
   assets:
-    - lib/mat_guide.pdf
-    - marine_logo.png
     - bio sludge -x.png
     - free moult.png
     - marine 6g.png
-    - matine white shield.png
+    - white shield.png
     - oxytab.png
     - protab.png
     - red thunder.png
     - starmin.png
     - vibrio shield.png
     - volt-x.png
-    - white shield.png
+    - lib/mat_guide.pdf
