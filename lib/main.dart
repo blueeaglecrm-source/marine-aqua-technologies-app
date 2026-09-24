@@ -925,7 +925,7 @@ class FarmerHome extends StatelessWidget {
             ),
           ),
 
-          const Column(
+          Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
@@ -991,7 +991,7 @@ class FarmerHome extends StatelessWidget {
 
               const SizedBox(width: 8),
 
-              const Expanded(
+              Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
