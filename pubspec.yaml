@@ -19,9 +19,11 @@ flutter:
   uses-material-design: true
 
   assets:
+     assets:
     - bio sludge -x.png
     - free moult.png
     - marine 6g.png
+    - marine_logo.png
     - white shield.png
     - oxytab.png
     - protab.png
