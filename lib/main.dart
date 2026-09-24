@@ -47,28 +47,7 @@ const Map<String, Map<String, String>> translations = {
     'Pond Area (Acres)':'చెరువు విస్తీర్ణం (ఎకరాలు)','Stocking Density (PL/acre)':'స్టాకింగ్ డెన్సిటీ (PL/ఎకరం)','Survival Rate (%)':'సర్వైవల్ రేట్ (%)','Average Body Weight (grams)':'సగటు శరీర బరువు (గ్రాములు)','CALCULATE BIOMASS':'బయోమాస్ లెక్కించండి',
     'Estimated shrimp count: ':'అంచనా రొయ్యల సంఖ్య: ','Total biomass: ':'మొత్తం బయోమాస్: ','Biomass/acre: ':'ఎకరానికి బయోమాస్: ',
     'White Gut':'వైట్ గట్','Vibrio-related problems':'విబ్రియో సంబంధిత సమస్యలు','Stress & weak growth':'స్ట్రెస్ & బలహీనమైన పెరుగుదల','Poor moulting / shell weakness':'మౌల్టింగ్ సమస్యలు / షెల్ బలహీనత','Oxygen stress':'ఆక్సిజన్ స్ట్రెస్',
-  },
-  'hi': {
-    'Home':'होम','Products':'उत्पाद','Support':'सहायता','Profile':'प्रोफ़ाइल','Language':'भाषा',
-    'ఆక్వా సాగులో ప్రతి దశలో… మీకు తోడుగా':'एक्वाकल्चर की हर अवस्था में… आपके साथ',
-    'Shrimp Culture Guide':'झींगा पालन गाइड','Pond Preparation to Harvest':'तालाब की तैयारी से हार्वेस्ट तक',
-    'Biomass Calculator':'बायोमास कैलकुलेटर','Estimate Your Shrimp Stock':'झींगा स्टॉक का अनुमान',
-    'Shrimp Diseases':'झींगा रोग','Identify • Prevent • Manage':'पहचानें • रोकें • प्रबंधित करें',
-    'Our Aquaculture Solutions':'हमारे एक्वाकल्चर समाधान','View All Products →':'सभी उत्पाद देखें →',
-    'Success Stories':'सफलता की कहानियाँ','View All Stories →':'सभी कहानियाँ देखें →',
-    'Water Quality Parameters':'जल गुणवत्ता मानक','View All →':'सभी देखें →',
-    'Maintain Optimal Water Conditions for Healthy Shrimp':'स्वस्थ झींगों के लिए पानी की सही स्थिति बनाए रखें',
-    'Healthy Ponds\nStronger Shrimp\nHigher Profits':'स्वस्थ तालाब\nमजबूत झींगे\nअधिक लाभ',
-    'Complete Aquaculture Solutions\nfor a Better Tomorrow':'बेहतर भविष्य के लिए\nसंपूर्ण एक्वाकल्चर समाधान',
-    'Explore Products  →':'उत्पाद देखें  →','Temperature':'तापमान','Dissolved Oxygen':'घुलित ऑक्सीजन','Salinity':'लवणता',
-    'Enter Your Mobile Number':'अपना मोबाइल नंबर दर्ज करें','We will send a 6-digit OTP to verify your mobile number.':'आपके मोबाइल नंबर को सत्यापित करने के लिए 6 अंकों का OTP भेजा जाएगा।',
-    'Enter 10-digit number':'10 अंकों का नंबर दर्ज करें','Send OTP  →':'OTP भेजें  →','Secure\nLogin':'सुरक्षित\nलॉगिन','Trusted by\nAqua Farmers':'एक्वा किसानों\nका भरोसा','Better\nTogether':'साथ मिलकर\nआगे बढ़ें',
-    'Verify OTP':'OTP सत्यापित करें','Enter the 6-digit OTP sent to your mobile number.':'अपने मोबाइल नंबर पर प्राप्त 6 अंकों का OTP दर्ज करें।','Enter 6-digit OTP':'6 अंकों का OTP दर्ज करें','Verify OTP  →':'OTP सत्यापित करें  →','Resend OTP':'OTP फिर से भेजें',
-    'Our Products':'हमारे उत्पाद','Product Details':'उत्पाद विवरण','Recommended Dosage':'अनुशंसित खुराक','Technical Support':'तकनीकी सहायता','Marine Aqua Technical Support':'Marine Aqua तकनीकी सहायता','Customer Care':'कस्टमर केयर','Email':'ईमेल','Farmer App':'किसान ऐप','Pond management, products and aquaculture tools.':'तालाब प्रबंधन, उत्पाद और एक्वाकल्चर टूल्स।',
-    'Pond Area (Acres)':'तालाब क्षेत्र (एकड़)','Stocking Density (PL/acre)':'स्टॉकिंग घनत्व (PL/एकड़)','Survival Rate (%)':'जीवित रहने की दर (%)','Average Body Weight (grams)':'औसत शरीर का वजन (ग्राम)','CALCULATE BIOMASS':'बायोमास की गणना करें',
-    'Estimated shrimp count: ':'अनुमानित झींगा संख्या: ','Total biomass: ':'कुल बायोमास: ','Biomass/acre: ':'प्रति एकड़ बायोमास: ',
-    'White Gut':'व्हाइट गट','Vibrio-related problems':'विब्रियो संबंधी समस्याएँ','Stress & weak growth':'तनाव और कमजोर वृद्धि','Poor moulting / shell weakness':'खराब मोल्टिंग / खोल की कमजोरी','Oxygen stress':'ऑक्सीजन तनाव',
-  },
+  }
 };
 
 String tr(String text) {
@@ -96,7 +75,6 @@ class LanguagePicker extends StatelessWidget {
       itemBuilder: (context) => const [
         PopupMenuItem(value: 'en', child: Text('🇬🇧  English')),
         PopupMenuItem(value: 'te', child: Text('🇮🇳  తెలుగు')),
-        PopupMenuItem(value: 'hi', child: Text('🇮🇳  हिन्दी')),
       ],
     );
   }
@@ -127,7 +105,7 @@ class MarineAquaApp extends StatelessWidget {
       builder: (context, locale, child) {
         return MaterialApp(
           locale: locale,
-          supportedLocales: const [Locale('en'), Locale('te'), Locale('hi')],
+          supportedLocales: const [Locale('en'), Locale('te')],
           debugShowCheckedModeBanner: false,
       title: 'MARINE AQUA TECHNOLOGIES',
       theme: ThemeData(
@@ -881,11 +859,14 @@ class FarmerHome extends StatelessWidget {
                 size: 20,
               ),
               SizedBox(width: 4),
-              Text(
-                'EN',
-                style: TextStyle(
-                  color: darkText,
-                  fontWeight: FontWeight.bold,
+              ValueListenableBuilder<Locale>(
+                valueListenable: appLocale,
+                builder: (context, locale, child) => Text(
+                  locale.languageCode == 'te' ? 'TE' : 'EN',
+                  style: const TextStyle(
+                    color: darkText,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
               Icon(
