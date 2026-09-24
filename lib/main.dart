@@ -1967,7 +1967,6 @@ class DiseasePage extends StatelessWidget {
               ),
             )
             .toList(),
-      ),
     );
   }
 }
