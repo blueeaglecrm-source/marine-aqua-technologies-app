@@ -2,215 +2,78 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
-
 // ================= LANGUAGE SYSTEM =================
+final ValueNotifier<Locale> appLocale = ValueNotifier<Locale>(const Locale('en'));
 
-final ValueNotifier<Locale> appLocale =
-    ValueNotifier<Locale>(const Locale('en'));
-
-const Map<String, Map<String, String>> _appTranslations = {
+const Map<String, Map<String, String>> translations = {
   'en': {
-    'Home': 'Home',
-    'Products': 'Products',
-    'Support': 'Support',
-    'Profile': 'Profile',
-    'Language': 'Language',
-    'ఆక్వా సాగులో ప్రతి దశలో… మీకు తోడుగా': 'With you at every stage of aquaculture',
-    'Shrimp Culture Guide': 'Shrimp Culture Guide',
-    'Pond Preparation to Harvest': 'Pond Preparation to Harvest',
-    'Biomass Calculator': 'Biomass Calculator',
-    'Estimate Your Shrimp Stock': 'Estimate Your Shrimp Stock',
-    'Shrimp Diseases': 'Shrimp Diseases',
-    'Identify • Prevent • Manage': 'Identify • Prevent • Manage',
-    'Our Aquaculture Solutions': 'Our Aquaculture Solutions',
-    'View All Products →': 'View All Products →',
-    'Success Stories': 'Success Stories',
-    'View All Stories →': 'View All Stories →',
-    'Water Quality Parameters': 'Water Quality Parameters',
-    'Maintain Optimal Water Conditions for Healthy Shrimp':
-        'Maintain Optimal Water Conditions for Healthy Shrimp',
-    'View All →': 'View All →',
-    'Healthy Ponds\nStronger Shrimp\nHigher Profits':
-        'Healthy Ponds\nStronger Shrimp\nHigher Profits',
-    'Complete Aquaculture Solutions\nfor a Better Tomorrow':
-        'Complete Aquaculture Solutions\nfor a Better Tomorrow',
-    'Explore Products  →': 'Explore Products  →',
-    'Temperature': 'Temperature',
-    'Dissolved Oxygen': 'Dissolved Oxygen',
-    'Salinity': 'Salinity',
-    'Enter Your Mobile Number': 'Enter Your Mobile Number',
-    'We will send a 6-digit OTP to verify your mobile number.':
-        'We will send a 6-digit OTP to verify your mobile number.',
-    'Enter 10-digit number': 'Enter 10-digit number',
-    'Send OTP  →': 'Send OTP  →',
-    'Secure\nLogin': 'Secure\nLogin',
-    'Trusted by\nAqua Farmers': 'Trusted by\nAqua Farmers',
-    'Better\nTogether': 'Better\nTogether',
-    'Verify OTP': 'Verify OTP',
-    'Enter the 6-digit OTP sent to your mobile number.':
-        'Enter the 6-digit OTP sent to your mobile number.',
-    'Enter 6-digit OTP': 'Enter 6-digit OTP',
-    'Verify OTP  →': 'Verify OTP  →',
-    'Resend OTP': 'Resend OTP',
-    'Our Products': 'Our Products',
-    'Product Details': 'Product Details',
-    'Recommended Dosage': 'Recommended Dosage',
-    'Technical Support': 'Technical Support',
-    'Marine Aqua Technical Support': 'Marine Aqua Technical Support',
-    'Customer Care': 'Customer Care',
-    'Email': 'Email',
-    'Farmer App': 'Farmer App',
-    'Pond management, products and aquaculture tools.':
-        'Pond management, products and aquaculture tools.',
-    'Pond Area (Acres)': 'Pond Area (Acres)',
-    'Stocking Density (PL/acre)': 'Stocking Density (PL/acre)',
-    'Survival Rate (%)': 'Survival Rate (%)',
-    'Average Body Weight (grams)': 'Average Body Weight (grams)',
-    'CALCULATE BIOMASS': 'CALCULATE BIOMASS',
-    'Estimated shrimp count: ': 'Estimated shrimp count: ',
-    'Total biomass: ': 'Total biomass: ',
-    'Biomass/acre: ': 'Biomass/acre: ',
-    'White Gut': 'White Gut',
-    'Vibrio-related problems': 'Vibrio-related problems',
-    'Stress & weak growth': 'Stress & weak growth',
-    'Poor moulting / shell weakness': 'Poor moulting / shell weakness',
-    'Oxygen stress': 'Oxygen stress',
+    'Home':'Home','Products':'Products','Support':'Support','Profile':'Profile','Language':'Language',
+    'ఆక్వా సాగులో ప్రతి దశలో… మీకు తోడుగా':'With you at every stage of aquaculture',
+    'Shrimp Culture Guide':tr('Shrimp Culture Guide'),'Pond Preparation to Harvest':tr('Pond Preparation to Harvest'),
+    'Biomass Calculator':tr('Biomass Calculator'),'Estimate Your Shrimp Stock':tr('Estimate Your Shrimp Stock'),
+    'Shrimp Diseases':tr('Shrimp Diseases'),'Identify • Prevent • Manage':tr('Identify • Prevent • Manage'),
+    'Our Aquaculture Solutions':tr('Our Aquaculture Solutions'),'View All Products →':tr('View All Products →'),
+    'Success Stories':tr('Success Stories'),'View All Stories →':tr('View All Stories →'),
+    'Water Quality Parameters':'Water Quality Parameters','View All →':'View All →',
+    'Maintain Optimal Water Conditions for Healthy Shrimp':'Maintain Optimal Water Conditions for Healthy Shrimp',
+    'Healthy Ponds\nStronger Shrimp\nHigher Profits':'Healthy Ponds\nStronger Shrimp\nHigher Profits',
+    'Complete Aquaculture Solutions\nfor a Better Tomorrow':'Complete Aquaculture Solutions\nfor a Better Tomorrow',
+    'Explore Products  →':'Explore Products  →','Temperature':'Temperature','Dissolved Oxygen':'Dissolved Oxygen','Salinity':'Salinity',
+    'Enter Your Mobile Number':'Enter Your Mobile Number','We will send a 6-digit OTP to verify your mobile number.':'We will send a 6-digit OTP to verify your mobile number.',
+    'Enter 10-digit number':'Enter 10-digit number','Send OTP  →':'Send OTP  →','Secure\nLogin':'Secure\nLogin','Trusted by\nAqua Farmers':'Trusted by\nAqua Farmers','Better\nTogether':'Better\nTogether',
+    'Verify OTP':'Verify OTP','Enter the 6-digit OTP sent to your mobile number.':'Enter the 6-digit OTP sent to your mobile number.','Enter 6-digit OTP':'Enter 6-digit OTP','Verify OTP  →':'Verify OTP  →','Resend OTP':'Resend OTP',
+    'Our Products':'Our Products','Product Details':'Product Details','Recommended Dosage':'Recommended Dosage','Technical Support':'Technical Support','Marine Aqua Technical Support':'Marine Aqua Technical Support','Customer Care':'Customer Care','Email':'Email','Farmer App':'Farmer App','Pond management, products and aquaculture tools.':'Pond management, products and aquaculture tools.',
+    'Pond Area (Acres)':'Pond Area (Acres)','Stocking Density (PL/acre)':'Stocking Density (PL/acre)','Survival Rate (%)':'Survival Rate (%)','Average Body Weight (grams)':'Average Body Weight (grams)','CALCULATE BIOMASS':'CALCULATE BIOMASS',
+    'Estimated shrimp count: ':'Estimated shrimp count: ','Total biomass: ':'Total biomass: ','Biomass/acre: ':'Biomass/acre: ',
+    'White Gut':'White Gut','Vibrio-related problems':'Vibrio-related problems','Stress & weak growth':'Stress & weak growth','Poor moulting / shell weakness':'Poor moulting / shell weakness','Oxygen stress':'Oxygen stress',
   },
   'te': {
-    'Home': 'హోమ్',
-    'Products': 'ఉత్పత్తులు',
-    'Support': 'సపోర్ట్',
-    'Profile': 'ప్రొఫైల్',
-    'Language': 'భాష',
-    'ఆక్వా సాగులో ప్రతి దశలో… మీకు తోడుగా': 'ఆక్వా సాగులో ప్రతి దశలో… మీకు తోడుగా',
-    'Shrimp Culture Guide': 'రొయ్యల సాగు గైడ్',
-    'Pond Preparation to Harvest': 'చెరువు తయారీ నుండి హార్వెస్ట్ వరకు',
-    'Biomass Calculator': 'బయోమాస్ కాలిక్యులేటర్',
-    'Estimate Your Shrimp Stock': 'రొయ్యల స్టాక్ అంచనా',
-    'Shrimp Diseases': 'రొయ్యల వ్యాధులు',
-    'Identify • Prevent • Manage': 'గుర్తించండి • నివారించండి • నిర్వహించండి',
-    'Our Aquaculture Solutions': 'మా ఆక్వాకల్చర్ సొల్యూషన్స్',
-    'View All Products →': 'అన్ని ఉత్పత్తులు చూడండి →',
-    'Success Stories': 'విజయ కథలు',
-    'View All Stories →': 'అన్ని విజయ కథలు →',
-    'Water Quality Parameters': 'నీటి నాణ్యత ప్రమాణాలు',
-    'Maintain Optimal Water Conditions for Healthy Shrimp':
-        'ఆరోగ్యకరమైన రొయ్యల కోసం సరైన నీటి పరిస్థితులను నిర్వహించండి',
-    'View All →': 'అన్నీ చూడండి →',
-    'Healthy Ponds\nStronger Shrimp\nHigher Profits':
-        'ఆరోగ్యకరమైన చెరువులు\nబలమైన రొయ్యలు\nఅధిక లాభాలు',
-    'Complete Aquaculture Solutions\nfor a Better Tomorrow':
-        'మెరుగైన రేపటి కోసం\nసంపూర్ణ ఆక్వాకల్చర్ సొల్యూషన్స్',
-    'Explore Products  →': 'ఉత్పత్తులను చూడండి  →',
-    'Temperature': 'ఉష్ణోగ్రత',
-    'Dissolved Oxygen': 'కరిగిన ఆక్సిజన్',
-    'Salinity': 'లవణీయత',
-    'Enter Your Mobile Number': 'మీ మొబైల్ నంబర్ నమోదు చేయండి',
-    'We will send a 6-digit OTP to verify your mobile number.':
-        'మీ మొబైల్ నంబర్‌ను ధృవీకరించడానికి 6 అంకెల OTP పంపబడుతుంది.',
-    'Enter 10-digit number': '10 అంకెల నంబర్ నమోదు చేయండి',
-    'Send OTP  →': 'OTP పంపండి  →',
-    'Secure\nLogin': 'సురక్షిత\nలాగిన్',
-    'Trusted by\nAqua Farmers': 'ఆక్వా రైతుల\nనమ్మకం',
-    'Better\nTogether': 'కలిసి\nముందుకు',
-    'Verify OTP': 'OTP ధృవీకరించండి',
-    'Enter the 6-digit OTP sent to your mobile number.':
-        'మీ మొబైల్ నంబర్‌కు వచ్చిన 6 అంకెల OTP నమోదు చేయండి.',
-    'Enter 6-digit OTP': '6 అంకెల OTP నమోదు చేయండి',
-    'Verify OTP  →': 'OTP ధృవీకరించండి  →',
-    'Resend OTP': 'OTP మళ్లీ పంపండి',
-    'Our Products': 'మా ఉత్పత్తులు',
-    'Product Details': 'ఉత్పత్తి వివరాలు',
-    'Recommended Dosage': 'సిఫార్సు చేసిన మోతాదు',
-    'Technical Support': 'సాంకేతిక సహాయం',
-    'Marine Aqua Technical Support': 'Marine Aqua సాంకేతిక సహాయం',
-    'Customer Care': 'కస్టమర్ కేర్',
-    'Email': 'ఈమెయిల్',
-    'Farmer App': 'రైతుల యాప్',
-    'Pond management, products and aquaculture tools.':
-        'చెరువు నిర్వహణ, ఉత్పత్తులు మరియు ఆక్వాకల్చర్ సాధనాలు.',
-    'Pond Area (Acres)': 'చెరువు విస్తీర్ణం (ఎకరాలు)',
-    'Stocking Density (PL/acre)': 'స్టాకింగ్ డెన్సిటీ (PL/ఎకరం)',
-    'Survival Rate (%)': 'సర్వైవల్ రేట్ (%)',
-    'Average Body Weight (grams)': 'సగటు శరీర బరువు (గ్రాములు)',
-    'CALCULATE BIOMASS': 'బయోమాస్ లెక్కించండి',
-    'White Gut': 'వైట్ గట్',
-    'Vibrio-related problems': 'విబ్రియో సంబంధిత సమస్యలు',
-    'Stress & weak growth': 'స్ట్రెస్ & బలహీనమైన పెరుగుదల',
-    'Poor moulting / shell weakness': 'మౌల్టింగ్ సమస్యలు / షెల్ బలహీనత',
-    'Oxygen stress': 'ఆక్సిజన్ స్ట్రెస్',
+    'Home':'హోమ్','Products':'ఉత్పత్తులు','Support':'సపోర్ట్','Profile':'ప్రొఫైల్','Language':'భాష',
+    'ఆక్వా సాగులో ప్రతి దశలో… మీకు తోడుగా':'ఆక్వా సాగులో ప్రతి దశలో… మీకు తోడుగా',
+    'Shrimp Culture Guide':'రొయ్యల సాగు గైడ్','Pond Preparation to Harvest':'చెరువు తయారీ నుండి హార్వెస్ట్ వరకు',
+    'Biomass Calculator':'బయోమాస్ కాలిక్యులేటర్','Estimate Your Shrimp Stock':'రొయ్యల స్టాక్ అంచనా',
+    'Shrimp Diseases':'రొయ్యల వ్యాధులు','Identify • Prevent • Manage':'గుర్తించండి • నివారించండి • నిర్వహించండి',
+    'Our Aquaculture Solutions':'మా ఆక్వాకల్చర్ సొల్యూషన్స్','View All Products →':'అన్ని ఉత్పత్తులు చూడండి →',
+    'Success Stories':'విజయ కథలు','View All Stories →':'అన్ని విజయ కథలు చూడండి →',
+    'Water Quality Parameters':'నీటి నాణ్యత ప్రమాణాలు','View All →':'అన్నీ చూడండి →',
+    'Maintain Optimal Water Conditions for Healthy Shrimp':'ఆరోగ్యకరమైన రొయ్యల కోసం సరైన నీటి పరిస్థితులను నిర్వహించండి',
+    'Healthy Ponds\nStronger Shrimp\nHigher Profits':'ఆరోగ్యకరమైన చెరువులు\nబలమైన రొయ్యలు\nఅధిక లాభాలు',
+    'Complete Aquaculture Solutions\nfor a Better Tomorrow':'మెరుగైన రేపటి కోసం\nసంపూర్ణ ఆక్వాకల్చర్ సొల్యూషన్స్',
+    'Explore Products  →':'ఉత్పత్తులను చూడండి  →','Temperature':'ఉష్ణోగ్రత','Dissolved Oxygen':'కరిగిన ఆక్సిజన్','Salinity':'లవణీయత',
+    'Enter Your Mobile Number':'మీ మొబైల్ నంబర్ నమోదు చేయండి','We will send a 6-digit OTP to verify your mobile number.':'మీ మొబైల్ నంబర్‌ను ధృవీకరించడానికి 6 అంకెల OTP పంపబడుతుంది.',
+    'Enter 10-digit number':'10 అంకెల నంబర్ నమోదు చేయండి','Send OTP  →':'OTP పంపండి  →','Secure\nLogin':'సురక్షిత\nలాగిన్','Trusted by\nAqua Farmers':'ఆక్వా రైతుల\nనమ్మకం','Better\nTogether':'కలిసి\nముందుకు',
+    'Verify OTP':'OTP ధృవీకరించండి','Enter the 6-digit OTP sent to your mobile number.':'మీ మొబైల్ నంబర్‌కు వచ్చిన 6 అంకెల OTP నమోదు చేయండి.','Enter 6-digit OTP':'6 అంకెల OTP నమోదు చేయండి','Verify OTP  →':'OTP ధృవీకరించండి  →','Resend OTP':'OTP మళ్లీ పంపండి',
+    'Our Products':'మా ఉత్పత్తులు','Product Details':'ఉత్పత్తి వివరాలు','Recommended Dosage':'సిఫార్సు చేసిన మోతాదు','Technical Support':'సాంకేతిక సహాయం','Marine Aqua Technical Support':'Marine Aqua సాంకేతిక సహాయం','Customer Care':'కస్టమర్ కేర్','Email':'ఈమెయిల్','Farmer App':'రైతుల యాప్','Pond management, products and aquaculture tools.':'చెరువు నిర్వహణ, ఉత్పత్తులు మరియు ఆక్వాకల్చర్ సాధనాలు.',
+    'Pond Area (Acres)':'చెరువు విస్తీర్ణం (ఎకరాలు)','Stocking Density (PL/acre)':'స్టాకింగ్ డెన్సిటీ (PL/ఎకరం)','Survival Rate (%)':'సర్వైవల్ రేట్ (%)','Average Body Weight (grams)':'సగటు శరీర బరువు (గ్రాములు)','CALCULATE BIOMASS':'బయోమాస్ లెక్కించండి',
+    'Estimated shrimp count: ':'అంచనా రొయ్యల సంఖ్య: ','Total biomass: ':'మొత్తం బయోమాస్: ','Biomass/acre: ':'ఎకరానికి బయోమాస్: ',
+    'White Gut':'వైట్ గట్','Vibrio-related problems':'విబ్రియో సంబంధిత సమస్యలు','Stress & weak growth':'స్ట్రెస్ & బలహీనమైన పెరుగుదల','Poor moulting / shell weakness':'మౌల్టింగ్ సమస్యలు / షెల్ బలహీనత','Oxygen stress':'ఆక్సిజన్ స్ట్రెస్',
   },
   'hi': {
-    'Home': 'होम',
-    'Products': 'उत्पाद',
-    'Support': 'सहायता',
-    'Profile': 'प्रोफ़ाइल',
-    'Language': 'भाषा',
-    'ఆక్వా సాగులో ప్రతి దశలో… మీకు తోడుగా': 'एक्वाकल्चर की हर अवस्था में… आपके साथ',
-    'Shrimp Culture Guide': 'झींगा पालन गाइड',
-    'Pond Preparation to Harvest': 'तालाब की तैयारी से हार्वेस्ट तक',
-    'Biomass Calculator': 'बायोमास कैलकुलेटर',
-    'Estimate Your Shrimp Stock': 'झींगा स्टॉक का अनुमान',
-    'Shrimp Diseases': 'झींगा रोग',
-    'Identify • Prevent • Manage': 'पहचानें • रोकें • प्रबंधित करें',
-    'Our Aquaculture Solutions': 'हमारे एक्वाकल्चर समाधान',
-    'View All Products →': 'सभी उत्पाद देखें →',
-    'Success Stories': 'सफलता की कहानियाँ',
-    'View All Stories →': 'सभी कहानियाँ देखें →',
-    'Water Quality Parameters': 'जल गुणवत्ता मानक',
-    'Maintain Optimal Water Conditions for Healthy Shrimp':
-        'स्वस्थ झींगों के लिए पानी की सही स्थिति बनाए रखें',
-    'View All →': 'सभी देखें →',
-    'Healthy Ponds\nStronger Shrimp\nHigher Profits':
-        'स्वस्थ तालाब\nमजबूत झींगे\nअधिक लाभ',
-    'Complete Aquaculture Solutions\nfor a Better Tomorrow':
-        'बेहतर भविष्य के लिए\nसंपूर्ण एक्वाकल्चर समाधान',
-    'Explore Products  →': 'उत्पाद देखें  →',
-    'Temperature': 'तापमान',
-    'Dissolved Oxygen': 'घुलित ऑक्सीजन',
-    'Salinity': 'लवणता',
-    'Enter Your Mobile Number': 'अपना मोबाइल नंबर दर्ज करें',
-    'We will send a 6-digit OTP to verify your mobile number.':
-        'आपके मोबाइल नंबर को सत्यापित करने के लिए 6 अंकों का OTP भेजा जाएगा।',
-    'Enter 10-digit number': '10 अंकों का नंबर दर्ज करें',
-    'Send OTP  →': 'OTP भेजें  →',
-    'Secure\nLogin': 'सुरक्षित\nलॉगिन',
-    'Trusted by\nAqua Farmers': 'एक्वा किसानों\nका भरोसा',
-    'Better\nTogether': 'साथ मिलकर\nआगे बढ़ें',
-    'Verify OTP': 'OTP सत्यापित करें',
-    'Enter the 6-digit OTP sent to your mobile number.':
-        'अपने मोबाइल नंबर पर प्राप्त 6 अंकों का OTP दर्ज करें।',
-    'Enter 6-digit OTP': '6 अंकों का OTP दर्ज करें',
-    'Verify OTP  →': 'OTP सत्यापित करें  →',
-    'Resend OTP': 'OTP फिर से भेजें',
-    'Our Products': 'हमारे उत्पाद',
-    'Product Details': 'उत्पाद विवरण',
-    'Recommended Dosage': 'अनुशंसित खुराक',
-    'Technical Support': 'तकनीकी सहायता',
-    'Marine Aqua Technical Support': 'Marine Aqua तकनीकी सहायता',
-    'Customer Care': 'कस्टमर केयर',
-    'Email': 'ईमेल',
-    'Farmer App': 'किसान ऐप',
-    'Pond management, products and aquaculture tools.':
-        'तालाब प्रबंधन, उत्पाद और एक्वाकल्चर टूल्स।',
-    'Pond Area (Acres)': 'तालाब क्षेत्र (एकड़)',
-    'Stocking Density (PL/acre)': 'स्टॉकिंग घनत्व (PL/एकड़)',
-    'Survival Rate (%)': 'जीवित रहने की दर (%)',
-    'Average Body Weight (grams)': 'औसत शरीर का वजन (ग्राम)',
-    'CALCULATE BIOMASS': 'बायोमास की गणना करें',
-    'White Gut': 'व्हाइट गट',
-    'Vibrio-related problems': 'विब्रियो संबंधी समस्याएँ',
-    'Stress & weak growth': 'तनाव और कमजोर वृद्धि',
-    'Poor moulting / shell weakness': 'खराब मोल्टिंग / खोल की कमजोरी',
-    'Oxygen stress': 'ऑक्सीजन तनाव',
+    'Home':'होम','Products':'उत्पाद','Support':'सहायता','Profile':'प्रोफ़ाइल','Language':'भाषा',
+    'ఆక్వా సాగులో ప్రతి దశలో… మీకు తోడుగా':'एक्वाकल्चर की हर अवस्था में… आपके साथ',
+    'Shrimp Culture Guide':'झींगा पालन गाइड','Pond Preparation to Harvest':'तालाब की तैयारी से हार्वेस्ट तक',
+    'Biomass Calculator':'बायोमास कैलकुलेटर','Estimate Your Shrimp Stock':'झींगा स्टॉक का अनुमान',
+    'Shrimp Diseases':'झींगा रोग','Identify • Prevent • Manage':'पहचानें • रोकें • प्रबंधित करें',
+    'Our Aquaculture Solutions':'हमारे एक्वाकल्चर समाधान','View All Products →':'सभी उत्पाद देखें →',
+    'Success Stories':'सफलता की कहानियाँ','View All Stories →':'सभी कहानियाँ देखें →',
+    'Water Quality Parameters':'जल गुणवत्ता मानक','View All →':'सभी देखें →',
+    'Maintain Optimal Water Conditions for Healthy Shrimp':'स्वस्थ झींगों के लिए पानी की सही स्थिति बनाए रखें',
+    'Healthy Ponds\nStronger Shrimp\nHigher Profits':'स्वस्थ तालाब\nमजबूत झींगे\nअधिक लाभ',
+    'Complete Aquaculture Solutions\nfor a Better Tomorrow':'बेहतर भविष्य के लिए\nसंपूर्ण एक्वाकल्चर समाधान',
+    'Explore Products  →':'उत्पाद देखें  →','Temperature':'तापमान','Dissolved Oxygen':'घुलित ऑक्सीजन','Salinity':'लवणता',
+    'Enter Your Mobile Number':'अपना मोबाइल नंबर दर्ज करें','We will send a 6-digit OTP to verify your mobile number.':'आपके मोबाइल नंबर को सत्यापित करने के लिए 6 अंकों का OTP भेजा जाएगा।',
+    'Enter 10-digit number':'10 अंकों का नंबर दर्ज करें','Send OTP  →':'OTP भेजें  →','Secure\nLogin':'सुरक्षित\nलॉगिन','Trusted by\nAqua Farmers':'एक्वा किसानों\nका भरोसा','Better\nTogether':'साथ मिलकर\nआगे बढ़ें',
+    'Verify OTP':'OTP सत्यापित करें','Enter the 6-digit OTP sent to your mobile number.':'अपने मोबाइल नंबर पर प्राप्त 6 अंकों का OTP दर्ज करें।','Enter 6-digit OTP':'6 अंकों का OTP दर्ज करें','Verify OTP  →':'OTP सत्यापित करें  →','Resend OTP':'OTP फिर से भेजें',
+    'Our Products':'हमारे उत्पाद','Product Details':'उत्पाद विवरण','Recommended Dosage':'अनुशंसित खुराक','Technical Support':'तकनीकी सहायता','Marine Aqua Technical Support':'Marine Aqua तकनीकी सहायता','Customer Care':'कस्टमर केयर','Email':'ईमेल','Farmer App':'किसान ऐप','Pond management, products and aquaculture tools.':'तालाब प्रबंधन, उत्पाद और एक्वाकल्चर टूल्स।',
+    'Pond Area (Acres)':'तालाब क्षेत्र (एकड़)','Stocking Density (PL/acre)':'स्टॉकिंग घनत्व (PL/एकड़)','Survival Rate (%)':'जीवित रहने की दर (%)','Average Body Weight (grams)':'औसत शरीर का वजन (ग्राम)','CALCULATE BIOMASS':'बायोमास की गणना करें',
+    'Estimated shrimp count: ':'अनुमानित झींगा संख्या: ','Total biomass: ':'कुल बायोमास: ','Biomass/acre: ':'प्रति एकड़ बायोमास: ',
+    'White Gut':'व्हाइट गट','Vibrio-related problems':'विब्रियो संबंधी समस्याएँ','Stress & weak growth':'तनाव और कमजोर वृद्धि','Poor moulting / shell weakness':'खराब मोल्टिंग / खोल की कमजोरी','Oxygen stress':'ऑक्सीजन तनाव',
   },
 };
 
 String tr(String text) {
   final lang = appLocale.value.languageCode;
-  return _appTranslations[lang]?[text] ??
-      _appTranslations['en']?[text] ??
-      text;
+  return translations[lang]?[text] ?? translations['en']?[text] ?? text;
 }
 
 class LanguagePicker extends StatelessWidget {
@@ -223,29 +86,22 @@ class LanguagePicker extends StatelessWidget {
       icon: const Icon(Icons.language, color: darkText),
       onSelected: (value) {
         appLocale.value = Locale(value);
+        // Rebuild the current screen safely without touching existing app data.
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (_) => const HomePage()),
+          (route) => false,
+        );
       },
       itemBuilder: (context) => const [
-        PopupMenuItem(
-          value: 'en',
-          child: Text('🇬🇧  English'),
-        ),
-        PopupMenuItem(
-          value: 'te',
-          child: Text('🇮🇳  తెలుగు'),
-        ),
-        PopupMenuItem(
-          value: 'hi',
-          child: Text('🇮🇳  हिन्दी'),
-        ),
+        PopupMenuItem(value: 'en', child: Text('🇬🇧  English')),
+        PopupMenuItem(value: 'te', child: Text('🇮🇳  తెలుగు')),
+        PopupMenuItem(value: 'hi', child: Text('🇮🇳  हिन्दी')),
       ],
     );
   }
 }
-
-String currentLanguageCode() => appLocale.value.languageCode;
-
 // ================= END LANGUAGE SYSTEM =================
-
 
 void main() {
   runApp(const MarineAquaApp());
@@ -270,15 +126,11 @@ class MarineAquaApp extends StatelessWidget {
       valueListenable: appLocale,
       builder: (context, locale, child) {
         return MaterialApp(
-          debugShowCheckedModeBanner: false,
-          title: 'MARINE AQUA TECHNOLOGIES',
           locale: locale,
-          supportedLocales: const [
-            Locale('en'),
-            Locale('te'),
-            Locale('hi'),
-          ],
-          theme: ThemeData(
+          supportedLocales: const [Locale('en'), Locale('te'), Locale('hi')],
+          debugShowCheckedModeBanner: false,
+      title: 'MARINE AQUA TECHNOLOGIES',
+      theme: ThemeData(
         useMaterial3: true,
         scaffoldBackgroundColor: pageBg,
         colorScheme: ColorScheme.fromSeed(
@@ -290,7 +142,7 @@ class MarineAquaApp extends StatelessWidget {
           foregroundColor: darkText,
           elevation: 0,
         ),
-          ),
+      ),
           home: const SplashPage(),
         );
       },
@@ -569,15 +421,15 @@ class _LoginPageState extends State<LoginPage> {
                 children: [
                   _LoginBadge(
                     icon: Icons.verified_user,
-                    text: 'Secure\nLogin',
+                    text: tr('Secure\nLogin'),
                   ),
                   _LoginBadge(
                     icon: Icons.eco,
-                    text: 'Trusted by\nAqua Farmers',
+                    text: tr('Trusted by\nAqua Farmers'),
                   ),
                   _LoginBadge(
                     icon: Icons.groups,
-                    text: 'Better\nTogether',
+                    text: tr('Better\nTogether'),
                   ),
                 ],
               ),
@@ -593,7 +445,7 @@ class _LoginBadge extends StatelessWidget {
   final IconData icon;
   final String text;
 
-  _LoginBadge({
+  const _LoginBadge({
     required this.icon,
     required this.text,
   });
@@ -767,9 +619,9 @@ class _OtpPageState extends State<OtpPage> {
 
               const Spacer(),
 
-              Center(
+              const Center(
                 child: Text(
-                  tr('Resend OTP'),
+                  'Resend OTP',
                   style: TextStyle(
                     color: brightBlue,
                     fontWeight: FontWeight.bold,
@@ -1000,6 +852,10 @@ class FarmerHome extends StatelessWidget {
           ),
         ),
 
+        const LanguagePicker(),
+
+        const SizedBox(width: 2),
+
         const Icon(
           Icons.notifications_none,
           color: darkText,
@@ -1008,7 +864,38 @@ class FarmerHome extends StatelessWidget {
 
         const SizedBox(width: 6),
 
-        const LanguagePicker(),
+        Container(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 10,
+            vertical: 8,
+          ),
+          decoration: BoxDecoration(
+            color: const Color(0xFFDCEEFF),
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: const Row(
+            children: [
+              Icon(
+                Icons.language,
+                color: darkText,
+                size: 20,
+              ),
+              SizedBox(width: 4),
+              Text(
+                'EN',
+                style: TextStyle(
+                  color: darkText,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Icon(
+                Icons.keyboard_arrow_down,
+                color: darkText,
+                size: 18,
+              ),
+            ],
+          ),
+        ),
       ],
     );
   }
@@ -1038,11 +925,11 @@ class FarmerHome extends StatelessWidget {
             ),
           ),
 
-          Column(
+          const Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Healthy Ponds\nStronger Shrimp\nHigher Profits',
+                tr('Healthy Ponds\nStronger Shrimp\nHigher Profits'),
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 27,
@@ -1054,7 +941,7 @@ class FarmerHome extends StatelessWidget {
               SizedBox(height: 14),
 
               Text(
-                'Complete Aquaculture Solutions\nfor a Better Tomorrow',
+                tr('Complete Aquaculture Solutions\nfor a Better Tomorrow'),
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 14,
@@ -1104,7 +991,7 @@ class FarmerHome extends StatelessWidget {
 
               const SizedBox(width: 8),
 
-              Expanded(
+              const Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -1137,7 +1024,7 @@ class FarmerHome extends StatelessWidget {
                   );
                 },
                 child: Text(
-                  tr('View All →'),
+                  'View All →',
                   style: TextStyle(
                     color: brightBlue,
                     fontWeight: FontWeight.bold,
@@ -1153,7 +1040,7 @@ class FarmerHome extends StatelessWidget {
             children: [
               _metric(
                 '🌡️',
-                tr('Temperature'),
+                'Temperature',
                 '28°C – 30°C',
               ),
               _metric(
@@ -1163,12 +1050,12 @@ class FarmerHome extends StatelessWidget {
               ),
               _metric(
                 'O₂',
-                tr('Dissolved Oxygen'),
+                'Dissolved Oxygen',
                 '> 4 / > 6 ppm',
               ),
               _metric(
                 '〰',
-                tr('Salinity'),
+                'Salinity',
                 '0 – 30 ppt',
               ),
             ],
@@ -1484,7 +1371,7 @@ class FarmerHome extends StatelessWidget {
         ),
         borderRadius: BorderRadius.circular(20),
       ),
-      child: Center(
+      child: const Center(
         child: Text(
           'Healthy Water… Healthy Shrimp…\nProsperous Farmers…',
           textAlign: TextAlign.center,
@@ -1739,7 +1626,7 @@ class ProductDetailsPage extends StatelessWidget {
                     CrossAxisAlignment.start,
                 children: [
                   Text(
-                    tr('Product Details'),
+                    'Product Details',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       color: darkText,
@@ -1754,7 +1641,7 @@ class ProductDetailsPage extends StatelessWidget {
                   const SizedBox(height: 16),
 
                   Text(
-                    tr('Recommended Dosage'),
+                    'Recommended Dosage',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       color: darkText,
@@ -1781,9 +1668,9 @@ class WaterQualityPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final rows = [
+    const rows = [
       [
-        tr('Temperature'),
+        'Temperature',
         '28°C to 30°C',
       ],
       [
@@ -1795,7 +1682,7 @@ class WaterQualityPage extends StatelessWidget {
         'Above 4 ppm morning; above 6 ppm daytime',
       ],
       [
-        tr('Salinity'),
+        'Salinity',
         '0 to 30 ppt',
       ],
       [
@@ -1882,7 +1769,7 @@ class GuidePage extends StatelessWidget {
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text(
-          tr('Shrimp Culture Guide'),
+          tr('Shrimp Culture Guide')),
         ),
       ),
       body: SfPdfViewer.asset(
@@ -1932,9 +1819,9 @@ class _BiomassPageState extends State<BiomassPage> {
 
     setState(() {
       result =
-          'Estimated shrimp count: ${count.toStringAsFixed(0)}\n'
-          'Total biomass: ${biomass.toStringAsFixed(2)} kg\n'
-          'Biomass/acre: ${a == 0 ? 0 : (biomass / a).toStringAsFixed(2)} kg';
+          '${tr('Estimated shrimp count: ')}${count.toStringAsFixed(0)}\n'
+          '${tr('Total biomass: ')}${biomass.toStringAsFixed(2)} kg\n'
+          '${tr('Biomass/acre: ')}${a == 0 ? 0 : (biomass / a).toStringAsFixed(2)} kg';
     });
   }
 
@@ -1952,7 +1839,7 @@ class _BiomassPageState extends State<BiomassPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          tr('Biomass Calculator'),
+          tr('Biomass Calculator')),
         ),
       ),
       body: ListView(
@@ -1980,7 +1867,7 @@ class _BiomassPageState extends State<BiomassPage> {
             child: ElevatedButton(
               onPressed: calc,
               child: Text(
-                tr('CALCULATE BIOMASS'),
+                'CALCULATE BIOMASS',
               ),
             ),
           ),
@@ -2020,7 +1907,7 @@ class _BiomassPageState extends State<BiomassPage> {
           decimal: true,
         ),
         decoration: InputDecoration(
-          labelText: label,
+          labelText: tr(label),
           filled: true,
           fillColor: Colors.white,
           border: OutlineInputBorder(
@@ -2041,18 +1928,18 @@ class DiseasePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final diseases = [
-      tr('White Gut'),
-      tr('Vibrio-related problems'),
-      tr('Stress & weak growth'),
-      tr('Poor moulting / shell weakness'),
-      tr('Oxygen stress'),
+    const diseases = [
+      'White Gut',
+      'Vibrio-related problems',
+      'Stress & weak growth',
+      'Poor moulting / shell weakness',
+      'Oxygen stress',
     ];
 
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          tr('Shrimp Diseases'),
+          tr('Shrimp Diseases')),
         ),
       ),
       body: ListView(
@@ -2067,7 +1954,7 @@ class DiseasePage extends StatelessWidget {
                     color: brightBlue,
                   ),
                   title: Text(
-                    disease,
+                    tr(disease),
                     style: const TextStyle(
                       color: darkText,
                       fontWeight: FontWeight.bold,
@@ -2112,7 +1999,7 @@ class SupportPage extends StatelessWidget {
           SizedBox(height: 14),
 
           Text(
-            tr('Marine Aqua Technical Support'),
+            'Marine Aqua Technical Support',
             textAlign: TextAlign.center,
             style: TextStyle(
               color: darkText,
@@ -2131,7 +2018,7 @@ class SupportPage extends StatelessWidget {
                 color: brightBlue,
               ),
               title: Text(
-                tr('Customer Care'),
+                'Customer Care',
               ),
               subtitle: Text(
                 '+91 93902 59830',
@@ -2147,7 +2034,7 @@ class SupportPage extends StatelessWidget {
                 color: brightBlue,
               ),
               title: Text(
-                tr('Email'),
+                'Email',
               ),
               subtitle: Text(
                 'marineaquahr@gmail.com',
@@ -2214,10 +2101,10 @@ class ProfilePage extends StatelessWidget {
                 color: brightBlue,
               ),
               title: Text(
-                tr('Farmer App'),
+                'Farmer App',
               ),
               subtitle: Text(
-                tr('Pond management, products and aquaculture tools.'),
+                'Pond management, products and aquaculture tools.',
               ),
             ),
           ),
