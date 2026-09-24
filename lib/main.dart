@@ -2,6 +2,251 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
+
+// ================= LANGUAGE SYSTEM =================
+
+final ValueNotifier<Locale> appLocale =
+    ValueNotifier<Locale>(const Locale('en'));
+
+const Map<String, Map<String, String>> _appTranslations = {
+  'en': {
+    'Home': 'Home',
+    'Products': 'Products',
+    'Support': 'Support',
+    'Profile': 'Profile',
+    'Language': 'Language',
+    'ఆక్వా సాగులో ప్రతి దశలో… మీకు తోడుగా': 'With you at every stage of aquaculture',
+    'Shrimp Culture Guide': 'Shrimp Culture Guide',
+    'Pond Preparation to Harvest': 'Pond Preparation to Harvest',
+    'Biomass Calculator': 'Biomass Calculator',
+    'Estimate Your Shrimp Stock': 'Estimate Your Shrimp Stock',
+    'Shrimp Diseases': 'Shrimp Diseases',
+    'Identify • Prevent • Manage': 'Identify • Prevent • Manage',
+    'Our Aquaculture Solutions': 'Our Aquaculture Solutions',
+    'View All Products →': 'View All Products →',
+    'Success Stories': 'Success Stories',
+    'View All Stories →': 'View All Stories →',
+    'Water Quality Parameters': 'Water Quality Parameters',
+    'Maintain Optimal Water Conditions for Healthy Shrimp':
+        'Maintain Optimal Water Conditions for Healthy Shrimp',
+    'View All →': 'View All →',
+    'Healthy Ponds\nStronger Shrimp\nHigher Profits':
+        'Healthy Ponds\nStronger Shrimp\nHigher Profits',
+    'Complete Aquaculture Solutions\nfor a Better Tomorrow':
+        'Complete Aquaculture Solutions\nfor a Better Tomorrow',
+    'Explore Products  →': 'Explore Products  →',
+    'Temperature': 'Temperature',
+    'Dissolved Oxygen': 'Dissolved Oxygen',
+    'Salinity': 'Salinity',
+    'Enter Your Mobile Number': 'Enter Your Mobile Number',
+    'We will send a 6-digit OTP to verify your mobile number.':
+        'We will send a 6-digit OTP to verify your mobile number.',
+    'Enter 10-digit number': 'Enter 10-digit number',
+    'Send OTP  →': 'Send OTP  →',
+    'Secure\nLogin': 'Secure\nLogin',
+    'Trusted by\nAqua Farmers': 'Trusted by\nAqua Farmers',
+    'Better\nTogether': 'Better\nTogether',
+    'Verify OTP': 'Verify OTP',
+    'Enter the 6-digit OTP sent to your mobile number.':
+        'Enter the 6-digit OTP sent to your mobile number.',
+    'Enter 6-digit OTP': 'Enter 6-digit OTP',
+    'Verify OTP  →': 'Verify OTP  →',
+    'Resend OTP': 'Resend OTP',
+    'Our Products': 'Our Products',
+    'Product Details': 'Product Details',
+    'Recommended Dosage': 'Recommended Dosage',
+    'Technical Support': 'Technical Support',
+    'Marine Aqua Technical Support': 'Marine Aqua Technical Support',
+    'Customer Care': 'Customer Care',
+    'Email': 'Email',
+    'Farmer App': 'Farmer App',
+    'Pond management, products and aquaculture tools.':
+        'Pond management, products and aquaculture tools.',
+    'Pond Area (Acres)': 'Pond Area (Acres)',
+    'Stocking Density (PL/acre)': 'Stocking Density (PL/acre)',
+    'Survival Rate (%)': 'Survival Rate (%)',
+    'Average Body Weight (grams)': 'Average Body Weight (grams)',
+    'CALCULATE BIOMASS': 'CALCULATE BIOMASS',
+    'Estimated shrimp count: ': 'Estimated shrimp count: ',
+    'Total biomass: ': 'Total biomass: ',
+    'Biomass/acre: ': 'Biomass/acre: ',
+    'White Gut': 'White Gut',
+    'Vibrio-related problems': 'Vibrio-related problems',
+    'Stress & weak growth': 'Stress & weak growth',
+    'Poor moulting / shell weakness': 'Poor moulting / shell weakness',
+    'Oxygen stress': 'Oxygen stress',
+  },
+  'te': {
+    'Home': 'హోమ్',
+    'Products': 'ఉత్పత్తులు',
+    'Support': 'సపోర్ట్',
+    'Profile': 'ప్రొఫైల్',
+    'Language': 'భాష',
+    'ఆక్వా సాగులో ప్రతి దశలో… మీకు తోడుగా': 'ఆక్వా సాగులో ప్రతి దశలో… మీకు తోడుగా',
+    'Shrimp Culture Guide': 'రొయ్యల సాగు గైడ్',
+    'Pond Preparation to Harvest': 'చెరువు తయారీ నుండి హార్వెస్ట్ వరకు',
+    'Biomass Calculator': 'బయోమాస్ కాలిక్యులేటర్',
+    'Estimate Your Shrimp Stock': 'రొయ్యల స్టాక్ అంచనా',
+    'Shrimp Diseases': 'రొయ్యల వ్యాధులు',
+    'Identify • Prevent • Manage': 'గుర్తించండి • నివారించండి • నిర్వహించండి',
+    'Our Aquaculture Solutions': 'మా ఆక్వాకల్చర్ సొల్యూషన్స్',
+    'View All Products →': 'అన్ని ఉత్పత్తులు చూడండి →',
+    'Success Stories': 'విజయ కథలు',
+    'View All Stories →': 'అన్ని విజయ కథలు →',
+    'Water Quality Parameters': 'నీటి నాణ్యత ప్రమాణాలు',
+    'Maintain Optimal Water Conditions for Healthy Shrimp':
+        'ఆరోగ్యకరమైన రొయ్యల కోసం సరైన నీటి పరిస్థితులను నిర్వహించండి',
+    'View All →': 'అన్నీ చూడండి →',
+    'Healthy Ponds\nStronger Shrimp\nHigher Profits':
+        'ఆరోగ్యకరమైన చెరువులు\nబలమైన రొయ్యలు\nఅధిక లాభాలు',
+    'Complete Aquaculture Solutions\nfor a Better Tomorrow':
+        'మెరుగైన రేపటి కోసం\nసంపూర్ణ ఆక్వాకల్చర్ సొల్యూషన్స్',
+    'Explore Products  →': 'ఉత్పత్తులను చూడండి  →',
+    'Temperature': 'ఉష్ణోగ్రత',
+    'Dissolved Oxygen': 'కరిగిన ఆక్సిజన్',
+    'Salinity': 'లవణీయత',
+    'Enter Your Mobile Number': 'మీ మొబైల్ నంబర్ నమోదు చేయండి',
+    'We will send a 6-digit OTP to verify your mobile number.':
+        'మీ మొబైల్ నంబర్‌ను ధృవీకరించడానికి 6 అంకెల OTP పంపబడుతుంది.',
+    'Enter 10-digit number': '10 అంకెల నంబర్ నమోదు చేయండి',
+    'Send OTP  →': 'OTP పంపండి  →',
+    'Secure\nLogin': 'సురక్షిత\nలాగిన్',
+    'Trusted by\nAqua Farmers': 'ఆక్వా రైతుల\nనమ్మకం',
+    'Better\nTogether': 'కలిసి\nముందుకు',
+    'Verify OTP': 'OTP ధృవీకరించండి',
+    'Enter the 6-digit OTP sent to your mobile number.':
+        'మీ మొబైల్ నంబర్‌కు వచ్చిన 6 అంకెల OTP నమోదు చేయండి.',
+    'Enter 6-digit OTP': '6 అంకెల OTP నమోదు చేయండి',
+    'Verify OTP  →': 'OTP ధృవీకరించండి  →',
+    'Resend OTP': 'OTP మళ్లీ పంపండి',
+    'Our Products': 'మా ఉత్పత్తులు',
+    'Product Details': 'ఉత్పత్తి వివరాలు',
+    'Recommended Dosage': 'సిఫార్సు చేసిన మోతాదు',
+    'Technical Support': 'సాంకేతిక సహాయం',
+    'Marine Aqua Technical Support': 'Marine Aqua సాంకేతిక సహాయం',
+    'Customer Care': 'కస్టమర్ కేర్',
+    'Email': 'ఈమెయిల్',
+    'Farmer App': 'రైతుల యాప్',
+    'Pond management, products and aquaculture tools.':
+        'చెరువు నిర్వహణ, ఉత్పత్తులు మరియు ఆక్వాకల్చర్ సాధనాలు.',
+    'Pond Area (Acres)': 'చెరువు విస్తీర్ణం (ఎకరాలు)',
+    'Stocking Density (PL/acre)': 'స్టాకింగ్ డెన్సిటీ (PL/ఎకరం)',
+    'Survival Rate (%)': 'సర్వైవల్ రేట్ (%)',
+    'Average Body Weight (grams)': 'సగటు శరీర బరువు (గ్రాములు)',
+    'CALCULATE BIOMASS': 'బయోమాస్ లెక్కించండి',
+    'White Gut': 'వైట్ గట్',
+    'Vibrio-related problems': 'విబ్రియో సంబంధిత సమస్యలు',
+    'Stress & weak growth': 'స్ట్రెస్ & బలహీనమైన పెరుగుదల',
+    'Poor moulting / shell weakness': 'మౌల్టింగ్ సమస్యలు / షెల్ బలహీనత',
+    'Oxygen stress': 'ఆక్సిజన్ స్ట్రెస్',
+  },
+  'hi': {
+    'Home': 'होम',
+    'Products': 'उत्पाद',
+    'Support': 'सहायता',
+    'Profile': 'प्रोफ़ाइल',
+    'Language': 'भाषा',
+    'ఆక్వా సాగులో ప్రతి దశలో… మీకు తోడుగా': 'एक्वाकल्चर की हर अवस्था में… आपके साथ',
+    'Shrimp Culture Guide': 'झींगा पालन गाइड',
+    'Pond Preparation to Harvest': 'तालाब की तैयारी से हार्वेस्ट तक',
+    'Biomass Calculator': 'बायोमास कैलकुलेटर',
+    'Estimate Your Shrimp Stock': 'झींगा स्टॉक का अनुमान',
+    'Shrimp Diseases': 'झींगा रोग',
+    'Identify • Prevent • Manage': 'पहचानें • रोकें • प्रबंधित करें',
+    'Our Aquaculture Solutions': 'हमारे एक्वाकल्चर समाधान',
+    'View All Products →': 'सभी उत्पाद देखें →',
+    'Success Stories': 'सफलता की कहानियाँ',
+    'View All Stories →': 'सभी कहानियाँ देखें →',
+    'Water Quality Parameters': 'जल गुणवत्ता मानक',
+    'Maintain Optimal Water Conditions for Healthy Shrimp':
+        'स्वस्थ झींगों के लिए पानी की सही स्थिति बनाए रखें',
+    'View All →': 'सभी देखें →',
+    'Healthy Ponds\nStronger Shrimp\nHigher Profits':
+        'स्वस्थ तालाब\nमजबूत झींगे\nअधिक लाभ',
+    'Complete Aquaculture Solutions\nfor a Better Tomorrow':
+        'बेहतर भविष्य के लिए\nसंपूर्ण एक्वाकल्चर समाधान',
+    'Explore Products  →': 'उत्पाद देखें  →',
+    'Temperature': 'तापमान',
+    'Dissolved Oxygen': 'घुलित ऑक्सीजन',
+    'Salinity': 'लवणता',
+    'Enter Your Mobile Number': 'अपना मोबाइल नंबर दर्ज करें',
+    'We will send a 6-digit OTP to verify your mobile number.':
+        'आपके मोबाइल नंबर को सत्यापित करने के लिए 6 अंकों का OTP भेजा जाएगा।',
+    'Enter 10-digit number': '10 अंकों का नंबर दर्ज करें',
+    'Send OTP  →': 'OTP भेजें  →',
+    'Secure\nLogin': 'सुरक्षित\nलॉगिन',
+    'Trusted by\nAqua Farmers': 'एक्वा किसानों\nका भरोसा',
+    'Better\nTogether': 'साथ मिलकर\nआगे बढ़ें',
+    'Verify OTP': 'OTP सत्यापित करें',
+    'Enter the 6-digit OTP sent to your mobile number.':
+        'अपने मोबाइल नंबर पर प्राप्त 6 अंकों का OTP दर्ज करें।',
+    'Enter 6-digit OTP': '6 अंकों का OTP दर्ज करें',
+    'Verify OTP  →': 'OTP सत्यापित करें  →',
+    'Resend OTP': 'OTP फिर से भेजें',
+    'Our Products': 'हमारे उत्पाद',
+    'Product Details': 'उत्पाद विवरण',
+    'Recommended Dosage': 'अनुशंसित खुराक',
+    'Technical Support': 'तकनीकी सहायता',
+    'Marine Aqua Technical Support': 'Marine Aqua तकनीकी सहायता',
+    'Customer Care': 'कस्टमर केयर',
+    'Email': 'ईमेल',
+    'Farmer App': 'किसान ऐप',
+    'Pond management, products and aquaculture tools.':
+        'तालाब प्रबंधन, उत्पाद और एक्वाकल्चर टूल्स।',
+    'Pond Area (Acres)': 'तालाब क्षेत्र (एकड़)',
+    'Stocking Density (PL/acre)': 'स्टॉकिंग घनत्व (PL/एकड़)',
+    'Survival Rate (%)': 'जीवित रहने की दर (%)',
+    'Average Body Weight (grams)': 'औसत शरीर का वजन (ग्राम)',
+    'CALCULATE BIOMASS': 'बायोमास की गणना करें',
+    'White Gut': 'व्हाइट गट',
+    'Vibrio-related problems': 'विब्रियो संबंधी समस्याएँ',
+    'Stress & weak growth': 'तनाव और कमजोर वृद्धि',
+    'Poor moulting / shell weakness': 'खराब मोल्टिंग / खोल की कमजोरी',
+    'Oxygen stress': 'ऑक्सीजन तनाव',
+  },
+};
+
+String tr(String text) {
+  final lang = appLocale.value.languageCode;
+  return _appTranslations[lang]?[text] ??
+      _appTranslations['en']?[text] ??
+      text;
+}
+
+class LanguagePicker extends StatelessWidget {
+  const LanguagePicker({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return PopupMenuButton<String>(
+      tooltip: tr('Language'),
+      icon: const Icon(Icons.language, color: darkText),
+      onSelected: (value) {
+        appLocale.value = Locale(value);
+      },
+      itemBuilder: (context) => const [
+        PopupMenuItem(
+          value: 'en',
+          child: Text('🇬🇧  English'),
+        ),
+        PopupMenuItem(
+          value: 'te',
+          child: Text('🇮🇳  తెలుగు'),
+        ),
+        PopupMenuItem(
+          value: 'hi',
+          child: Text('🇮🇳  हिन्दी'),
+        ),
+      ],
+    );
+  }
+}
+
+String currentLanguageCode() => appLocale.value.languageCode;
+
+// ================= END LANGUAGE SYSTEM =================
+
+
 void main() {
   runApp(const MarineAquaApp());
 }
@@ -21,10 +266,19 @@ class MarineAquaApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'MARINE AQUA TECHNOLOGIES',
-      theme: ThemeData(
+    return ValueListenableBuilder<Locale>(
+      valueListenable: appLocale,
+      builder: (context, locale, child) {
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'MARINE AQUA TECHNOLOGIES',
+          locale: locale,
+          supportedLocales: const [
+            Locale('en'),
+            Locale('te'),
+            Locale('hi'),
+          ],
+          theme: ThemeData(
         useMaterial3: true,
         scaffoldBackgroundColor: pageBg,
         colorScheme: ColorScheme.fromSeed(
@@ -36,8 +290,10 @@ class MarineAquaApp extends StatelessWidget {
           foregroundColor: darkText,
           elevation: 0,
         ),
-      ),
-      home: const SplashPage(),
+          ),
+          home: const SplashPage(),
+        );
+      },
     );
   }
 }
@@ -85,8 +341,8 @@ class _SplashPageState extends State<SplashPage> {
 
             const SizedBox(height: 22),
 
-            const Text(
-              'ఆక్వా సాగులో ప్రతి దశలో… మీకు తోడుగా',
+            Text(
+              tr('ఆక్వా సాగులో ప్రతి దశలో… మీకు తోడుగా'),
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: darkText,
@@ -97,7 +353,7 @@ class _SplashPageState extends State<SplashPage> {
 
             const SizedBox(height: 8),
 
-            const Text(
+            Text(
               'Marine Aqua Technologies',
               style: TextStyle(
                 color: darkText,
@@ -193,8 +449,8 @@ class _LoginPageState extends State<LoginPage> {
 
               const SizedBox(height: 6),
 
-              const Text(
-                'ఆక్వా సాగులో ప్రతి దశలో… మీకు తోడుగా',
+              Text(
+                tr('ఆక్వా సాగులో ప్రతి దశలో… మీకు తోడుగా'),
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: darkText,
@@ -205,7 +461,7 @@ class _LoginPageState extends State<LoginPage> {
 
               const SizedBox(height: 4),
 
-              const Text(
+              Text(
                 'Marine Aqua Technologies',
                 style: TextStyle(
                   color: darkText,
@@ -215,12 +471,12 @@ class _LoginPageState extends State<LoginPage> {
 
               const SizedBox(height: 44),
 
-              const Align(
+              Align(
                 alignment: Alignment.centerLeft,
                 child: FittedBox(
                   fit: BoxFit.scaleDown,
                   child: Text(
-                    'Enter Your Mobile Number',
+                    tr('Enter Your Mobile Number'),
                     maxLines: 1,
                     style: TextStyle(
                       color: darkText,
@@ -233,10 +489,10 @@ class _LoginPageState extends State<LoginPage> {
 
               const SizedBox(height: 12),
 
-              const Align(
+              Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  'We will send a 6-digit OTP to verify your mobile number.',
+                  tr('We will send a 6-digit OTP to verify your mobile number.'),
                   style: TextStyle(
                     color: Colors.grey,
                     fontSize: 16,
@@ -253,7 +509,7 @@ class _LoginPageState extends State<LoginPage> {
                 keyboardType: TextInputType.phone,
                 decoration: InputDecoration(
                   counterText: '',
-                  hintText: 'Enter 10-digit number',
+                  hintText: tr('Enter 10-digit number'),
                   hintStyle: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w600,
@@ -296,8 +552,8 @@ class _LoginPageState extends State<LoginPage> {
                       borderRadius: BorderRadius.circular(30),
                     ),
                   ),
-                  child: const Text(
-                    'Send OTP  →',
+                  child: Text(
+                    tr('Send OTP  →'),
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -337,7 +593,7 @@ class _LoginBadge extends StatelessWidget {
   final IconData icon;
   final String text;
 
-  const _LoginBadge({
+  _LoginBadge({
     required this.icon,
     required this.text,
   });
@@ -436,9 +692,9 @@ class _OtpPageState extends State<OtpPage> {
 
               const SizedBox(height: 14),
 
-              const Center(
+              Center(
                 child: Text(
-                  'Verify OTP',
+                  tr('Verify OTP'),
                   style: TextStyle(
                     color: darkText,
                     fontSize: 30,
@@ -449,9 +705,9 @@ class _OtpPageState extends State<OtpPage> {
 
               const SizedBox(height: 10),
 
-              const Center(
+              Center(
                 child: Text(
-                  'Enter the 6-digit OTP sent to your mobile number.',
+                  tr('Enter the 6-digit OTP sent to your mobile number.'),
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Colors.grey,
@@ -469,7 +725,7 @@ class _OtpPageState extends State<OtpPage> {
                 textAlign: TextAlign.center,
                 decoration: InputDecoration(
                   counterText: '',
-                  hintText: 'Enter 6-digit OTP',
+                  hintText: tr('Enter 6-digit OTP'),
                   filled: true,
                   fillColor: Colors.white,
                   contentPadding: const EdgeInsets.symmetric(
@@ -499,8 +755,8 @@ class _OtpPageState extends State<OtpPage> {
                       borderRadius: BorderRadius.circular(30),
                     ),
                   ),
-                  child: const Text(
-                    'Verify OTP  →',
+                  child: Text(
+                    tr('Verify OTP  →'),
                     style: TextStyle(
                       fontSize: 19,
                       fontWeight: FontWeight.bold,
@@ -511,9 +767,9 @@ class _OtpPageState extends State<OtpPage> {
 
               const Spacer(),
 
-              const Center(
+              Center(
                 child: Text(
-                  'Resend OTP',
+                  tr('Resend OTP'),
                   style: TextStyle(
                     color: brightBlue,
                     fontWeight: FontWeight.bold,
@@ -560,26 +816,26 @@ class _HomePageState extends State<HomePage> {
             tab = value;
           });
         },
-        destinations: const [
+        destinations: [
           NavigationDestination(
             icon: Icon(Icons.home_outlined),
             selectedIcon: Icon(Icons.home),
-            label: 'Home',
+            label: tr('Home'),
           ),
           NavigationDestination(
             icon: Icon(Icons.inventory_2_outlined),
             selectedIcon: Icon(Icons.inventory_2),
-            label: 'Products',
+            label: tr('Products'),
           ),
           NavigationDestination(
             icon: Icon(Icons.support_agent_outlined),
             selectedIcon: Icon(Icons.support_agent),
-            label: 'Support',
+            label: tr('Support'),
           ),
           NavigationDestination(
             icon: Icon(Icons.person_outline),
             selectedIcon: Icon(Icons.person),
-            label: 'Profile',
+            label: tr('Profile'),
           ),
         ],
       ),
@@ -616,8 +872,8 @@ class FarmerHome extends StatelessWidget {
                 child: _featureCard(
                   context,
                   Icons.menu_book_rounded,
-                  'Shrimp Culture Guide',
-                  'Pond Preparation to Harvest',
+                  tr('Shrimp Culture Guide'),
+                  tr('Pond Preparation to Harvest'),
                   const GuidePage(),
                   const Color(0xFFE6F4FF),
                 ),
@@ -627,8 +883,8 @@ class FarmerHome extends StatelessWidget {
                 child: _featureCard(
                   context,
                   Icons.calculate_rounded,
-                  'Biomass Calculator',
-                  'Estimate Your Shrimp Stock',
+                  tr('Biomass Calculator'),
+                  tr('Estimate Your Shrimp Stock'),
                   const BiomassPage(),
                   const Color(0xFFE8F8EE),
                 ),
@@ -638,8 +894,8 @@ class FarmerHome extends StatelessWidget {
                 child: _featureCard(
                   context,
                   Icons.health_and_safety_rounded,
-                  'Shrimp Diseases',
-                  'Identify • Prevent • Manage',
+                  tr('Shrimp Diseases'),
+                  tr('Identify • Prevent • Manage'),
                   const DiseasePage(),
                   const Color(0xFFFFE9EA),
                 ),
@@ -650,8 +906,8 @@ class FarmerHome extends StatelessWidget {
           const SizedBox(height: 18),
 
           _sectionTitle(
-            'Our Aquaculture Solutions',
-            'View All Products →',
+            tr('Our Aquaculture Solutions'),
+            tr('View All Products →'),
           ),
 
           const SizedBox(height: 10),
@@ -676,8 +932,8 @@ class FarmerHome extends StatelessWidget {
           const SizedBox(height: 20),
 
           _sectionTitle(
-            'Success Stories',
-            'View All Stories →',
+            tr('Success Stories'),
+            tr('View All Stories →'),
           ),
 
           const SizedBox(height: 10),
@@ -723,8 +979,8 @@ class FarmerHome extends StatelessWidget {
                 height: 52,
               ),
 
-              const Text(
-                'ఆక్వా సాగులో ప్రతి దశలో… మీకు తోడుగా',
+              Text(
+                tr('ఆక్వా సాగులో ప్రతి దశలో… మీకు తోడుగా'),
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: darkText,
@@ -733,7 +989,7 @@ class FarmerHome extends StatelessWidget {
                 ),
               ),
 
-              const Text(
+              Text(
                 'Marine Aqua Technologies',
                 style: TextStyle(
                   color: darkText,
@@ -752,38 +1008,7 @@ class FarmerHome extends StatelessWidget {
 
         const SizedBox(width: 6),
 
-        Container(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 10,
-            vertical: 8,
-          ),
-          decoration: BoxDecoration(
-            color: const Color(0xFFDCEEFF),
-            borderRadius: BorderRadius.circular(20),
-          ),
-          child: const Row(
-            children: [
-              Icon(
-                Icons.language,
-                color: darkText,
-                size: 20,
-              ),
-              SizedBox(width: 4),
-              Text(
-                'EN',
-                style: TextStyle(
-                  color: darkText,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              Icon(
-                Icons.keyboard_arrow_down,
-                color: darkText,
-                size: 18,
-              ),
-            ],
-          ),
-        ),
+        const LanguagePicker(),
       ],
     );
   }
@@ -840,7 +1065,7 @@ class FarmerHome extends StatelessWidget {
               Spacer(),
 
               Text(
-                'Explore Products  →',
+                tr('Explore Products  →'),
                 style: TextStyle(
                   color: darkText,
                   backgroundColor: Colors.white,
@@ -884,7 +1109,7 @@ class FarmerHome extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Water Quality Parameters',
+                      tr('Water Quality Parameters'),
                       style: TextStyle(
                         color: darkText,
                         fontSize: 19,
@@ -892,7 +1117,7 @@ class FarmerHome extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      'Maintain Optimal Water Conditions for Healthy Shrimp',
+                      tr('Maintain Optimal Water Conditions for Healthy Shrimp'),
                       style: TextStyle(
                         color: Colors.grey,
                         fontSize: 11,
@@ -911,8 +1136,8 @@ class FarmerHome extends StatelessWidget {
                     ),
                   );
                 },
-                child: const Text(
-                  'View All →',
+                child: Text(
+                  tr('View All →'),
                   style: TextStyle(
                     color: brightBlue,
                     fontWeight: FontWeight.bold,
@@ -928,7 +1153,7 @@ class FarmerHome extends StatelessWidget {
             children: [
               _metric(
                 '🌡️',
-                'Temperature',
+                tr('Temperature'),
                 '28°C – 30°C',
               ),
               _metric(
@@ -938,12 +1163,12 @@ class FarmerHome extends StatelessWidget {
               ),
               _metric(
                 'O₂',
-                'Dissolved Oxygen',
+                tr('Dissolved Oxygen'),
                 '> 4 / > 6 ppm',
               ),
               _metric(
                 '〰',
-                'Salinity',
+                tr('Salinity'),
                 '0 – 30 ppt',
               ),
             ],
@@ -1259,7 +1484,7 @@ class FarmerHome extends StatelessWidget {
         ),
         borderRadius: BorderRadius.circular(20),
       ),
-      child: const Center(
+      child: Center(
         child: Text(
           'Healthy Water… Healthy Shrimp…\nProsperous Farmers…',
           textAlign: TextAlign.center,
@@ -1383,7 +1608,7 @@ class ProductsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Our Products'),
+        title: Text(tr('Our Products')),
       ),
       body: GridView.builder(
         padding: const EdgeInsets.all(14),
@@ -1513,8 +1738,8 @@ class ProductDetailsPage extends StatelessWidget {
                 crossAxisAlignment:
                     CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    'Product Details',
+                  Text(
+                    tr('Product Details'),
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       color: darkText,
@@ -1528,8 +1753,8 @@ class ProductDetailsPage extends StatelessWidget {
 
                   const SizedBox(height: 16),
 
-                  const Text(
-                    'Recommended Dosage',
+                  Text(
+                    tr('Recommended Dosage'),
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       color: darkText,
@@ -1556,9 +1781,9 @@ class WaterQualityPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const rows = [
+    final rows = [
       [
-        'Temperature',
+        tr('Temperature'),
         '28°C to 30°C',
       ],
       [
@@ -1570,7 +1795,7 @@ class WaterQualityPage extends StatelessWidget {
         'Above 4 ppm morning; above 6 ppm daytime',
       ],
       [
-        'Salinity',
+        tr('Salinity'),
         '0 to 30 ppt',
       ],
       [
@@ -1597,8 +1822,8 @@ class WaterQualityPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Water Quality Parameters',
+        title: Text(
+          tr('Water Quality Parameters'),
         ),
       ),
       body: ListView.separated(
@@ -1656,8 +1881,8 @@ class GuidePage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text(
-          'Shrimp Culture Guide',
+        title: Text(
+          tr('Shrimp Culture Guide'),
         ),
       ),
       body: SfPdfViewer.asset(
@@ -1726,8 +1951,8 @@ class _BiomassPageState extends State<BiomassPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Biomass Calculator',
+        title: Text(
+          tr('Biomass Calculator'),
         ),
       ),
       body: ListView(
@@ -1735,27 +1960,27 @@ class _BiomassPageState extends State<BiomassPage> {
         children: [
           _field(
             area,
-            'Pond Area (Acres)',
+            tr('Pond Area (Acres)'),
           ),
           _field(
             density,
-            'Stocking Density (PL/acre)',
+            tr('Stocking Density (PL/acre)'),
           ),
           _field(
             survival,
-            'Survival Rate (%)',
+            tr('Survival Rate (%)'),
           ),
           _field(
             weight,
-            'Average Body Weight (grams)',
+            tr('Average Body Weight (grams)'),
           ),
 
           SizedBox(
             height: 52,
             child: ElevatedButton(
               onPressed: calc,
-              child: const Text(
-                'CALCULATE BIOMASS',
+              child: Text(
+                tr('CALCULATE BIOMASS'),
               ),
             ),
           ),
@@ -1816,18 +2041,18 @@ class DiseasePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const diseases = [
-      'White Gut',
-      'Vibrio-related problems',
-      'Stress & weak growth',
-      'Poor moulting / shell weakness',
-      'Oxygen stress',
+    final diseases = [
+      tr('White Gut'),
+      tr('Vibrio-related problems'),
+      tr('Stress & weak growth'),
+      tr('Poor moulting / shell weakness'),
+      tr('Oxygen stress'),
     ];
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Shrimp Diseases',
+        title: Text(
+          tr('Shrimp Diseases'),
         ),
       ),
       body: ListView(
@@ -1869,13 +2094,13 @@ class SupportPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Technical Support',
+        title: Text(
+          tr('Technical Support'),
         ),
       ),
       body: ListView(
         padding: const EdgeInsets.all(18),
-        children: const [
+        children: [
           SizedBox(height: 20),
 
           Icon(
@@ -1887,7 +2112,7 @@ class SupportPage extends StatelessWidget {
           SizedBox(height: 14),
 
           Text(
-            'Marine Aqua Technical Support',
+            tr('Marine Aqua Technical Support'),
             textAlign: TextAlign.center,
             style: TextStyle(
               color: darkText,
@@ -1906,7 +2131,7 @@ class SupportPage extends StatelessWidget {
                 color: brightBlue,
               ),
               title: Text(
-                'Customer Care',
+                tr('Customer Care'),
               ),
               subtitle: Text(
                 '+91 93902 59830',
@@ -1922,7 +2147,7 @@ class SupportPage extends StatelessWidget {
                 color: brightBlue,
               ),
               title: Text(
-                'Email',
+                tr('Email'),
               ),
               subtitle: Text(
                 'marineaquahr@gmail.com',
@@ -1944,8 +2169,8 @@ class ProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Profile',
+        title: Text(
+          tr('Profile'),
         ),
       ),
       body: ListView(
@@ -1958,7 +2183,7 @@ class ProfilePage extends StatelessWidget {
 
           const SizedBox(height: 16),
 
-          const Text(
+          Text(
             'MARINE AQUA TECHNOLOGIES',
             textAlign: TextAlign.center,
             style: TextStyle(
@@ -1970,8 +2195,8 @@ class ProfilePage extends StatelessWidget {
 
           const SizedBox(height: 8),
 
-          const Text(
-            'ఆక్వా సాగులో ప్రతి దశలో… మీకు తోడుగా',
+          Text(
+            tr('ఆక్వా సాగులో ప్రతి దశలో… మీకు తోడుగా'),
             textAlign: TextAlign.center,
             style: TextStyle(
               color: marineTeal,
@@ -1989,10 +2214,10 @@ class ProfilePage extends StatelessWidget {
                 color: brightBlue,
               ),
               title: Text(
-                'Farmer App',
+                tr('Farmer App'),
               ),
               subtitle: Text(
-                'Pond management, products and aquaculture tools.',
+                tr('Pond management, products and aquaculture tools.'),
               ),
             ),
           ),
