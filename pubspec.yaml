@@ -24,7 +24,6 @@ flutter:
 
   assets:
     - lib/mat_guide.pdf
-    - lib/marine_logo.png
     - lib/marine_6g.png
     - lib/marine_white_shield.png
     - lib/vibrio_shield.png
