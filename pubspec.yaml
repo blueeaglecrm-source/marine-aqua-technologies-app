@@ -1,5 +1,8 @@
+```yaml
 name: marine_aqua_technologies
+
 description: MARINE AQUA TECHNOLOGIES - Smart Aquaculture. Better Results.
+
 publish_to: "none"
 
 version: 1.0.0+1
@@ -10,25 +13,33 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+
   geolocator: ^14.0.2
   image_picker: ^1.2.0
   geocoding: ^5.0.0
   syncfusion_flutter_pdfviewer: ^31.1.21
 
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^5.0.0
+
 flutter:
   uses-material-design: true
 
   assets:
-     assets:
     - bio sludge -x.png
     - free moult.png
     - marine 6g.png
     - marine_logo.png
-    - white shield.png
+    - marine white shield.png
     - oxytab.png
     - protab.png
     - red thunder.png
     - starmin.png
     - vibrio shield.png
     - volt-x.png
-    - lib/mat_guide.pdf
+    - white shield.png
+    - mat_guide.pdf
+```
