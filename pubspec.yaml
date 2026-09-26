@@ -23,16 +23,15 @@ flutter:
   uses-material-design: true
 
   assets:
-    - lib/mat_guide.pdf
-    - lib/marine_6g.png
-    - lib/marine_white_shield.png
-    - lib/vibrio_shield.png
-    - lib/protab.png
-    - lib/volt-x.png
-    - lib/volt-x.png
-    - lib/oxytab.png
-    - lib/bio_sludge_x.png
-    - lib/free_moult.png
-    - lib/red_thunder.png
-    - lib/starmin.png
-    - lib/white_shield.png
+    - assets/mat_guide.pdf
+    - assets/marine_logo.png
+    - assets/marine_6g.png
+    - assets/marine_white_shield.png
+    - assets/vibrio_shield.png
+    - assets/protab.png
+    - assets/volt-x.png
+    - assets/oxytab.png
+    - assets/bio_sludge_x.png
+    - assets/free_moult.png
+    - assets/red_thunder.png
+    - assets/starmin.png
